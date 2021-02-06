@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { SIGN_IN_URL } from '../constant';
 import TopNav from '../component/TopNav';
@@ -9,7 +9,7 @@ import useAuth from '../useAuth';
 
 export default function CheckList() {
   const auth = useAuth();
-  const [certificate_qty, setCertificateQty] = useState(0);
+  const [certificate_qty, setCertificateQty] = React.useState(0);
 
   React.useEffect(() => {
     const auth = sessionStorage.getItem('mis-auth');
@@ -18,12 +18,13 @@ export default function CheckList() {
     }
   }, []);
 
-  useEffect(() => {
-    (async () => {
-      const response = await window.fetch('/api/enterprise/certificate/qty');
-      const res = await response.json();
-      setCertificateQty(res.content.qty);
-    })();
+  React.useEffect(() => {
+    window
+      .fetch('/api/enterprise/certificate/qty')
+      .then((response) => response.json())
+      .then((data) => {
+        setCertificateQty(data.content.qty);
+      });
   }, []);
 
   return (

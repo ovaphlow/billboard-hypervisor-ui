@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import md5 from 'blueimp-md5';
 
 import { SIGN_IN_URL } from '../constant';
@@ -11,11 +11,11 @@ import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
 export default function ChangePassword() {
   const auth = useAuth();
-  const [password, setPassword] = useState('');
-  const [password1, setPassword1] = useState('');
-  const [password2, setPassword2] = useState('');
+  const [password, setPassword] = React.useState('');
+  const [password1, setPassword1] = React.useState('');
+  const [password2, setPassword2] = React.useState('');
 
-  const handleChange = async () => {
+  const handleChange = () => {
     if (!password || !password1 || !password2) {
       window.alert('请完整填写所需信息');
       return;
@@ -30,18 +30,21 @@ export default function ChangePassword() {
       current_password: md5(password),
       new_password: md5(password1),
     };
-    let res = await window.fetch('/api/current-user/change-password', {
-      method: 'PUT',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-    res = await res.json();
-    if (res.message) {
-      window.alert(res.message);
-      return;
-    }
-    window.alert('数据已经提交至服务器，即将重定向至登录页面。');
-    window.location = '#登录';
+    window
+      .fetch('/api/current-user/change-password', {
+        method: 'PUT',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(data),
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message) {
+          window.alert(data.message);
+          return;
+        }
+        window.alert('数据已经提交至服务器，即将重定向至登录页面。');
+        window.location = '#登录';
+      });
   };
 
   React.useEffect(() => {

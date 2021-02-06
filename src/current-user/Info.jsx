@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { SIGN_IN_URL } from '../constant';
 import TopNav from '../component/TopNav';
@@ -10,21 +10,24 @@ import { faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 
 export default function Info() {
   const auth = useAuth();
-  const [username, setUsername] = useState('');
-  const [name, setName] = useState('');
+  const [username, setUsername] = React.useState('');
+  const [name, setName] = React.useState('');
 
-  const handleSave = async () => {
-    const response = await window.fetch(`/api/mis-user/${auth.id}?uuid=${auth.uuid}`, {
-      method: 'PUT',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ username, name }),
-    });
-    const res = await response.json();
-    if (res.message) {
-      window.alert(res.message);
-      return;
-    }
-    window.location = '#/登录';
+  const handleSave = () => {
+    window
+      .fetch(`/api/mis-user/${auth.id}?uuid=${auth.uuid}`, {
+        method: 'PUT',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ username, name }),
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message) {
+          window.alert(data.message);
+          return;
+        }
+        window.location = '#/登录';
+      });
   };
 
   React.useEffect(() => {
@@ -34,7 +37,7 @@ export default function Info() {
     }
   }, []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     setUsername(auth.username);
     setName(auth.name);
   }, []);

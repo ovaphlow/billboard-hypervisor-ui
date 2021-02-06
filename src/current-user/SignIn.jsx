@@ -14,19 +14,22 @@ export default function SignIn() {
     sessionStorage.removeItem('mis-auth');
   }, []);
 
-  const handleSignIn = async () => {
-    const response = await fetch('/api/mis-user/sign-in', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ username, password: md5(password) }),
-    });
-    const res = await response.json();
-    if (res.message) {
-      window.alert(res.message);
-      return;
-    }
-    sessionStorage.setItem('mis-auth', JSON.stringify(res.content));
-    window.location = Home;
+  const handleSignIn = () => {
+    window
+      .fetch('/api/mis-user/sign-in', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ username, password: md5(password) }),
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.message) {
+          window.alert(data.message);
+          return;
+        }
+        sessionStorage.setItem('mis-auth', JSON.stringify(data.content));
+        window.location = Home;
+      });
   };
 
   return (
