@@ -14,6 +14,7 @@
     "dayjs": "^1.10.4",
     "moment": "^2.29.1",
     "parcel-bundler": "^1.12.4",
+    "popper.js": "^1.16.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
@@ -27,9 +28,13 @@
     "prettier": "^2.2.1"
   },
   "scripts": {
-    "start": "parcel watch *.html --out-dir dist",
+    "watch": "parcel watch *.html --out-dir dist",
     "build": "parcel build *.html --out-dir dist",
-    "format": "prettier --write .",
+    "format": "prettier --write src",
     "lint": "eslint ."
-  }
+  },
+  "browserslist": [
+    "last 1 chrome version",
+    "last 1 firefox version"
+  ]
 }
