@@ -122,10 +122,10 @@ function Home() {
   }, []);
 
   React.useEffect(() => {
-    window;
-    fetch('/api/job/statistic?option=all', {
-      method: 'PUT',
-    })
+    window
+      .fetch('/api/job/statistic?option=all', {
+        method: 'PUT',
+      })
       .then((response) => response.json())
       .then((data) => {
         dispatch({
