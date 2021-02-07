@@ -135,6 +135,35 @@ function Home() {
       });
   }, []);
 
+  React.useEffect(() => {
+    window
+      .fetch('/api/bulletin/statistic?option=tuijian-today', {
+        method: 'PUT',
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        dispatch({
+          type: 'set',
+          payload: { key: 'bulletin_tuijian_today', value: data },
+        });
+      });
+  }, []);
+
+  React.useEffect(() => {
+    window
+      .fetch('/api/bulletin/statistic?option=tuijian-all', {
+        method: 'PUT',
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        console.info(data);
+        dispatch({
+          type: 'set',
+          payload: { key: 'bulletin_tuijian_all', value: data },
+        });
+      });
+  }, []);
+
   return (
     <div className="d-flex flex-column h-100 w-100">
       <header>
