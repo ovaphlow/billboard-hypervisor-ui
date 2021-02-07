@@ -156,7 +156,6 @@ function Home() {
       })
       .then((response) => response.json())
       .then((data) => {
-        console.info(data);
         dispatch({
           type: 'set',
           payload: { key: 'bulletin_tuijian_all', value: data },
