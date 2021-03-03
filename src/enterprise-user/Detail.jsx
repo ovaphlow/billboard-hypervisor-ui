@@ -13,7 +13,6 @@ export default function Detail({ component_option }) {
   const { id } = useParams();
   const location = useLocation();
   const [uuid, setUUID] = useState('');
-  const [enterprise_id, setEnterpriseID] = useState(0);
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
   const [phone, setPhone] = useState('');
@@ -21,7 +20,7 @@ export default function Detail({ component_option }) {
   const handleSubmit = async () => {
     if (component_option === '编辑') {
       const response = await window.fetch(
-        `/api/enterprise-user/${id}?uuid=${uuid}&enterprise_id=${enterprise_id}`,
+        `/api/enterprise-user/${id}?uuid=${uuid}`,
         {
           method: 'PUT',
           headers: { 'content-type': 'application/json' },
@@ -43,7 +42,7 @@ export default function Detail({ component_option }) {
   const handleRemove = async () => {
     if (!window.confirm('确定要删除当前数据？')) return;
     const response = await window.fetch(
-      `/api/enterprise-user/${id}?uuid=${uuid}&enterprise_id=${enterprise_id}`,
+      `/api/enterprise-user/${id}?uuid=${uuid}`,
       {
         method: 'DELETE',
       },
@@ -58,24 +57,22 @@ export default function Detail({ component_option }) {
 
   useEffect(() => {
     if (component_option === '编辑') {
-      setEnterpriseID(parseInt(new URLSearchParams(location.search).get('enterprise_id'), 10));
       setUUID(new URLSearchParams(location.search).get('uuid'));
     }
   }, []);
 
   useEffect(() => {
-    if (enterprise_id && uuid) {
+    if (id && uuid) {
       (async () => {
         const response = await fetch(
-          `/api/enterprise-user/${id}?uuid=${uuid}&enterprise_id=${enterprise_id}`,
+          `/api/enterprise-user/${id}?uuid=${uuid}`,
         );
         const res = await response.json();
         setName(res.content.name);
         setPhone(res.content.phone);
       })();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enterprise_id, uuid]);
+  }, [id, uuid]);
 
   return (
     <div className="d-flex flex-column h-100 w-100">
