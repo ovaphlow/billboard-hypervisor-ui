@@ -9,7 +9,7 @@ export default function TopNav({ component_option, component_param_name }) {
   const message_qty = useMessageQty({ user_id: 0, user_uuid: '' });
 
   return (
-    <nav className="navbar navbar-expand navbar-dark bg-dark mb-3">
+    <nav className="navbar navbar-expand navbar-dark mb-3">
       <div className="container-fluid">
         <a href="home.html" className="navbar-brand">
           龙招聘

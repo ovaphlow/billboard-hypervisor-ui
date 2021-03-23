@@ -139,19 +139,6 @@ export default function LeftNav({ component_option }) {
           )}
         </a>
       </li>
-      <li className="nav-item">
-        <a href="report.html" className="nav-link text-reset text-decoration-none">
-          {component_option === '举报' ? (
-            <strong>
-              <FontAwesomeIcon icon={faChevronRight} fixedWidth size="lg" />
-              {component_option}
-              <FontAwesomeIcon icon={faChevronLeft} fixedWidth size="lg" />
-            </strong>
-          ) : (
-            <span>举报</span>
-          )}
-        </a>
-      </li>
       <hr />
       <li className="nav-item">
         <a href="bulletin.html" className="nav-link text-reset text-decoration-none">
