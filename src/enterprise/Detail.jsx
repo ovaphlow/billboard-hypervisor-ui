@@ -157,7 +157,15 @@ export default function Detail({ component_option }) {
                   <div className="card-body">
                     <dl className="row">
                       <dt className="col-3">名称</dt>
-                      <dd className="col-9">{employer.name}</dd>
+                      <dd className="col-9 lead">
+                        {employer.status === '认证' && (
+                          <>
+                            <span class="badge bg-success pull-right">{employer.status}</span>
+                            &nbsp;
+                          </>
+                        )}
+                        {employer.name}
+                      </dd>
 
                       <hr />
 
