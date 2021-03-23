@@ -19,17 +19,14 @@ export default function Detail({ component_option }) {
 
   const handleSubmit = async () => {
     if (component_option === '编辑') {
-      const response = await window.fetch(
-        `/api/enterprise-user/${id}?uuid=${uuid}`,
-        {
-          method: 'PUT',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({
-            name,
-            phone,
-          }),
-        },
-      );
+      const response = await window.fetch(`/api/enterprise-user/${id}?uuid=${uuid}`, {
+        method: 'PUT',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({
+          name,
+          phone,
+        }),
+      });
       const res = await response.json();
       if (res.message) {
         window.alert(res.message);
@@ -41,12 +38,9 @@ export default function Detail({ component_option }) {
 
   const handleRemove = async () => {
     if (!window.confirm('确定要删除当前数据？')) return;
-    const response = await window.fetch(
-      `/api/enterprise-user/${id}?uuid=${uuid}`,
-      {
-        method: 'DELETE',
-      },
-    );
+    const response = await window.fetch(`/api/enterprise-user/${id}?uuid=${uuid}`, {
+      method: 'DELETE',
+    });
     const res = await response.json();
     if (res.message) {
       window.alert(res.message);
@@ -64,9 +58,7 @@ export default function Detail({ component_option }) {
   useEffect(() => {
     if (id && uuid) {
       (async () => {
-        const response = await fetch(
-          `/api/enterprise-user/${id}?uuid=${uuid}`,
-        );
+        const response = await fetch(`/api/enterprise-user/${id}?uuid=${uuid}`);
         const res = await response.json();
         setName(res.content.name);
         setPhone(res.content.phone);
