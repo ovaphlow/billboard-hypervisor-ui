@@ -4,8 +4,8 @@ import { useParams, useLocation } from 'react-router-dom';
 import TopNav from '../component/TopNav';
 import LeftNav from '../component/LeftNav';
 import BottomNav from '../component/BottomNav';
-import RecruitmentList from '../recruitment/component/List';
-import RecruitmentList1 from '../recruitment/component/List1';
+import RecruitmentList from './ComponentJobList';
+import RecruitmentList1 from './ComponentJobNResumeList';
 import useAuth from '../useAuth';
 import { reducer } from '../miscellaneous';
 
@@ -83,7 +83,7 @@ export default function Detail() {
         <div className="container-fluid h-100">
           <div className="row h-100 d-flex justify-content-center">
             <div className="col-3 col-lg-2">
-              <div className="card bg-dark h-100">
+              <div className="card left-nav h-100">
                 <LeftNav component_option="企业用户" />
               </div>
             </div>

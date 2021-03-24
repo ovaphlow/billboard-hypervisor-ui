@@ -1,13 +1,24 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-export default function List1({ enterprise_id, enterprise_uuid }) {
-  const [data_list, setDataList] = useState([]);
-  const [min, setMin] = useState(moment().startOf('month').format('YYYY-MM-DD'));
-  const [max, setMax] = useState(moment().endOf('month').format('YYYY-MM-DD'));
+export default function ComponentJobNResumeList({ enterprise_id, enterprise_uuid }) {
+  const [data_list, setDataList] = React.useState([]);
+  const [min, setMin] = React.useState(moment().startOf('month').format('YYYY-MM-DD'));
+  const [max, setMax] = React.useState(moment().endOf('month').format('YYYY-MM-DD'));
 
   const handleFilter = async () => {
+    // setDataList([]);
+    // let query = `option=list-by-employer`;
+    // query = `${query}&id=${enterprise_id}`;
+    // query = `${query}&uuid=${enterprise_uuid}`;
+    // query = `${query}&date_begin=${min}`;
+    // query = `${query}&date_end=${max}`;
+    // fetch(`/api/biz/send-in/filter?${query}`)
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     console.info(data);
+    //   });
     const response = await window.fetch(`/api/enterprise/delivery/?uuid=${enterprise_uuid}`, {
       method: 'PUT',
       headers: { 'content-type': 'application/json' },
@@ -96,11 +107,11 @@ export default function List1({ enterprise_id, enterprise_uuid }) {
   );
 }
 
-List1.propTypes = {
+ComponentJobNResumeList.propTypes = {
   enterprise_id: PropTypes.string.isRequired,
   enterprise_uuid: PropTypes.string,
 };
 
-List1.defaultProps = {
+ComponentJobNResumeList.defaultProps = {
   enterprise_uuid: undefined,
 };

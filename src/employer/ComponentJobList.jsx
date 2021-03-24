@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 
-export default function List({ enterprise_id, enterprise_uuid }) {
-  const [data_list, setDataList] = useState([]);
+export default function ComponentJobList({ enterprise_id, enterprise_uuid }) {
+  const [data_list, setDataList] = React.useState([]);
 
-  useEffect(() => {
-    (async () => {
-      const response = await window.fetch(
-        `/api/recruitment/?enterprise_id=${enterprise_id}&enterprise_uuid=${enterprise_uuid}`,
-      );
-      const res = await response.json();
-      setDataList(res.content);
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  React.useEffect(() => {
+    if (!enterprise_id || !enterprise_uuid) return;
+    fetch(
+      `/api/biz/job/filter?option=list-by-employer-id&id=${enterprise_id}&uuid=${enterprise_uuid}`,
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setDataList(data);
+      });
+  }, [enterprise_id, enterprise_uuid]);
 
   return (
     <table className="table table-dark table-striped">
@@ -63,11 +63,11 @@ export default function List({ enterprise_id, enterprise_uuid }) {
   );
 }
 
-List.propTypes = {
+ComponentJobList.propTypes = {
   enterprise_id: PropTypes.string.isRequired,
   enterprise_uuid: PropTypes.string,
 };
 
-List.defaultProps = {
-  enterprise_uuid: undefined,
+ComponentJobList.defaultProps = {
+  enterprise_uuid: '',
 };

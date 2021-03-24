@@ -27,54 +27,6 @@ export default function Detail({ component_option }) {
   const [education, setEducation] = useState('');
   const [category, setCategory] = useState('');
 
-  const handleSubmit = async () => {
-    if (component_option === '编辑') {
-      const response = await window.fetch(
-        `/api/recruitment/${recruitment_id}?recruitment_uuid=${uuid}`,
-        {
-          method: 'PUT',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({
-            name,
-            qty,
-            description,
-            requirement,
-            address1,
-            address2,
-            address3,
-            date,
-            salary1,
-            salary2,
-            education,
-            category,
-          }),
-        },
-      );
-      const res = await response.json();
-      if (res.message) {
-        window.alert(res.message);
-        return;
-      }
-      window.history.go(-1);
-    }
-  };
-
-  const handleRemove = async () => {
-    if (!window.confirm('确定要删除当前数据？')) return;
-    const response = await window.fetch(
-      `/api/recruitment/${recruitment_id}?recruitment_uuid=${uuid}`,
-      {
-        method: 'DELETE',
-      },
-    );
-    const res = await response.json();
-    if (res.message) {
-      window.alert(res.message);
-      return;
-    }
-    window.history.go(-1);
-  };
-
   useEffect(() => {
     if (component_option === '编辑') {
       setUUID(new URLSearchParams(location.search).get('uuid'));
@@ -331,23 +283,6 @@ export default function Detail({ component_option }) {
                         }}
                       >
                         返回
-                      </button>
-                    </div>
-
-                    <div className="btn-group float-right">
-                      {component_option === '编辑' && (
-                        <button type="button" className="btn btn-danger" onClick={handleRemove}>
-                          删除
-                        </button>
-                      )}
-
-                      <button
-                        type="button"
-                        className="btn btn-primary"
-                        style={{ display: 'none' }}
-                        onClick={handleSubmit}
-                      >
-                        保存
                       </button>
                     </div>
                   </div>
