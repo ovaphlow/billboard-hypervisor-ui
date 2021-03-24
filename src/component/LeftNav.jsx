@@ -74,7 +74,7 @@ export default function LeftNav({ component_option }) {
       </li>
       <hr />
       <li className="nav-item">
-        <a href="enterprise-user.html" className="nav-link text-reset text-decoration-none">
+        <a href="employer.html" className="nav-link text-reset text-decoration-none">
           {component_option === '企业用户' ? (
             <strong>
               <FontAwesomeIcon icon={faChevronRight} fixedWidth size="lg" />

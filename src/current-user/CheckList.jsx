@@ -4,7 +4,7 @@ import { SIGN_IN_URL } from '../constant';
 import TopNav from '../component/TopNav';
 import LeftNav from '../component/LeftNav';
 import BottomNav from '../component/BottomNav';
-import ComponentCertificateList from '../enterprise/ComponentCertificateList';
+import ComponentCertificateList from '../employer/ComponentCertificateList';
 import useAuth from '../useAuth';
 
 export default function CheckList() {

@@ -3,8 +3,9 @@ import ReactDOM from 'react-dom';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 
 import { SIGN_IN_URL } from '../constant';
-import List from './List';
 import Detail from './Detail';
+import List from './List';
+import UserDetail from './UserDetail';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -27,11 +28,12 @@ export default function Index() {
         <Route exact path="/">
           <List />
         </Route>
-        <Route exact path="/新增">
-          <Detail component_option="新增" />
+        <Route exact path="/账号/:id">
+          <UserDetail component_option="编辑" />
         </Route>
-        <Route path="/:id">
-          <Detail component_option="编辑" />
+
+        <Route exact path="/:id">
+          <Detail />
         </Route>
       </Switch>
     </Router>

@@ -1,6 +1,5 @@
 import React from 'react';
 import { useParams, useLocation } from 'react-router-dom';
-import PropTypes from 'prop-types';
 
 import TopNav from '../component/TopNav';
 import LeftNav from '../component/LeftNav';
@@ -29,7 +28,7 @@ const initial_employer = {
   yingyezhizhao_tu: '',
 };
 
-export default function Detail({ component_option }) {
+export default function Detail() {
   const [employer, dispatch] = React.useReducer(reducer, initial_employer);
   const auth = useAuth();
   const { id } = useParams();
@@ -37,40 +36,38 @@ export default function Detail({ component_option }) {
   const [uuid, setUUID] = React.useState('');
 
   React.useEffect(() => {
-    if (component_option === '编辑') {
-      setUUID(new URLSearchParams(location.search).get('uuid'));
-    }
-  });
+    setUUID(new URLSearchParams(location.search).get('uuid'));
+  }, []);
 
   React.useEffect(() => {
     if (uuid) {
-      fetch(`/api/enterprise/${id}?uuid=${uuid}`)
+      fetch(`/api/biz/employer/${id}?option=&uuid=${uuid}`)
         .then((response) => response.json())
         .then((data) => {
-          dispatch({ type: 'set', payload: { key: 'name', value: data.content.name } });
-          dispatch({ type: 'set', payload: { key: 'faren', value: data.content.faren } });
+          dispatch({ type: 'set', payload: { key: 'name', value: data.name } });
+          dispatch({ type: 'set', payload: { key: 'faren', value: data.faren } });
           dispatch({
             type: 'set',
-            payload: { key: 'yingyezhizhao', value: data.content.yingyezhizhao },
+            payload: { key: 'yingyezhizhao', value: data.yingyezhizhao },
           });
-          dispatch({ type: 'set', payload: { key: 'zhuceriqi', value: data.content.zhuceriqi } });
-          dispatch({ type: 'set', payload: { key: 'zhuziguimo', value: data.content.zhuziguimo } });
+          dispatch({ type: 'set', payload: { key: 'zhuceriqi', value: data.zhuceriqi } });
+          dispatch({ type: 'set', payload: { key: 'zhuziguimo', value: data.zhuziguimo } });
           dispatch({
             type: 'set',
-            payload: { key: 'yuangongshuliang', value: data.content.yuangongshuliang },
+            payload: { key: 'yuangongshuliang', value: data.yuangongshuliang },
           });
-          dispatch({ type: 'set', payload: { key: 'address1', value: data.content.address1 } });
-          dispatch({ type: 'set', payload: { key: 'address2', value: data.content.address2 } });
-          dispatch({ type: 'set', payload: { key: 'address3', value: data.content.address3 } });
-          dispatch({ type: 'set', payload: { key: 'address4', value: data.content.address4 } });
-          dispatch({ type: 'set', payload: { key: 'industry', value: data.content.industry } });
-          dispatch({ type: 'set', payload: { key: 'phone', value: data.content.phone } });
-          dispatch({ type: 'set', payload: { key: 'intro', value: data.content.intro } });
-          dispatch({ type: 'set', payload: { key: 'url', value: data.content.url } });
-          dispatch({ type: 'set', payload: { key: 'status', value: data.content.status } });
+          dispatch({ type: 'set', payload: { key: 'address1', value: data.address1 } });
+          dispatch({ type: 'set', payload: { key: 'address2', value: data.address2 } });
+          dispatch({ type: 'set', payload: { key: 'address3', value: data.address3 } });
+          dispatch({ type: 'set', payload: { key: 'address4', value: data.address4 } });
+          dispatch({ type: 'set', payload: { key: 'industry', value: data.industry } });
+          dispatch({ type: 'set', payload: { key: 'phone', value: data.phone } });
+          dispatch({ type: 'set', payload: { key: 'intro', value: data.intro } });
+          dispatch({ type: 'set', payload: { key: 'url', value: data.url } });
+          dispatch({ type: 'set', payload: { key: 'status', value: data.status } });
           dispatch({
             type: 'set',
-            payload: { key: 'yingyezhizhao_tu', value: data.content.yingyezhizhao_tu },
+            payload: { key: 'yingyezhizhao_tu', value: data.yingyezhizhao_tu },
           });
         });
     }
@@ -112,7 +109,7 @@ export default function Detail({ component_option }) {
                         </a>
                       </li>
                       <li className="breadcrumb-item">
-                        <a href="enterprise-user.html" className="text-reset text-decoration-none">
+                        <a href="employer.html" className="text-reset text-decoration-none">
                           企业用户
                         </a>
                       </li>
@@ -128,7 +125,7 @@ export default function Detail({ component_option }) {
                       <dd className="col-9 lead">
                         {employer.status === '认证' && (
                           <>
-                            <span class="badge bg-success pull-right">{employer.status}</span>
+                            <span className="badge bg-success pull-right">{employer.status}</span>
                             &nbsp;
                           </>
                         )}
@@ -181,7 +178,7 @@ export default function Detail({ component_option }) {
                           <dt className="col-3">营业执照</dt>
                           <dd className="col-9">
                             <img
-                              src={employer.yingyezhizhao_tu}
+                              src={employer.yingyezhizhao_tu || ''}
                               className="img-fluid"
                               alt={employer.name}
                             />
@@ -230,7 +227,3 @@ export default function Detail({ component_option }) {
     </div>
   );
 }
-
-Detail.propTypes = {
-  component_option: PropTypes.string.isRequired,
-};

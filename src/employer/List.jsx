@@ -13,6 +13,7 @@ export default function List() {
   const message_qty = useMessageQty({ user_id: 0, user_uuid: '' });
   const [list, setList] = React.useState([]);
   const [filter, setFilter] = React.useState('');
+  const [flag, setFlag] = React.useState(false);
 
   const handleFilter = async () => {
     setList([]);
@@ -20,8 +21,31 @@ export default function List() {
       .then((response) => response.json())
       .then((data) => {
         setList(data);
+        setFlag(true);
       });
   };
+
+  React.useEffect(() => {
+    if (!flag) return;
+    const ll = list.map((iter) => iter.id);
+    fetch(`/api/biz/employer/filter?option=filter-user-by-id-list&list=${ll.join(',')}`)
+      .then((response) => response.json())
+      .then((data) => {
+        const lf = list.map((current) => {
+          const user = data.find((element) => element.enterprise_id === current.id);
+          return {
+            ...current,
+            user_id: 0 || (user && user.id),
+            user_uuid: '' || (user && user.uuid),
+            user_name: '' || (user && user.name),
+            user_email: '' || (user && user.email),
+            user_phone: '' || (user && user.phone),
+          };
+        });
+        setFlag(false);
+        setList(lf);
+      });
+  }, [flag, list]);
 
   return (
     <div className="d-flex flex-column h-100 w-100">
@@ -116,8 +140,9 @@ export default function List() {
                         <tr>
                           <th className="text-right">序号</th>
                           <th>名称</th>
-                          <th>电话</th>
-                          <th>法人</th>
+                          <th>固定电话</th>
+                          <th>账号</th>
+                          <th>手机/EMAIL</th>
                           <th>操作</th>
                         </tr>
                       </thead>
@@ -128,14 +153,11 @@ export default function List() {
                             <td className="text-right">{it.id}</td>
                             <td>{it.name}</td>
                             <td>{it.phone}</td>
+                            <td>{it.user_name}</td>
                             <td>
-                              {it.faren}
-                              &nbsp;
-                              <a
-                                href={`enterprise.html#/${it.enterprise_id}?uuid=${it.enterprise_uuid}`}
-                              >
-                                <FontAwesomeIcon icon={faLink} fixedWidth size="lg" />
-                              </a>
+                              {it.user_phone}
+                              <br />
+                              {it.user_email}
                             </td>
                             <td>
                               <ul className="list-inline">
@@ -144,7 +166,14 @@ export default function List() {
                                     企业信息
                                   </a>
                                 </li>
-                                <li className="list-inline-item">账号信息</li>
+                                <li className="list-inline-item">
+                                  <a
+                                    href={`#/账号/${it.user_id}?uuid=${it.user_uuid}`}
+                                    className="float-left"
+                                  >
+                                    账号信息
+                                  </a>
+                                </li>
                               </ul>
                             </td>
                           </tr>

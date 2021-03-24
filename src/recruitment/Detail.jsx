@@ -140,7 +140,7 @@ export default function Detail({ component_option }) {
                         </a>
                       </li>
                       <li className="breadcrumb-item">
-                        <a href="enterprise-user.html" className="text-reset text-decoration-none">
+                        <a href="employer.html" className="text-reset text-decoration-none">
                           企业用户
                         </a>
                       </li>
