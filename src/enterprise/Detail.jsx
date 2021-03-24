@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { YUAN_GONG_SHU_LIANG } from '../constant';
 import TopNav from '../component/TopNav';
 import LeftNav from '../component/LeftNav';
 import BottomNav from '../component/BottomNav';
-import IndustryPicker from '../component/IndustryPicker';
 import RecruitmentList from '../recruitment/component/List';
 import RecruitmentList1 from '../recruitment/component/List1';
 import useAuth from '../useAuth';
@@ -36,49 +34,19 @@ export default function Detail({ component_option }) {
   const auth = useAuth();
   const { id } = useParams();
   const location = useLocation();
-  const [uuid, setUUID] = useState('');
-  const [name, setName] = useState('');
-  const [yingyezhizhao, setYingyezhizhao] = useState('');
-  const [yingyezhizhao_tu, setYingyezhizhaoTu] = useState('');
-  const [faren, setFaren] = useState('');
-  const [zhuceriqi, setZhuceriqi] = useState('');
-  const [zhuziguimo, setZhuziguimo] = useState('');
-  const [yuangongshuliang, setYuangongshuliang] = useState('');
-  const [address1, setAddress1] = useState('');
-  const [address2, setAddress2] = useState('');
-  const [address3, setAddress3] = useState('');
-  const [address4, setAddress4] = useState('');
-  const [industry, setIndustry] = useState('');
-  const [phone, setPhone] = useState('');
-  const [intro, setIntro] = useState('');
-  const [url, setUrl] = useState('');
+  const [uuid, setUUID] = React.useState('');
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (component_option === '编辑') {
       setUUID(new URLSearchParams(location.search).get('uuid'));
     }
   });
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (uuid) {
       fetch(`/api/enterprise/${id}?uuid=${uuid}`)
         .then((response) => response.json())
         .then((data) => {
-          setName(data.content.name);
-          setYingyezhizhao(data.content.yingyezhizhao);
-          setYingyezhizhaoTu(data.content.yingyezhizhao_tu);
-          setFaren(data.content.faren);
-          setZhuceriqi(data.content.zhuceriqi);
-          setZhuziguimo(data.content.zhuziguimo);
-          setYuangongshuliang(data.content.yuangongshuliang);
-          setAddress1(data.content.address1);
-          setAddress2(data.content.address2);
-          setAddress3(data.content.address3);
-          setAddress4(data.content.address4);
-          setIndustry(data.content.industry);
-          setPhone(data.content.phone);
-          setIntro(data.content.intro);
-          setUrl(data.content.url);
           dispatch({ type: 'set', payload: { key: 'name', value: data.content.name } });
           dispatch({ type: 'set', payload: { key: 'faren', value: data.content.faren } });
           dispatch({
