@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import TopNav from '../component/TopNav';
 import LeftNav from '../component/LeftNav';
@@ -11,22 +11,16 @@ import { faSearch, faSyncAlt, faEdit, faLink } from '@fortawesome/free-solid-svg
 export default function List() {
   const auth = useAuth();
   const message_qty = useMessageQty({ user_id: 0, user_uuid: '' });
-  const [list, setList] = useState([]);
-  const [filter, setFilter] = useState('');
+  const [list, setList] = React.useState([]);
+  const [filter, setFilter] = React.useState('');
 
   const handleFilter = async () => {
     setList([]);
-    const response = await window.fetch('/api/enterprise-user/filter', {
-      method: 'PUT',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ filter }),
-    });
-    const res = await response.json();
-    if (res.message) {
-      window.alert(res.message);
-      return;
-    }
-    setList(res.content);
+    fetch(`/api/biz/employer/filter?option=&keyword=${filter}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setList(data);
+      });
   };
 
   return (
@@ -121,31 +115,37 @@ export default function List() {
                       <thead>
                         <tr>
                           <th className="text-right">序号</th>
-                          <th>用户</th>
+                          <th>名称</th>
                           <th>电话</th>
-                          <th>企业</th>
+                          <th>法人</th>
+                          <th>操作</th>
                         </tr>
                       </thead>
 
                       <tbody>
                         {list.map((it) => (
                           <tr key={it.id}>
-                            <td className="text-right">
-                              <a href={`#/${it.id}?uuid=${it.uuid}`} className="float-left">
-                                <FontAwesomeIcon icon={faEdit} fixedWidth size="lg" />
-                              </a>
-                              {it.id}
-                            </td>
+                            <td className="text-right">{it.id}</td>
                             <td>{it.name}</td>
                             <td>{it.phone}</td>
                             <td>
-                              {it.enterprise}
+                              {it.faren}
                               &nbsp;
                               <a
                                 href={`enterprise.html#/${it.enterprise_id}?uuid=${it.enterprise_uuid}`}
                               >
                                 <FontAwesomeIcon icon={faLink} fixedWidth size="lg" />
                               </a>
+                            </td>
+                            <td>
+                              <ul className="list-inline">
+                                <li className="list-inline-item">
+                                  <a href={`#/${it.id}?uuid=${it.uuid}`} className="float-left">
+                                    企业信息
+                                  </a>
+                                </li>
+                                <li className="list-inline-item">账号信息</li>
+                              </ul>
                             </td>
                           </tr>
                         ))}
