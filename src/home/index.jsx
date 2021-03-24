@@ -52,10 +52,7 @@ function Home() {
   });
 
   React.useEffect(() => {
-    window
-      .fetch('/api/candidate/statistic?option=today', {
-        method: 'PUT',
-      })
+    fetch('/api/biz/candidate/statistic?option=today')
       .then((response) => response.json())
       .then((data) => {
         dispatch({
@@ -66,10 +63,7 @@ function Home() {
   }, []);
 
   React.useEffect(() => {
-    window
-      .fetch('/api/candidate/statistic?option=all', {
-        method: 'PUT',
-      })
+    fetch('/api/biz/candidate/statistic?option=all')
       .then((response) => response.json())
       .then((data) => {
         dispatch({
@@ -80,10 +74,7 @@ function Home() {
   }, []);
 
   React.useEffect(() => {
-    window
-      .fetch('/api/employer/statistic?option=today', {
-        method: 'PUT',
-      })
+    fetch('/api/biz/employer/statistic?option=today')
       .then((response) => response.json())
       .then((data) => {
         dispatch({
@@ -94,10 +85,7 @@ function Home() {
   }, []);
 
   React.useEffect(() => {
-    window
-      .fetch('/api/employer/statistic?option=all', {
-        method: 'PUT',
-      })
+    fetch('/api/biz/employer/statistic?option=all')
       .then((response) => response.json())
       .then((data) => {
         dispatch({
@@ -108,10 +96,7 @@ function Home() {
   }, []);
 
   React.useEffect(() => {
-    window;
-    fetch('/api/send-in/statistic?option=all', {
-      method: 'PUT',
-    })
+    fetch('/api/biz/send-in/statistic?option=all')
       .then((response) => response.json())
       .then((data) => {
         dispatch({
@@ -122,10 +107,7 @@ function Home() {
   }, []);
 
   React.useEffect(() => {
-    window
-      .fetch('/api/job/statistic?option=all', {
-        method: 'PUT',
-      })
+    fetch('/api/biz/job/statistic?option=all')
       .then((response) => response.json())
       .then((data) => {
         dispatch({
@@ -136,10 +118,7 @@ function Home() {
   }, []);
 
   React.useEffect(() => {
-    window
-      .fetch('/api/bulletin/statistic?option=tuijian-today', {
-        method: 'PUT',
-      })
+    fetch('/api/bulletin/statistic?option=tuijian-today')
       .then((response) => response.json())
       .then((data) => {
         dispatch({
@@ -150,10 +129,7 @@ function Home() {
   }, []);
 
   React.useEffect(() => {
-    window
-      .fetch('/api/bulletin/statistic?option=tuijian-all', {
-        method: 'PUT',
-      })
+    fetch('/api/bulletin/statistic?option=tuijian-all')
       .then((response) => response.json())
       .then((data) => {
         dispatch({
@@ -173,7 +149,7 @@ function Home() {
         <div className="container-fluid h-100">
           <div className="row h-100 d-flex justify-content-center">
             <div className="col-3 col-lg-2">
-              <div className="card bg-dark h-100">
+              <div className="card left-nav h-100">
                 <LeftNav component_option="" />
               </div>
             </div>

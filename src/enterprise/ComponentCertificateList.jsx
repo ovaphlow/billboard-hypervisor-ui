@@ -1,51 +1,40 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSyncAlt, faEdit, faCheckCircle } from '@fortawesome/free-solid-svg-icons';
 
 export default function ComponentCertificateList() {
-  const [list, setList] = useState([]);
-  const [filter_name, setFilterName] = useState('');
+  const [list, setList] = React.useState([]);
+  const [filter_name, setFilterName] = React.useState('');
 
-  useEffect(() => {
-    (async () => {
-      const response = await window.fetch('/api/enterprise/certificate/');
-      const res = await response.json();
-      setList(res.content);
-    })();
+  React.useEffect(() => {
+    fetch('/api/biz/employer/filter?option=to-certificate&name=')
+      .then((response) => response.json())
+      .then((data) => {
+        setList(data);
+      });
   }, []);
 
   const handleFilter = async () => {
     setList([]);
-    const response = await window.fetch('/api/enterprise/certificate/filter/', {
-      method: 'PUT',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ name: filter_name }),
-    });
-    const res = await response.json();
-    if (res.message) {
-      window.alert(res.message);
-      return;
-    }
-    setList(res.content);
+    fetch(`/api/biz/employer/filter?option=to-certificate&name=${filter_name}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setList(data);
+      });
   };
 
   const handleCertificate = async (event) => {
     if (!window.confirm('确定对该企业的信息核实完毕，并进行认证吗？')) return;
-    const response = await window.fetch('/api/enterprise/certificate/', {
+    const id = event.target.getAttribute('data-id') || 0;
+    const uuid = event.target.getAttribute('data-uuid') || '';
+    fetch(`/api/biz/employer/${id}?option=certificate&uuid=${uuid}`, {
       method: 'PUT',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({
-        id: event.target.getAttribute('data-id'),
-        uuid: event.target.getAttribute('data-uuid'),
-      }),
+    }).then((response) => {
+      if (response.status === 200) {
+        window.location.reload();
+      }
     });
-    const res = await response.json();
-    if (res.message) {
-      window.alert(res.message);
-      return;
-    }
-    window.location.reload(true);
   };
 
   return (
