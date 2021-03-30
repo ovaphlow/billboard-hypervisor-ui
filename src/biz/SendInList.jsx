@@ -8,41 +8,83 @@ import TopNav from '../component/TopNav';
 import LeftNav from '../component/LeftNav';
 import BottomNav from '../component/BottomNav';
 import useAuth from '../useAuth';
+import { reducer } from '../miscellaneous';
+
+const initial_param = {
+  date_begin: dayjs().format('YYYY-MM-01'),
+  date_end: dayjs().format('YYYY-MM-DD'),
+};
 
 export default function SendInList() {
   const auth = useAuth();
   const location = useLocation();
+  const [param, dispatch] = React.useReducer(reducer, initial_param);
   const [user_id, setUserID] = React.useState(0);
   const [user_uuid, setUserUUID] = React.useState('');
-  const [filter_date_begin, setFilterDateBegin] = React.useState(dayjs().format('YYYY-MM-01'));
-  const [filter_date_end, setFilterDateEnd] = React.useState(dayjs().format('YYYY-MM-DD'));
   const [list, setList] = React.useState([]);
+  const [flag, setFlag] = React.useState(0);
 
   const handleFilter = async () => {
-    const response = await window.fetch(
-      `/api/delivery/?user_id=${user_id}&user_uuid=${user_uuid}`,
-      {
-        method: 'PUT',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          filter_date_begin,
-          filter_date_end,
-        }),
-      },
-    );
-    const res = await response.json();
-    if (res.message) {
-      window.alert(res.message);
-      return;
-    }
-    setList(res.content);
+    setList([]);
+    const query =
+      'option=' +
+      `&id=${user_id}` +
+      `&uuid=${user_uuid}` +
+      `&date_begin=${param.date_begin}` +
+      `&date_end=${param.date_end}`;
+    fetch(`/api/biz/send-in/filter?${query}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setList(data);
+        setFlag(1);
+      });
   };
 
   React.useEffect(() => {
+    if (!location) return;
     setUserID(new URLSearchParams(location.search).get('user_id'));
     setUserUUID(new URLSearchParams(location.search).get('user_uuid'));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [location]);
+
+  React.useEffect(() => {
+    if (flag !== 1) return;
+    if (list.length === 0) return;
+    fetch(`/api/biz/resume/filter?option=by-candidate&id=${user_id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        const lf = list.map((current) => {
+          const resume = data.find((element) => element.id === current.resume_id);
+          return {
+            ...current,
+            resume_name: resume.name,
+          };
+        });
+        setFlag(2);
+        setList(lf);
+      })
+      .catch((err) => console.error(err.stack));
+  }, [flag, list]);
+
+  React.useEffect(() => {
+    if (flag !== 2) return;
+    if (list.length === 0) return;
+    const ll = list.map((current) => current.recruitment_id);
+    fetch(`/api/biz/job/filter?option=by-id-list&list=${ll}`)
+      .then((response) => response.json())
+      .then((data) => {
+        const lf = list.map((current) => {
+          const job = data.find((element) => element.id === current.recruitment_id);
+          return {
+            ...current,
+            job_id: job.id,
+            job_uuid: job.uuid,
+            job_name: job.name,
+          };
+        });
+        setFlag(0);
+        setList(lf);
+      });
+  }, [flag, list]);
 
   return (
     <div className="d-flex flex-column h-100 w-100">
@@ -101,10 +143,15 @@ export default function SendInList() {
                           </div>
                           <input
                             type="date"
-                            value={filter_date_begin}
+                            value={param.date_begin}
                             aria-label="起始日期"
                             className="form-control"
-                            onChange={(event) => setFilterDateBegin(event.target.value)}
+                            onChange={(event) =>
+                              dispatch({
+                                type: 'set',
+                                payload: { key: 'date_begin', value: event.target.value },
+                              })
+                            }
                           />
                         </div>
                       </div>
@@ -116,10 +163,15 @@ export default function SendInList() {
                           </div>
                           <input
                             type="date"
-                            value={filter_date_end}
+                            value={param.date_end}
                             aria-label="终止日期"
                             className="form-control"
-                            onChange={(event) => setFilterDateEnd(event.target.value)}
+                            onChange={(event) =>
+                              dispatch({
+                                type: 'set',
+                                payload: { key: 'date_end', value: event.target.value },
+                              })
+                            }
                           />
                         </div>
                       </div>
@@ -134,7 +186,7 @@ export default function SendInList() {
                             type="button"
                             className="btn btn-secondary"
                             onClick={() => {
-                              window.location.reload(true);
+                              window.location.reload();
                             }}
                           >
                             <FontAwesomeIcon icon={faSyncAlt} fixedWidth size="lg" />
@@ -163,16 +215,12 @@ export default function SendInList() {
                           <tr key={it.id}>
                             <td className="text-right">{it.id}</td>
                             <td>
-                              <a href={`resume.html#/${it.resume_id}?uuid=${it.resume_uuid}`}>
+                              <a href={`#/resume/${it.resume_id}?uuid=${it.resume_uuid}`}>
                                 {it.resume_name}
                               </a>
                             </td>
                             <td>
-                              <a
-                                href={`recruitment.html#/${it.recruitment_id}?uuid=${it.recruitment_uuid}`}
-                              >
-                                {it.recruitment_name}
-                              </a>
+                              <a href={`#/job/${it.job_id}?uuid=${it.job_uuid}`}>{it.job_name}</a>
                             </td>
                             <td>{it.datime}</td>
                             <td className="text-right">{it.status}</td>

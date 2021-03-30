@@ -6,6 +6,7 @@ import CandidateList from './CandidateList';
 import CandidateDetail from './CandidateDetail';
 import ResumeDetail from './ResumeDetail';
 import SendInList from './SendInList';
+import JobDetail from './JobDetail';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -24,6 +25,10 @@ function Index() {
 
         <Route path="/candidate/:id">
           <CandidateDetail />
+        </Route>
+
+        <Route path="/job/:id">
+          <JobDetail />
         </Route>
 
         <Route path="/resume/:id">

@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
@@ -9,9 +8,9 @@ import LeftNav from '../component/LeftNav';
 import BottomNav from '../component/BottomNav';
 import useAuth from '../useAuth';
 
-export default function Detail({ component_option }) {
+export default function JobDetail() {
   const auth = useAuth();
-  const { recruitment_id } = useParams();
+  const { id } = useParams();
   const location = useLocation();
   const [uuid, setUUID] = useState('');
   const [name, setName] = useState('');
@@ -27,32 +26,41 @@ export default function Detail({ component_option }) {
   const [education, setEducation] = useState('');
   const [category, setCategory] = useState('');
 
-  useEffect(() => {
-    if (component_option === '编辑') {
-      setUUID(new URLSearchParams(location.search).get('uuid'));
-    }
-  }, []);
+  React.useEffect(() => {
+    if (!location) return;
+    setUUID(new URLSearchParams(location.search).get('uuid'));
+  }, [location]);
 
-  useEffect(() => {
-    if (!uuid) return;
-    (async () => {
-      const response = await window.fetch(`/api/recruitment/${recruitment_id}?uuid=${uuid}`);
-      const res = await response.json();
-      setName(res.content.name);
-      setQty(res.content.qty);
-      setDescription(res.content.description);
-      setRequirement(res.content.requirement);
-      setAddress1(res.content.address1);
-      setAddress2(res.content.address2);
-      setAddress3(res.content.address3);
-      setDate(res.content.date);
-      setSalary1(res.content.salary1);
-      setSalary2(res.content.salary2);
-      setEducation(res.content.education);
-      setCategory(res.content.category);
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [uuid]);
+  React.useEffect(() => {
+    if (!id || !uuid) return;
+    fetch(`/api/biz/job/${id}?uuid=${uuid}`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.info(data);
+      });
+  }, [id, uuid]);
+
+  // useEffect(() => {
+  //   if (!uuid) return;
+  //   (async () => {
+  //     const response = await window.fetch(`/api/recruitment/${id}?uuid=${uuid}`);
+  //     const res = await response.json();
+  //     console.info(res);
+  //     setName(res.content.name);
+  //     setQty(res.content.qty);
+  //     setDescription(res.content.description);
+  //     setRequirement(res.content.requirement);
+  //     setAddress1(res.content.address1);
+  //     setAddress2(res.content.address2);
+  //     setAddress3(res.content.address3);
+  //     setDate(res.content.date);
+  //     setSalary1(res.content.salary1);
+  //     setSalary2(res.content.salary2);
+  //     setEducation(res.content.education);
+  //     setCategory(res.content.category);
+  //   })();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [uuid]);
 
   return (
     <div className="d-flex flex-column h-100 w-100">
@@ -64,7 +72,7 @@ export default function Detail({ component_option }) {
         <div className="container-fluid h-100">
           <div className="row h-100 d-flex justify-content-center">
             <div className="col-3 col-lg-2">
-              <div className="card bg-dark h-100">
+              <div className="card left-nav h-100">
                 <LeftNav component_option="企业用户" />
               </div>
             </div>
@@ -299,7 +307,3 @@ export default function Detail({ component_option }) {
     </div>
   );
 }
-
-Detail.propTypes = {
-  component_option: PropTypes.string.isRequired,
-};
