@@ -202,7 +202,7 @@ export default function CandidateDetail() {
                         type="button"
                         className="btn btn-sm btn-info"
                         onClick={() => {
-                          window.location = `delivery.html#/?user_id=${id}&user_uuid=${uuid}`;
+                          window.location = `#/send-in?user_id=${id}&user_uuid=${uuid}`;
                         }}
                       >
                         <FontAwesomeIcon icon={faList} fixedWidth size="lg" />

@@ -77,7 +77,7 @@ export default function ChangePassword() {
                       type="button"
                       className="btn btn-link text-reset text-decoration-none"
                       onClick={() => {
-                        window.history.go(-1);
+                        window.history.back();
                       }}
                     >
                       返回
@@ -179,7 +179,7 @@ export default function ChangePassword() {
                       type="button"
                       className="btn btn-secondary"
                       onClick={() => {
-                        window.history.go(-1);
+                        window.history.back();
                       }}
                     >
                       返回

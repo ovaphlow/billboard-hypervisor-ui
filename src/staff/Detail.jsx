@@ -26,7 +26,7 @@ export default function Detail({ component_option }) {
       window.alert(res.message);
       return;
     }
-    window.history.go(-1);
+    window.history.back();
   };
 
   const handleSubmit = async () => {
@@ -52,7 +52,7 @@ export default function Detail({ component_option }) {
         window.alert(res.message);
         return;
       }
-      window.history.go(-1);
+      window.history.back();
     } else if (component_option === '编辑') {
       const response = await fetch(`/api/mis-user/${id}?uuid=${uuid}`, {
         method: 'PUT',
@@ -64,7 +64,7 @@ export default function Detail({ component_option }) {
         window.alert(res.message);
         return;
       }
-      window.history.go(-1);
+      window.history.back();
     }
   };
 
@@ -108,7 +108,7 @@ export default function Detail({ component_option }) {
                       type="button"
                       className="btn btn-link text-reset text-decoration-none"
                       onClick={() => {
-                        window.history.go(-1);
+                        window.history.back();
                       }}
                     >
                       返回
@@ -164,7 +164,7 @@ export default function Detail({ component_option }) {
                         type="button"
                         className="btn btn-secondary"
                         onClick={() => {
-                          window.history.go(-1);
+                          window.history.back();
                         }}
                       >
                         返回

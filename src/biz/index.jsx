@@ -5,6 +5,7 @@ import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import CandidateList from './CandidateList';
 import CandidateDetail from './CandidateDetail';
 import ResumeDetail from './ResumeDetail';
+import SendInList from './SendInList';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -27,6 +28,10 @@ function Index() {
 
         <Route path="/resume/:id">
           <ResumeDetail />
+        </Route>
+
+        <Route path="/send-in">
+          <SendInList />
         </Route>
       </Switch>
     </Router>

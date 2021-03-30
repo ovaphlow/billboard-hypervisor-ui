@@ -159,7 +159,7 @@ export default function List({ component_option }) {
                       type="button"
                       className="btn btn-link text-reset text-decoration-none"
                       onClick={() => {
-                        window.history.go(-1);
+                        window.history.back();
                       }}
                     >
                       返回

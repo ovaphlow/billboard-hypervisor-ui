@@ -194,7 +194,7 @@ export default function Detail() {
                         type="button"
                         className="btn btn-secondary"
                         onClick={() => {
-                          window.history.go(-1);
+                          window.history.back();
                         }}
                       >
                         返回

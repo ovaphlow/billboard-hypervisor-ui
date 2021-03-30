@@ -35,7 +35,7 @@ export default function Detail({ component_option }) {
         window.alert('服务器错误');
         return;
       }
-      window.history.go(-1);
+      window.history.back();
     } else {
       const response = await window.fetch(`/api/job-fair/`, {
         method: 'POST',
@@ -51,7 +51,7 @@ export default function Detail({ component_option }) {
         window.alert('服务器错误');
         return;
       }
-      window.history.go(-1);
+      window.history.back();
     }
   };
 
@@ -64,7 +64,7 @@ export default function Detail({ component_option }) {
       window.alert('服务器错误');
       return;
     }
-    window.history.go(-1);
+    window.history.back();
   };
 
   useEffect(() => {
@@ -118,7 +118,7 @@ export default function Detail({ component_option }) {
                       type="button"
                       className="btn btn-link text-reset text-decoration-none"
                       onClick={() => {
-                        window.history.go(-1);
+                        window.history.back();
                       }}
                     >
                       返回
@@ -216,7 +216,7 @@ export default function Detail({ component_option }) {
                         type="button"
                         className="btn btn-secondary"
                         onClick={() => {
-                          window.history.go(-1);
+                          window.history.back();
                         }}
                       >
                         返回
