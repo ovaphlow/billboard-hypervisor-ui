@@ -1,36 +1,24 @@
 import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch, faSyncAlt, faEnvelope, faMobileAlt } from '@fortawesome/free-solid-svg-icons';
 
 import TopNav from '../component/TopNav';
 import LeftNav from '../component/LeftNav';
 import BottomNav from '../component/BottomNav';
 import useAuth from '../useAuth';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faSearch,
-  faSyncAlt,
-  faEdit,
-  faEnvelope,
-  faMobileAlt,
-} from '@fortawesome/free-solid-svg-icons';
 
-export default function List() {
+export default function CandidateList() {
   const auth = useAuth();
   const [data, setData] = useState([]);
   const [filter_name, setFilterName] = useState('');
 
   const handleFilter = async () => {
     setData([]);
-    const response = await window.fetch('/api/common-user/', {
-      method: 'PUT',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ filter_name }),
-    });
-    const res = await response.json();
-    if (res.message) {
-      window.alert(res.message);
-      return;
-    }
-    setData(res.content);
+    fetch(`/api/biz/candidate/filter?keyword=${filter_name}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data);
+      });
   };
 
   return (
@@ -43,7 +31,7 @@ export default function List() {
         <div className="container-fluid h-100">
           <div className="row h-100 d-flex justify-content-center">
             <div className="col-3 col-lg-2">
-              <div className="card bg-dark h-100">
+              <div className="card left-nav h-100">
                 <LeftNav component_option="个人用户" />
               </div>
             </div>
@@ -55,9 +43,7 @@ export default function List() {
                     <button
                       type="button"
                       className="btn btn-link text-reset text-decoration-none"
-                      onClick={() => {
-                        window.history.go(-1);
-                      }}
+                      onClick={() => window.history.back()}
                     >
                       返回
                     </button>
@@ -124,7 +110,7 @@ export default function List() {
                           <th>用户</th>
                           <th>EMAIL</th>
                           <th>电话</th>
-                          <th>收藏</th>
+                          <th>操作</th>
                         </tr>
                       </thead>
 
@@ -132,9 +118,6 @@ export default function List() {
                         {data.map((it) => (
                           <tr key={it.id}>
                             <td className="text-right">
-                              <a href={`#/${it.id}?uuid=${it.uuid}`} className="float-left">
-                                <FontAwesomeIcon icon={faEdit} fixedWidth size="lg" />
-                              </a>
                               <span className="float-right">{it.id}</span>
                             </td>
                             <td>{it.name}</td>
@@ -146,7 +129,14 @@ export default function List() {
                               <FontAwesomeIcon icon={faMobileAlt} fixedWidth size="lg" />
                               {it.phone}
                             </td>
-                            <td>{it.qty_favorite}</td>
+                            <td>
+                              <a
+                                href={`#/candidate/${it.id}?uuid=${it.uuid}`}
+                                className="float-left"
+                              >
+                                查看
+                              </a>
+                            </td>
                           </tr>
                         ))}
                       </tbody>
