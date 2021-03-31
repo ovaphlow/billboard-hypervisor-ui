@@ -1,22 +1,30 @@
 import React, { useEffect, useState } from 'react';
-import moment from 'moment';
+import dayjs from 'dayjs';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlusCircle, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 import TopNav from '../component/TopNav';
 import LeftNav from '../component/LeftNav';
 import BottomNav from '../component/BottomNav';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusCircle, faEdit } from '@fortawesome/free-solid-svg-icons';
 import useAuth from '../useAuth';
 
-export default function List() {
+export default function FairList() {
   const auth = useAuth();
   const [list, setList] = useState([]);
 
   useEffect(() => {
     (async () => {
-      const response = await window.fetch('/api/bulletin/');
+      const response = await window.fetch('/api/job-fair/', {
+        method: 'PUT',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({}),
+      });
       const res = await response.json();
-      setList(res.content);
+      if (res.status === 500) {
+        window.alert('服务器错误');
+        return;
+      }
+      setList(res);
     })();
   }, []);
 
@@ -31,7 +39,7 @@ export default function List() {
           <div className="row h-100 d-flex justify-content-center">
             <div className="col-3 col-lg-2">
               <div className="card left-nav h-100">
-                <LeftNav component_option="通知/公告" />
+                <LeftNav component_option="线上招聘会" />
               </div>
             </div>
 
@@ -49,7 +57,7 @@ export default function List() {
                       返回
                     </button>
                   </div>
-                  <span className="h1">通知 公告</span>
+                  <span className="h1">线上招聘会</span>
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
@@ -57,30 +65,32 @@ export default function List() {
                           首页
                         </a>
                       </li>
-                      <li className="breadcrumb-item active">通知公告</li>
+                      <li className="breadcrumb-item active">线上招聘会</li>
                     </ol>
                   </nav>
                 </div>
-                <div className="card shadow bg-dark h-100">
+
+                <div className="card shadow bg-dark h-100 flex-grow-1">
                   <div className="card-header">
-                    <a href="#/新增" className="btn btn-sm btn-secondary">
-                      <FontAwesomeIcon icon={faPlusCircle} fixedWidth size="lg" />
-                      新增
-                    </a>
+                    <div className="row">
+                      <div className="col">
+                        <a href="#/fair/新增" className="btn btn-secondary">
+                          <FontAwesomeIcon icon={faPlusCircle} fixedWidth size="lg" />
+                          新增
+                        </a>
+                      </div>
+                    </div>
                   </div>
+
                   <div className="card-body">
                     <table className="table table-dark table-striped">
-                      <caption>通知/公告</caption>
+                      <caption>线上招聘会</caption>
                       <thead>
                         <tr>
                           <th className="text-right">序号</th>
                           <th>标题</th>
-                          <th>用户类型</th>
-                          <th>截止日期</th>
-                          <th>内容</th>
-                          <th>地区</th>
-                          <th>行业</th>
-                          <th>学历</th>
+                          <th>时间</th>
+                          <th>状态</th>
                         </tr>
                       </thead>
 
@@ -88,32 +98,14 @@ export default function List() {
                         {list.map((it) => (
                           <tr key={it.id}>
                             <td className="text-right">
-                              <span className="float-left">
-                                <a href={`#/${it.id}?uuid=${it.uuid}`}>
-                                  <FontAwesomeIcon icon={faEdit} fixedWidth size="lg" />
-                                </a>
-                              </span>
+                              <a href={`#/fair/${it.id}`} className="float-left">
+                                <FontAwesomeIcon icon={faEdit} fixedWidth size="lg" />
+                              </a>
                               {it.id}
                             </td>
                             <td>{it.title}</td>
-                            <td>
-                              {it.receiver === '企业用户' && (
-                                <span className="badge bg-success">{it.receiver}</span>
-                              )}
-
-                              {it.receiver === '个人用户' && (
-                                <span className="badge bg-info">{it.receiver}</span>
-                              )}
-                            </td>
-                            <td>{moment(it.dday).format('YYYY-MM-DD')}</td>
-                            <td>{it.doc.content}</td>
-                            <td>
-                              {it.doc.address_level1}
-                              <br />
-                              {it.doc.address_level2}
-                            </td>
-                            <td>{it.receiver === '企业用户' && it.doc.industry}</td>
-                            <td>{it.receiver === '个人用户' && it.doc.education}</td>
+                            <td>{dayjs(it.datime).format('YYYY-MM-DD HH:mm')}</td>
+                            <td>{it.status}</td>
                           </tr>
                         ))}
                       </tbody>

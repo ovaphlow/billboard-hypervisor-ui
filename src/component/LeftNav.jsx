@@ -61,7 +61,7 @@ export default function LeftNav({ component_option }) {
         </a>
       </li>
       <li className="nav-item">
-        <a href="job-fair.html" className="nav-link text-reset text-decoration-none">
+        <a href="bulletin.html#/fair" className="nav-link text-reset text-decoration-none">
           {component_option === '线上招聘会' ? (
             <strong>
               <FontAwesomeIcon icon={faChevronRight} fixedWidth size="lg" />
