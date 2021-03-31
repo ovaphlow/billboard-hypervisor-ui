@@ -128,7 +128,7 @@ export default function LeftNav({ component_option }) {
         </a>
       </li>
       <li className="nav-item">
-        <a href="feedback.html" className="nav-link text-reset text-decoration-none">
+        <a href="miscellaneous.html#/feedback" className="nav-link text-reset text-decoration-none">
           {component_option === '意见反馈' ? (
             <strong>
               <FontAwesomeIcon icon={faChevronRight} fixedWidth size="lg" />

@@ -1,51 +1,25 @@
-import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
-import { HashRouter as Router, Switch, Route } from 'react-router-dom';
+import React from 'react';
 import moment from 'moment';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
-import { SIGN_IN_URL } from '../constant';
 import TopNav from '../component/TopNav';
 import LeftNav from '../component/LeftNav';
 import BottomNav from '../component/BottomNav';
 import useAuth from '../useAuth';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Index />
-  </React.StrictMode>,
-  document.getElementById('app'),
-);
-
-function Index() {
-  useEffect(() => {
-    const auth = sessionStorage.getItem('mis-auth');
-    if (!auth) {
-      window.location = SIGN_IN_URL;
-    }
-  }, []);
-
-  return (
-    <Router>
-      <Switch>
-        <Route path="/">
-          <Feedback />
-        </Route>
-      </Switch>
-    </Router>
-  );
-}
-
-function Feedback() {
+export default function Feedback() {
   const auth = useAuth();
-  const [data, setData] = useState([]);
+  const [feedback_list, setFeedbackList] = React.useState([]);
+  const [flag, setFlag] = React.useState(0);
 
-  const handleReply = async (event) => {
+  const handleReply = (event) => {
     const content = window.prompt('对用户意见反馈内容的回复');
-    const response = await window.fetch('/api/feedback/feedback/reply', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
+    fetch(`/api/miscellaneous/feedback/${event.target.getAttribute('data-id')}?option=reply`, {
+      method: 'PUT',
+      headers: {
+        'content-type': 'application/json',
+      },
       body: JSON.stringify({
         id: event.target.getAttribute('data-id'),
         user_id: event.target.getAttribute('data-user-id'),
@@ -55,22 +29,70 @@ function Feedback() {
         datime: moment().format('YYYY-MM-DD'),
         user_category: event.target.getAttribute('data-user-category'),
       }),
+    }).then((response) => {
+      if (response.status !== 200) console.error('服务器错误');
+      else window.location.reload();
     });
-    const res = await response.json();
-    if (res.message) {
-      window.alert(res.message);
-      return;
-    }
-    window.location.reload(true);
   };
 
-  useEffect(() => {
-    (async () => {
-      const response = await window.fetch('/api/feedback/feedback/');
-      const res = await response.json();
-      setData(res.content);
-    })();
+  React.useEffect(() => {
+    fetch('/api/miscellaneous/feedback/filter')
+      .then((response) => response.json())
+      .then((data) => {
+        setFeedbackList(data);
+        setFlag(1);
+      });
   }, []);
+
+  React.useEffect(() => {
+    if (flag !== 1 || feedback_list.length === 0) return;
+    const ll = [];
+    feedback_list.map((current) => {
+      if (current.user_category === '个人用户') ll.push(current.user_id);
+    });
+    fetch(`/api/biz/candidate/filter?option=by-id-list&list=${ll.join(',')}`)
+      .then((response) => response.json())
+      .then((data) => {
+        const lf = feedback_list.map((current) => {
+          if (current.user_category === '个人用户') {
+            const user = data.find((element) => element.uuid === current.user_uuid);
+            return {
+              ...current,
+              name: (user && user.name) || '',
+              phone: (user && user.phone) || '',
+              email: (user && user.email) || '',
+            };
+          } else return current;
+        });
+        setFlag(2);
+        setFeedbackList(lf);
+      });
+  }, [flag, feedback_list]);
+
+  React.useEffect(() => {
+    if (flag !== 2 || feedback_list.length === 0) return;
+    const ll = [];
+    feedback_list.map((current) => {
+      if (current.user_category === '企业用户') ll.push(current.user_id);
+    });
+    fetch(`/api/biz/employer/filter?option=user-by-user-id-list&list=${ll.join(',')}`)
+      .then((response) => response.json())
+      .then((data) => {
+        const lf = feedback_list.map((current) => {
+          if (current.user_category === '企业用户') {
+            const user = data.find((element) => element.id === current.user_id);
+            return {
+              ...current,
+              name: (user && user.name) || '',
+              phone: (user && user.phone) || '',
+              email: (user && user.email) || '',
+            };
+          } else return current;
+        });
+        setFlag(0);
+        setFeedbackList(lf);
+      });
+  }, [flag, feedback_list]);
 
   return (
     <div className="d-flex flex-column h-100 w-100">
@@ -82,7 +104,7 @@ function Feedback() {
         <div className="container-fluid h-100">
           <div className="row h-100 d-flex justify-content-center">
             <div className="col-3 col-lg-2">
-              <div className="card bg-dark h-100">
+              <div className="card left-nav h-100">
                 <LeftNav component_option="意见反馈" />
               </div>
             </div>
@@ -130,7 +152,7 @@ function Feedback() {
                       </thead>
 
                       <tbody>
-                        {data.map((it) => (
+                        {feedback_list.map((it) => (
                           <tr key={it.id}>
                             <td className="text-right">{it.id}</td>
                             <td>
