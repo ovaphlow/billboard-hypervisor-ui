@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 
 import { SIGN_IN_URL } from '../constant';
+import ComplaintList from './ComplaintList';
 import FeedbackList from './FeedbackList';
 
 ReactDOM.render(
@@ -25,6 +26,10 @@ function Index() {
       <Switch>
         <Route path="/feedback">
           <FeedbackList />
+        </Route>
+
+        <Route path="/complaint">
+          <ComplaintList />
         </Route>
       </Switch>
     </Router>

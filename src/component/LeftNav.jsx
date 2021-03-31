@@ -115,7 +115,10 @@ export default function LeftNav({ component_option }) {
       </li>
       <hr />
       <li className="nav-item">
-        <a href="complaint.html" className="nav-link text-reset text-decoration-none">
+        <a
+          href="miscellaneous.html#/complaint"
+          className="nav-link text-reset text-decoration-none"
+        >
           {component_option === '投诉' ? (
             <strong>
               <FontAwesomeIcon icon={faChevronRight} fixedWidth size="lg" />

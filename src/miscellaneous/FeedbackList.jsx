@@ -1,5 +1,5 @@
 import React from 'react';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
@@ -8,7 +8,7 @@ import LeftNav from '../component/LeftNav';
 import BottomNav from '../component/BottomNav';
 import useAuth from '../useAuth';
 
-export default function Feedback() {
+export default function FeedbackList() {
   const auth = useAuth();
   const [feedback_list, setFeedbackList] = React.useState([]);
   const [flag, setFlag] = React.useState(0);
@@ -26,7 +26,7 @@ export default function Feedback() {
         category: '系统消息',
         title: '对用户意见反馈内容的回复',
         content,
-        datime: moment().format('YYYY-MM-DD'),
+        datime: dayjs().format('YYYY-MM-DD'),
         user_category: event.target.getAttribute('data-user-category'),
       }),
     }).then((response) => {
@@ -36,7 +36,7 @@ export default function Feedback() {
   };
 
   React.useEffect(() => {
-    fetch('/api/miscellaneous/feedback/filter')
+    fetch('/api/miscellaneous/feedback/filter?category=意见反馈')
       .then((response) => response.json())
       .then((data) => {
         setFeedbackList(data);
@@ -175,11 +175,9 @@ export default function Feedback() {
                               <small className="text-muted">{it.phone}</small>
                             </td>
                             <td>
-                              {moment(it.datime).format('YYYY-MM-DD')}
+                              {dayjs(it.datime).format('YYYY-MM-DD')}
                               <br />
-                              <span className="text-muted">
-                                {moment(it.datime).format('HH:mm')}
-                              </span>
+                              <span className="text-muted">{dayjs(it.datime).format('HH:mm')}</span>
                             </td>
                             <td>{it.content}</td>
                             <td>

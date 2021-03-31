@@ -1,76 +1,98 @@
-import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
-import { HashRouter as Router, Switch, Route } from 'react-router-dom';
-import moment from 'moment';
+import React from 'react';
+import dayjs from 'dayjs';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
-import { SIGN_IN_URL } from '../constant';
 import TopNav from '../component/TopNav';
 import LeftNav from '../component/LeftNav';
 import BottomNav from '../component/BottomNav';
 import useAuth from '../useAuth';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <Index />
-  </React.StrictMode>,
-  document.getElementById('app'),
-);
-
-function Index() {
-  useEffect(() => {
-    const auth = sessionStorage.getItem('mis-auth');
-    if (!auth) {
-      window.location = SIGN_IN_URL;
-    }
-  }, []);
-
-  return (
-    <Router>
-      <Switch>
-        <Route path="/">
-          <Complaint />
-        </Route>
-      </Switch>
-    </Router>
-  );
-}
-
-function Complaint() {
+export default function ComplaintList() {
   const auth = useAuth();
-  const [data, setData] = useState([]);
+  const [complaint_list, setComplaintList] = React.useState([]);
+  const [flag, setFlag] = React.useState(0);
 
-  const handleReply = async (event) => {
+  const handleReply = (event) => {
     const content = window.prompt('对投诉回复的内容');
-    const response = await window.fetch('/api/feedback/complaint/reply', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
+    fetch(`/api/miscellaneous/feedback/${event.target.getAttribute('data-id')}?option=reply`, {
+      method: 'PUT',
+      headers: {
+        'content-type': 'application/json',
+      },
       body: JSON.stringify({
         id: event.target.getAttribute('data-id'),
         user_id: event.target.getAttribute('data-user-id'),
-        user_category: event.target.getAttribute('data-user-category'),
         category: '系统消息',
         title: '对用户投诉内容的回复',
         content,
-        datime: moment().format('YYYY-MM-DD'),
+        datime: dayjs().format('YYYY-MM-DD'),
+        user_category: event.target.getAttribute('data-user-category'),
       }),
+    }).then((response) => {
+      if (response.status !== 200) console.error('服务器错误');
+      else window.location.reload();
     });
-    const res = await response.json();
-    if (res.message) {
-      window.alert(res.message);
-      return;
-    }
-    window.location.reload(true);
   };
 
-  useEffect(() => {
-    (async () => {
-      const response = await window.fetch('/api/feedback/complaint/');
-      const res = await response.json();
-      setData(res.content);
-    })();
+  React.useEffect(() => {
+    fetch('/api/miscellaneous/feedback/filter?category=投诉')
+      .then((response) => response.json())
+      .then((data) => {
+        setComplaintList(data);
+        setFlag(1);
+      });
   }, []);
+
+  React.useEffect(() => {
+    if (flag !== 1 || complaint_list.length === 0) return;
+    const ll = [];
+    complaint_list.map((current) => {
+      if (current.user_category === '个人用户') ll.push(current.user_id);
+    });
+    fetch(`/api/biz/candidate/filter?option=by-id-list&list=${ll.join(',')}`)
+      .then((response) => response.json())
+      .then((data) => {
+        const lf = complaint_list.map((current) => {
+          if (current.user_category === '个人用户') {
+            const user = data.find((element) => element.uuid === current.user_uuid);
+            return {
+              ...current,
+              name: (user && user.name) || '',
+              phone: (user && user.phone) || '',
+              email: (user && user.email) || '',
+            };
+          } else return current;
+        });
+        setFlag(2);
+        setComplaintList(lf);
+      });
+  }, [flag, complaint_list]);
+
+  React.useEffect(() => {
+    if (flag !== 2 || complaint_list.length === 0) return;
+    const ll = [];
+    complaint_list.map((current) => {
+      if (current.user_category === '企业用户') ll.push(current.user_id);
+    });
+    fetch(`/api/biz/employer/filter?option=user-by-user-id-list&list=${ll.join(',')}`)
+      .then((response) => response.json())
+      .then((data) => {
+        const lf = complaint_list.map((current) => {
+          if (current.user_category === '企业用户') {
+            const user = data.find((element) => element.id === current.user_id);
+            return {
+              ...current,
+              name: (user && user.name) || '',
+              phone: (user && user.phone) || '',
+              email: (user && user.email) || '',
+            };
+          } else return current;
+        });
+        setFlag(0);
+        setComplaintList(lf);
+      });
+  }, [flag, complaint_list]);
 
   return (
     <div className="d-flex flex-column h-100 w-100">
@@ -82,7 +104,7 @@ function Complaint() {
         <div className="container-fluid h-100">
           <div className="row h-100 d-flex justify-content-center">
             <div className="col-3 col-lg-2">
-              <div className="card bg-dark h-100">
+              <div className="card left-nav h-100">
                 <LeftNav component_option="投诉" />
               </div>
             </div>
@@ -130,7 +152,7 @@ function Complaint() {
                       </thead>
 
                       <tbody>
-                        {data.map((it) => (
+                        {complaint_list.map((it) => (
                           <tr key={it.id}>
                             <td className="text-right">{it.id}</td>
                             <td>
@@ -153,10 +175,10 @@ function Complaint() {
                               <small className="text-muted">{it.phone}</small>
                             </td>
                             <td>
-                              {moment(it.datime).format('YYYY-MM-DD')}
+                              {dayjs(it.datime).format('YYYY-MM-DD')}
                               <br />
                               <small className="text-muted">
-                                {moment(it.datime).format('HH:mm')}
+                                {dayjs(it.datime).format('HH:mm')}
                               </small>
                             </td>
                             <td>{it.content}</td>
