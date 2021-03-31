@@ -48,15 +48,6 @@ export default function CandidateDetail() {
       .catch((err) => console.error(err.stack));
   }, [id]);
 
-  React.useEffect(() => {
-    // (async () => {
-    //   const response = await window.fetch(`/api/resume?user_id=${id}`);
-    //   const res = await response.json();
-    //   setResumeList(res.content);
-    // })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <div className="d-flex flex-column h-100 w-100">
       <header>
