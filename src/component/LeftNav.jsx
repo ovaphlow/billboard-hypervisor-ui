@@ -48,7 +48,7 @@ export default function LeftNav({ component_option }) {
         </a>
       </li>
       <li className="nav-item">
-        <a href="campus.html" className="nav-link text-reset text-decoration-none">
+        <a href="bulletin.html#/campus" className="nav-link text-reset text-decoration-none">
           {component_option === '校园招聘' ? (
             <strong>
               <FontAwesomeIcon icon={faChevronRight} fixedWidth size="lg" />

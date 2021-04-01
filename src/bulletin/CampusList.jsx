@@ -1,48 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import moment from 'moment';
+import React from 'react';
+import dayjs from 'dayjs';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlusCircle, faSearch, faSyncAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 import TopNav from '../component/TopNav';
 import LeftNav from '../component/LeftNav';
 import BottomNav from '../component/BottomNav';
 import useAuth from '../useAuth';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusCircle, faSearch, faSyncAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { reducer } from '../miscellaneous';
 
-export default function List() {
+const initial_filter = {
+  title: '',
+  date: '',
+};
+
+export default function CampusList() {
   const auth = useAuth();
-  const [list, setList] = useState([]);
-  const [filter_title, setFilterTitle] = useState('');
-  const [filter_date, setFilterDate] = useState();
+  const [list, setList] = React.useState([]);
+  const [filter, dispatch] = React.useReducer(reducer, initial_filter);
 
-  useEffect(() => {
-    (async () => {
-      const response = await window.fetch('/api/content/campus/');
-      const res = await response.json();
-      if (res.message) {
-        window.alert(res.message);
-        return;
-      }
-      setList(res.content);
-    })();
-  }, []);
-
-  const handleFilter = async () => {
+  const handleFilter = () => {
     setList([]);
-    const response = await window.fetch('/api/content/campus/', {
-      method: 'PUT',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({
-        title: filter_title,
-        date: filter_date,
-      }),
-    });
-    const res = await response.json();
-    if (res.message) {
-      window.alert(res.message);
-      return;
-    }
-    setList(res.content);
+    fetch(`/api/bulletin/campus/filter?option=&title=${filter.title}&date=${filter.date}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setList(data);
+      });
   };
+
+  React.useEffect(() => {
+    fetch('/api/bulletin/campus/filter?option=&title=&date=')
+      .then((response) => response.json())
+      .then((data) => {
+        setList(data);
+      });
+  }, []);
 
   return (
     <div className="d-flex flex-column h-100 w-100">
@@ -54,7 +46,7 @@ export default function List() {
         <div className="container-fluid h-100">
           <div className="row h-100 d-flex justify-content-center">
             <div className="col-3 col-lg-2">
-              <div className="card bg-dark h-100">
+              <div className="card left-nav h-100">
                 <LeftNav component_option="校园招聘" />
               </div>
             </div>
@@ -90,7 +82,7 @@ export default function List() {
                   <div className="card-header">
                     <div className="row">
                       <div className="col-auto">
-                        <a href="#/新增" className="btn btn-secondary">
+                        <a href="#/campus/新增" className="btn btn-secondary">
                           <FontAwesomeIcon icon={faPlusCircle} fixedWidth size="lg" />
                           新增
                         </a>
@@ -102,9 +94,14 @@ export default function List() {
                           </div>
                           <input
                             type="text"
-                            value={filter_title || ''}
+                            value={filter.title}
                             className="form-control"
-                            onChange={(event) => setFilterTitle(event.target.value)}
+                            onChange={(event) =>
+                              dispatch({
+                                type: 'set',
+                                payload: { key: 'title', value: event.target.value },
+                              })
+                            }
                           />
                         </div>
                       </div>
@@ -116,9 +113,14 @@ export default function List() {
                           </div>
                           <input
                             type="date"
-                            value={filter_date || ''}
+                            value={filter.date}
                             className="form-control"
-                            onChange={(event) => setFilterDate(event.target.value)}
+                            onChange={(event) =>
+                              dispatch({
+                                type: 'set',
+                                payload: { key: 'date', value: event.target.value },
+                              })
+                            }
                           />
                         </div>
                       </div>
@@ -161,7 +163,7 @@ export default function List() {
                           <tr key={it.id}>
                             <td className="text-right">
                               <span className="float-left">
-                                <a href={`#/${it.id}?uuid=${it.uuid}`}>
+                                <a href={`#/campus/${it.id}?uuid=${it.uuid}`}>
                                   <FontAwesomeIcon icon={faEdit} fixedWidth size="lg" />
                                 </a>
                               </span>
@@ -171,7 +173,7 @@ export default function List() {
                             <td>{it.school}</td>
                             <td>{it.title}</td>
                             <td>
-                              {moment(it.date).format('YYYY-MM-DD')}
+                              {dayjs(it.date).format('YYYY-MM-DD')}
                               <br />
                               {it.time}
                             </td>

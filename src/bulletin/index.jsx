@@ -7,6 +7,8 @@ import List from './List';
 import Detail from './Detail';
 import FairList from './FairList';
 import FairDetail from './FairDetail';
+import CampusList from './CampusList';
+import CampusDetail from './CampusDetail';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -26,6 +28,18 @@ export default function Index() {
   return (
     <Router>
       <Switch>
+        <Route exact path="/campus">
+          <CampusList />
+        </Route>
+
+        <Route exact path="/campus/新增">
+          <CampusDetail component_option="新增" />
+        </Route>
+
+        <Route exact path="/campus/:id">
+          <CampusDetail component_option="编辑" />
+        </Route>
+
         <Route exact path="/fair">
           <FairList />
         </Route>

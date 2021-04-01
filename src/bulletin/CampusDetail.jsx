@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import ReactQuill from 'react-quill';
@@ -9,18 +9,33 @@ import LeftNav from '../component/LeftNav';
 import BottomNav from '../component/BottomNav';
 import { useAddressKeys, useAddressValues, useAddressLevel1ValueList } from '../useAddress';
 import useAuth from '../useAuth';
+import { reducer } from '../miscellaneous';
 
-export default function Detail({ component_option }) {
+const initial_campus = {
+  title: '',
+  date: '',
+  time: '',
+  school: '',
+  content: '',
+  address_level1: '',
+  address_level2: '',
+  address_level3: '',
+  address_level4: '',
+  category: '',
+};
+
+export default function CampusDetail({ component_option }) {
   const auth = useAuth();
   const { id } = useParams();
   const location = useLocation();
-  const [uuid, setUUID] = useState('');
+  const [uuid, setUUID] = React.useState('');
   const address_keys = useAddressKeys();
   const address_values = useAddressValues();
   const address_level1_values = useAddressLevel1ValueList();
-  const [arr1, setArr1] = useState([]);
-  const [arr2, setArr2] = useState([]);
-  const [arr3, setArr3] = useState([]);
+  const [arr1, setArr1] = React.useState([]);
+  const [arr2, setArr2] = React.useState([]);
+  const [arr3, setArr3] = React.useState([]);
+  const [campus, dispatch] = React.useReducer(reducer, initial_campus);
 
   const [date, setDate] = useState('');
   const [time, setTime] = useState('');
@@ -87,41 +102,36 @@ export default function Detail({ component_option }) {
     window.history.back();
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (component_option === '编辑') {
       setUUID(new URLSearchParams(location.search).get('uuid'));
     }
   }, []);
 
-  useEffect(() => {
-    if (uuid) {
-      (async () => {
-        const response = await window.fetch(`/api/content/campus/${id}?uuid=${uuid}`);
-        const res = await response.json();
-        if (res.message) {
-          window.alert(res.message);
-          return;
-        }
-        setTitle(res.content.title);
-        setContent(res.content.content);
-        setDate(res.content.date);
-        setTime(res.content.time);
-        setAddressLevel1(res.content.address_level1);
-        setAddressLevel2(res.content.address_level2);
-        setAddressLevel3(res.content.address_level3);
-        setAddressLevel4(res.content.address_level4);
-        setSchool(res.content.school);
-        setCategory(res.content.category);
-      })();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  React.useEffect(() => {
+    if (!uuid) return;
+    fetch(`/api/bulletin/campus/${id}?uuid=${uuid}`)
+      .then((response) => response.json())
+      .then((data) => {
+        console.info(data);
+        dispatch({ type: 'set', payload: { key: 'title', value: data.title } });
+        dispatch({ type: 'set', payload: { key: 'content', value: data.content } });
+        dispatch({ type: 'set', payload: { key: 'date', value: data.date } });
+        dispatch({ type: 'set', payload: { key: 'time', value: data.time } });
+        dispatch({ type: 'set', payload: { key: 'address_level1', value: data.address_level1 } });
+        dispatch({ type: 'set', payload: { key: 'address_level2', value: data.address_level2 } });
+        dispatch({ type: 'set', payload: { key: 'address_level3', value: data.address_level3 } });
+        dispatch({ type: 'set', payload: { key: 'address_level4', value: data.address_level4 } });
+        dispatch({ type: 'set', payload: { key: 'school', value: data.school } });
+        dispatch({ type: 'set', payload: { key: 'category', value: data.category } });
+      });
   }, [uuid]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     setArr1(address_level1_values);
   }, []);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const arr = [];
     setArr2(arr);
     setArr3(arr);
@@ -143,7 +153,7 @@ export default function Detail({ component_option }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address_level1]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const arr = [];
     setArr3(arr);
     address_values.forEach((e, index) => {
@@ -170,7 +180,7 @@ export default function Detail({ component_option }) {
         <div className="container-fluid h-100">
           <div className="row h-100 d-flex justify-content-center">
             <div className="col-3 col-lg-2">
-              <div className="card bg-dark h-100">
+              <div className="card left-nav h-100">
                 <LeftNav component_option="校园招聘" />
               </div>
             </div>
@@ -210,9 +220,14 @@ export default function Detail({ component_option }) {
                         <div className="mb-3">
                           <label className="form-label">类型</label>
                           <select
-                            value={category || ''}
+                            value={campus.category}
                             className="form-control input-underscore"
-                            onChange={(event) => setCategory(event.target.value)}
+                            onChange={(event) =>
+                              dispatch({
+                                type: 'set',
+                                payload: { key: 'category', value: event.target.value },
+                              })
+                            }
                           >
                             <option value="">未选择</option>
                             <option>双选会</option>
@@ -226,9 +241,14 @@ export default function Detail({ component_option }) {
                           <label className="form-label">标题</label>
                           <input
                             type="text"
-                            value={title || ''}
+                            value={campus.title}
                             className="form-control input-underscore"
-                            onChange={(event) => setTitle(event.target.value)}
+                            onChange={(event) =>
+                              dispatch({
+                                type: 'set',
+                                payload: { key: 'title', value: event.target.value },
+                              })
+                            }
                           />
                         </div>
                       </div>
@@ -240,9 +260,14 @@ export default function Detail({ component_option }) {
                           <label className="form-label">日期</label>
                           <input
                             type="date"
-                            value={date || ''}
+                            value={campus.date}
                             className="form-control input-underscore"
-                            onChange={(event) => setDate(event.target.value)}
+                            onChange={(event) =>
+                              dispatch({
+                                type: 'set',
+                                payload: { key: 'date', value: event.target.value },
+                              })
+                            }
                           />
                         </div>
                       </div>
@@ -252,9 +277,14 @@ export default function Detail({ component_option }) {
                           <label className="form-label">时间</label>
                           <input
                             type="time"
-                            value={time || ''}
+                            value={campus.time}
                             className="form-control input-underscore"
-                            onChange={(event) => setTime(event.target.value)}
+                            onChange={(event) =>
+                              dispatch({
+                                type: 'set',
+                                payload: { key: 'time', value: event.target.value },
+                              })
+                            }
                           />
                         </div>
                       </div>
@@ -265,9 +295,14 @@ export default function Detail({ component_option }) {
                         <div className="mb-3">
                           <label className="form-label">地址</label>
                           <select
-                            value={address_level1 || ''}
+                            value={campus.address_level1}
                             className="form-control input-underscore"
-                            onChange={(event) => setAddressLevel1(event.target.value)}
+                            onChange={(event) =>
+                              dispatch({
+                                type: 'set',
+                                payload: { key: 'address_level1', value: event.target.value },
+                              })
+                            }
                           >
                             <option value="">未选择</option>
                             {arr1.map((it) => (
@@ -283,9 +318,14 @@ export default function Detail({ component_option }) {
                         <div className="mb-3">
                           <label className="form-label">&nbsp;</label>
                           <select
-                            value={address_level2 || ''}
+                            value={campus.address_level2}
                             className="form-control input-underscore"
-                            onChange={(event) => setAddressLevel2(event.target.value)}
+                            onChange={(event) =>
+                              dispatch({
+                                type: 'set',
+                                payload: { key: 'address_level2', value: event.target.value },
+                              })
+                            }
                           >
                             <option value="">未选择</option>
                             {arr2.map((it) => (
@@ -301,9 +341,14 @@ export default function Detail({ component_option }) {
                         <div className="mb-3">
                           <label className="form-label">&nbsp;</label>
                           <select
-                            value={address_level3 || ''}
+                            value={campus.address_level3}
                             className="form-control input-underscore"
-                            onChange={(event) => setAddressLevel3(event.target.value)}
+                            onChange={(event) =>
+                              dispatch({
+                                type: 'set',
+                                payload: { key: 'address_level3', value: event.target.value },
+                              })
+                            }
                           >
                             <option value="">未选择</option>
                             {arr3.map((it) => (
@@ -320,9 +365,14 @@ export default function Detail({ component_option }) {
                       <label />
                       <input
                         type="text"
-                        value={address_level4 || ''}
+                        value={campus.address_level4}
                         className="form-control input-underscore"
-                        onChange={(event) => setAddressLevel4(event.target.value)}
+                        onChange={(event) =>
+                          dispatch({
+                            type: 'set',
+                            payload: { key: 'address_level4', value: event.target.value },
+                          })
+                        }
                       />
                     </div>
 
@@ -330,9 +380,14 @@ export default function Detail({ component_option }) {
                       <label className="form-label">院校</label>
                       <input
                         type="text"
-                        value={school}
+                        value={campus.school}
                         className="form-control input-underscore"
-                        onChange={(event) => setSchool(event.target.value)}
+                        onChange={(event) =>
+                          dispatch({
+                            type: 'set',
+                            payload: { key: 'school', value: event.target.value },
+                          })
+                        }
                       />
                     </div>
 
@@ -358,13 +413,15 @@ export default function Detail({ component_option }) {
                           ],
                         }}
                         placeholder="请填写内容"
-                        value={content}
-                        onChange={setContent}
+                        value={campus.content}
+                        onChange={(event) =>
+                          dispatch({ type: 'set', payload: { key: 'content', value: event } })
+                        }
                       />
                     </div>
                   </div>
 
-                  <div className="card-footer">
+                  <div className="card-footer d-flex justify-content-between">
                     <div className="btn-group">
                       <button
                         type="button"
@@ -377,7 +434,7 @@ export default function Detail({ component_option }) {
                       </button>
                     </div>
 
-                    <div className="btn-group float-right">
+                    <div className="btn-group">
                       <button type="button" className="btn btn-danger" onClick={handleRemove}>
                         删除
                       </button>
@@ -401,6 +458,6 @@ export default function Detail({ component_option }) {
   );
 }
 
-Detail.propTypes = {
+CampusDetail.propTypes = {
   component_option: PropTypes.string.isRequired,
 };
