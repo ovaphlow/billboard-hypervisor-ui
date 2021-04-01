@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
@@ -9,94 +9,79 @@ import TopNav from '../component/TopNav';
 import LeftNav from '../component/LeftNav';
 import BottomNav from '../component/BottomNav';
 import useAuth from '../useAuth';
+import { reducer } from '../miscellaneous';
+
+const initial_fair = {
+  title: '',
+  datime: '',
+  status: '',
+  content: '',
+};
 
 export default function FairDetail({ component_option }) {
   const auth = useAuth();
   const { id } = useParams();
+  const [fair, dispatch] = React.useReducer(reducer, initial_fair);
   const [data_list, setDataList] = React.useState([]);
-  const [title, setTitle] = React.useState('');
-  const [datime, setDatime] = React.useState('');
-  const [status, setStatus] = React.useState('');
-  const [content, setContent] = React.useState('');
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (component_option === '编辑') {
-      const response = await window.fetch(`/api/job-fair/${id}`, {
+      fetch(`/api/bulletin/fair/${id}`, {
         method: 'PUT',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          title,
-          datime,
-          status,
-          content,
-        }),
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(fair),
+      }).then((response) => {
+        if (response.status === 200) window.history.back();
+        else window.alert('操作失败');
       });
-      if (response.status === 500) {
-        window.alert('服务器错误');
-        return;
-      }
-      window.history.back();
     } else {
-      const response = await window.fetch(`/api/job-fair/`, {
+      fetch('/api/bulletin/fair', {
         method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          title,
-          datime,
-          status,
-          content,
-        }),
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(fair),
+      }).then((response) => {
+        if (response.status === 200) window.history.back();
+        else window.alert('操作失败');
       });
-      if (response.status === 500) {
-        window.alert('服务器错误');
-        return;
-      }
-      window.history.back();
     }
   };
 
-  const handleRemove = async () => {
+  const handleRemove = () => {
     if (!window.confirm('确定要删除当前数据？')) return;
-    const response = await window.fetch(`/api/job-fair/${id}`, {
+    fetch(`/api/bulletin/fair/${id}`, {
       method: 'DELETE',
+    }).then((response) => {
+      if (response.status === 200) window.history.back();
+      else window.alert('操作失败');
     });
-    if (response.status === 500) {
-      window.alert('服务器错误');
-      return;
-    }
-    window.history.back();
   };
 
   React.useEffect(() => {
     if (component_option === '编辑') {
-      (async () => {
-        const response = await fetch(`/api/job-fair/${id}`);
-        const res = await response.json();
-        setTitle(res.title);
-        setDatime(res.datime);
-        setStatus(res.status);
-        setContent(res.content);
-      })();
+      fetch(`/api/bulletin/fair/${id}`)
+        .then((response) => response.json())
+        .then((data) => {
+          dispatch({ type: 'set', payload: { key: 'title', value: data.title } });
+          dispatch({ type: 'set', payload: { key: 'datime', value: data.datime } });
+          dispatch({ type: 'set', payload: { key: 'status', value: data.status } });
+          dispatch({ type: 'set', payload: { key: 'content', value: data.content } });
+        });
 
       fetch(`/api/biz/job/filter?option=by-fair-id&fair_id=${id}`)
         .then((response) => response.json())
         .then((data) => {
           setDataList(data);
         });
-      // (async () => {
-      //   const response = await window.fetch(`/api/recruitment?category=job-fair`, {
-      //     method: 'PUT',
-      //     headers: { 'content-type': 'application/json' },
-      //     body: JSON.stringify({
-      //       job_fair_id: id,
-      //     }),
-      //   });
-      //   const res = await response.json();
-      //   setDataList(res);
-      // })();
     } else {
-      setStatus('停用');
-      setDatime(moment().format('YYYY-MM-DD HH:mm:ss'));
+      dispatch({ type: 'set', payload: { key: 'status', value: '停用' } });
+      dispatch({
+        type: 'set',
+        payload: { key: 'datime', value: dayjs().format('YYYY-MM-DD HH:mm:ss') },
+      });
     }
   }, []);
 
@@ -110,7 +95,7 @@ export default function FairDetail({ component_option }) {
         <div className="container-fluid h-100">
           <div className="row h-100 d-flex justify-content-center">
             <div className="col-3 col-lg-2">
-              <div className="card bg-dark h-100">
+              <div className="card left-nav h-100">
                 <LeftNav component_option="线上招聘会" />
               </div>
             </div>
@@ -153,9 +138,14 @@ export default function FairDetail({ component_option }) {
                       <label className="form-label">标题</label>
                       <input
                         type="text"
-                        value={title || ''}
+                        value={fair.title || ''}
                         className="form-control input-underscore"
-                        onChange={(event) => setTitle(event.target.value)}
+                        onChange={(event) =>
+                          dispatch({
+                            type: 'set',
+                            payload: { key: 'title', value: event.target.value },
+                          })
+                        }
                       />
                     </div>
 
@@ -163,9 +153,14 @@ export default function FairDetail({ component_option }) {
                       <label className="form-label">预计召开时间</label>
                       <input
                         type="datetime-local"
-                        value={datime || ''}
+                        value={fair.datime || ''}
                         className="form-control input-underscore"
-                        onChange={(event) => setDatime(event.target.value)}
+                        onChange={(event) =>
+                          dispatch({
+                            type: 'set',
+                            payload: { key: 'datime', value: event.target.value },
+                          })
+                        }
                       />
                     </div>
 
@@ -176,9 +171,17 @@ export default function FairDetail({ component_option }) {
                           type="checkbox"
                           className="form-check-input"
                           id="status"
-                          checked={status === '启用'}
+                          checked={fair.status === '启用'}
                           onChange={(event) =>
-                            event.target.checked ? setStatus('启用') : setStatus('停用')
+                            event.target.checked
+                              ? dispatch({
+                                  type: 'set',
+                                  payload: { key: 'status', value: '启用' },
+                                })
+                              : dispatch({
+                                  type: 'set',
+                                  payload: { key: 'status', value: '停用' },
+                                })
                           }
                         />
                         <label htmlFor="status" className="form-check-label">
@@ -209,13 +212,18 @@ export default function FairDetail({ component_option }) {
                           ],
                         }}
                         placeholder="请填写内容"
-                        value={content || ''}
-                        onChange={setContent}
+                        value={fair.content || ''}
+                        onChange={(event) => {
+                          dispatch({
+                            type: 'set',
+                            payload: { key: 'content', value: event },
+                          });
+                        }}
                       />
                     </div>
                   </div>
 
-                  <div className="card-footer">
+                  <div className="card-footer d-flex justify-content-between">
                     <div className="btn-group">
                       <button
                         type="button"

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import dayjs from 'dayjs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle, faEdit } from '@fortawesome/free-solid-svg-icons';
@@ -10,22 +10,14 @@ import useAuth from '../useAuth';
 
 export default function FairList() {
   const auth = useAuth();
-  const [list, setList] = useState([]);
+  const [list, setList] = React.useState([]);
 
-  useEffect(() => {
-    (async () => {
-      const response = await window.fetch('/api/job-fair/', {
-        method: 'PUT',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({}),
+  React.useEffect(() => {
+    fetch('/api/bulletin/fair/filter')
+      .then((response) => response.json())
+      .then((data) => {
+        setList(data);
       });
-      const res = await response.json();
-      if (res.status === 500) {
-        window.alert('服务器错误');
-        return;
-      }
-      setList(res);
-    })();
   }, []);
 
   return (
