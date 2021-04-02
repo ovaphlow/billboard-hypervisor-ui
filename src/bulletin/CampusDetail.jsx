@@ -49,57 +49,39 @@ export default function CampusDetail({ component_option }) {
   const [category, setCategory] = useState('');
 
   const handleSubmit = async () => {
-    const data = {
-      title,
-      content,
-      date,
-      time,
-      address_level1,
-      address_level2,
-      address_level3,
-      address_level4,
-      school,
-      category,
-    };
-
     if (component_option === '新增') {
-      const response = await window.fetch('/api/content/campus/', {
+      fetch('/api/bulletin/campus', {
         method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(data),
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(campus),
+      }).then((response) => {
+        if (response.status === 200) window.history.back();
+        else window.alert('操作失败');
       });
-      const res = await response.json();
-      if (res.message) {
-        window.alert(res.message);
-        return;
-      }
-      window.history.back();
     } else if (component_option === '编辑') {
-      const response = await window.fetch(`/api/content/campus/${id}?uuid=${uuid}`, {
+      fetch(`/api/bulletin/campus/${id}?uuid=${uuid}`, {
         method: 'PUT',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(data),
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(campus),
+      }).then((response) => {
+        if (response.status === 200) window.history.back();
+        else window.alert('操作失败');
       });
-      const res = await response.json();
-      if (res.message) {
-        window.alert(res.message);
-        return;
-      }
-      window.history.back();
     }
   };
 
   const handleRemove = async () => {
     if (!window.confirm('确定要删除当前数据？')) return;
-    const response = await window.fetch(`/api/content/campus/${id}?uuid=${uuid}`, {
+    fetch(`/api/bulletin/campus/${id}?uuid=${uuid}`, {
       method: 'DELETE',
+    }).then((response) => {
+      if (response.status === 200) window.history.back();
+      else window.alert('操作失败');
     });
-    const res = await response.json();
-    if (res.message) {
-      window.alert(res.message);
-      return;
-    }
-    window.history.back();
   };
 
   React.useEffect(() => {
@@ -113,7 +95,6 @@ export default function CampusDetail({ component_option }) {
     fetch(`/api/bulletin/campus/${id}?uuid=${uuid}`)
       .then((response) => response.json())
       .then((data) => {
-        console.info(data);
         dispatch({ type: 'set', payload: { key: 'title', value: data.title } });
         dispatch({ type: 'set', payload: { key: 'content', value: data.content } });
         dispatch({ type: 'set', payload: { key: 'date', value: data.date } });
@@ -136,7 +117,7 @@ export default function CampusDetail({ component_option }) {
     setArr2(arr);
     setArr3(arr);
     for (let i = 0; i < address_values.length; i += 1) {
-      if (address_values[i] === address_level1) {
+      if (address_values[i] === campus.address_level1) {
         const code = address_keys[i];
         for (let j = 0; j < address_keys.length; j += 1) {
           if (
@@ -150,14 +131,13 @@ export default function CampusDetail({ component_option }) {
       }
     }
     setArr2(arr);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address_level1]);
+  }, [campus.address_level1]);
 
   React.useEffect(() => {
     const arr = [];
     setArr3(arr);
     address_values.forEach((e, index) => {
-      if (e === address_level2) {
+      if (e === campus.address_level2) {
         const code = address_keys[index];
         address_keys.forEach((it, i) => {
           if (it.slice(0, 4) === code.slice(0, 4) && it.slice(-2) !== '00') {
@@ -167,8 +147,7 @@ export default function CampusDetail({ component_option }) {
       }
     });
     setArr3(arr);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [address_level2]);
+  }, [campus.address_level2]);
 
   return (
     <div className="d-flex flex-column h-100 w-100">
