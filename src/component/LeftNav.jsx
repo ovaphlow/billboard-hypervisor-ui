@@ -35,7 +35,7 @@ export default function LeftNav({ component_option }) {
         </a>
       </li>
       <li className="nav-item">
-        <a href="topic.html" className="nav-link text-reset text-decoration-none">
+        <a href="bulletin.html#/topic" className="nav-link text-reset text-decoration-none">
           {component_option === '热门话题' ? (
             <strong>
               <FontAwesomeIcon icon={faChevronRight} fixedWidth size="lg" />

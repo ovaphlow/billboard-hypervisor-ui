@@ -1,43 +1,35 @@
-import React, { useState, useEffect } from 'react';
-import moment from 'moment';
+import React from 'react';
+import dayjs from 'dayjs';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlusCircle, faSearch, faSyncAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 import TopNav from '../component/TopNav';
 import LeftNav from '../component/LeftNav';
 import BottomNav from '../component/BottomNav';
 import useAuth from '../useAuth';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusCircle, faSearch, faSyncAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { reducer } from '../miscellaneous';
 
-export default function List() {
+const initial_filter = {
+  title: '',
+  date: '',
+};
+
+export default function TopicList() {
   const auth = useAuth();
-  const [list, setList] = useState([]);
-  const [filter_title, setFilterTitle] = useState('');
-  const [filter_date, setFilterDate] = useState('');
+  const [topic_list, setTopicList] = React.useState([]);
+  const [filter, dispatch] = React.useReducer(reducer, initial_filter);
 
-  const handleFilter = async () => {
-    setList([]);
-    const response = await window.fetch('/api/content/topic/', {
-      method: 'PUT',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({
-        date: filter_date,
-        title: filter_title,
-      }),
-    });
-    const res = await response.json();
-    if (res.message) {
-      window.alert(res.message);
-      return;
-    }
-    setList(res.content);
+  const handleFilter = () => {
+    setTopicList([]);
+    fetch(`/api/bulletin/topic/filter?option=&date=${filter.date}&title=${filter.title}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setTopicList(data);
+      });
   };
 
-  useEffect(() => {
-    (async () => {
-      const response = await window.fetch('/api/content/topic/');
-      const res = await response.json();
-      setList(res.content);
-    })();
+  React.useEffect(() => {
+    handleFilter();
   }, []);
 
   return (
@@ -50,7 +42,7 @@ export default function List() {
         <div className="container-fluid h-100">
           <div className="row h-100 d-flex justify-content-center">
             <div className="col-3 col-lg-2">
-              <div className="card bg-dark h-100">
+              <div className="card left-nav h-100">
                 <LeftNav component_option="热门话题" />
               </div>
             </div>
@@ -86,7 +78,7 @@ export default function List() {
                   <div className="card-header">
                     <div className="row">
                       <div className="col-auto">
-                        <a href="#/新增" className="btn btn-secondary">
+                        <a href="#/topic/新增" className="btn btn-secondary">
                           <FontAwesomeIcon icon={faPlusCircle} fixedWidth size="lg" />
                           新增
                         </a>
@@ -98,9 +90,14 @@ export default function List() {
                           </div>
                           <input
                             type="text"
-                            value={filter_title || ''}
+                            value={filter.title || ''}
                             className="form-control"
-                            onChange={(event) => setFilterTitle(event.target.value)}
+                            onChange={(event) =>
+                              dispatch({
+                                type: 'set',
+                                payload: { key: 'title', value: event.target.value },
+                              })
+                            }
                           />
                         </div>
                       </div>
@@ -112,9 +109,14 @@ export default function List() {
                           </div>
                           <input
                             type="date"
-                            value={filter_date || ''}
+                            value={filter.date || ''}
                             className="form-control"
-                            onChange={(event) => setFilterDate(event.target.value)}
+                            onChange={(event) =>
+                              dispatch({
+                                type: 'set',
+                                payload: { key: 'date', value: event.target.value },
+                              })
+                            }
                           />
                         </div>
                       </div>
@@ -152,11 +154,11 @@ export default function List() {
                       </thead>
 
                       <tbody>
-                        {list.map((it) => (
+                        {topic_list.map((it) => (
                           <tr key={it.id}>
                             <td className="text-right">
                               <span className="float-left">
-                                <a href={`#/${it.id}?uuid=${it.uuid}`}>
+                                <a href={`#/topic/${it.id}?uuid=${it.uuid}`}>
                                   <FontAwesomeIcon icon={faEdit} fixedWidth size="lg" />
                                 </a>
                               </span>
@@ -164,7 +166,7 @@ export default function List() {
                             </td>
                             <td>{it.tag}</td>
                             <td>{it.title}</td>
-                            <td>{moment(it.date).format('YYYY-MM-DD')}</td>
+                            <td>{dayjs(it.date).format('YYYY-MM-DD')}</td>
                           </tr>
                         ))}
                       </tbody>

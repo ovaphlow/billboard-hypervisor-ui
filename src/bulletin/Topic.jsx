@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
@@ -9,82 +9,75 @@ import TopNav from '../component/TopNav';
 import LeftNav from '../component/LeftNav';
 import BottomNav from '../component/BottomNav';
 import useAuth from '../useAuth';
+import { reducer } from '../miscellaneous';
 
-export default function Detail({ component_option }) {
+const initial_topic = {
+  title: '',
+  content: '',
+  tag: '',
+  date: dayjs().format('YYYY-MM-DD'),
+  time: dayjs().format('HH:mm:ss'),
+};
+
+export default function Topic({ component_option }) {
   const auth = useAuth();
   const { id } = useParams();
   const location = useLocation();
-  const [uuid, setUUID] = useState('');
-  const [title, setTitle] = useState('');
-  const [content, setContent] = useState('');
-  const [tag, setTag] = useState('');
+  const [topic, dispatch] = React.useReducer(reducer, initial_topic);
+  const [uuid, setUUID] = React.useState('');
 
   const handleSubmit = async () => {
-    const data = {
-      title,
-      content,
-      tag,
-      date: moment().format('YYYY-MM-DD'),
-      time: moment().format('HH:mm:ss'),
-    };
-
     if (component_option === '新增') {
-      const response = await window.fetch('/api/content/topic/', {
+      fetch('/api/bulletin/topic', {
         method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(data),
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(topic),
+      }).then((response) => {
+        if (response.status === 200) window.history.back();
+        else window.alert('操作失败');
       });
-      const res = await response.json();
-      if (res.message) {
-        window.alert(res.message);
-        return;
-      }
-      window.history.back();
     } else if (component_option === '编辑') {
-      const response = await window.fetch(`/api/content/topic/${id}?uuid=${uuid}`, {
+      fetch(`/api/bulletin/topic/${id}?uuid=${uuid}`, {
         method: 'PUT',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(data),
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(topic),
+      }).then((response) => {
+        if (response.status === 200) window.history.back();
+        else window.alert('操作失败');
       });
-      const res = await response.json();
-      if (res.message) {
-        window.alert(res.message);
-        return;
-      }
-      window.history.back();
     }
   };
 
   const handleRemove = async () => {
     if (!window.confirm('确定要删除当前数据？')) return;
-    const response = await window.fetch(`/api/content/topic/${id}?uuid=${uuid}`, {
+    fetch(`/api/bulletin/topic/${id}?uuid=${uuid}`, {
       method: 'DELETE',
+    }).then((response) => {
+      if (response.status === 200) window.history.back();
+      else window.alert('操作失败');
     });
-    const res = await response.json();
-    if (res.message) {
-      window.alert(res.message);
-      return;
-    }
-    window.history.back();
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (component_option === '编辑') {
       setUUID(new URLSearchParams(location.search).get('uuid'));
     }
-  }, []);
+  }, [location]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!uuid) return;
-    (async () => {
-      const response = await window.fetch(`/api/content/topic/${id}?uuid=${uuid}`);
-      const res = await response.json();
-      setTag(res.content.tag);
-      setTitle(res.content.title);
-      setContent(res.content.content);
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [uuid]);
+    fetch(`/api/bulletin/topic/${id}?uuid=${uuid}`)
+      .then((response) => response.json())
+      .then((data) => {
+        dispatch({ type: 'set', payload: { key: 'title', value: data.title } });
+        dispatch({ type: 'set', payload: { key: 'content', value: data.content } });
+        dispatch({ type: 'set', payload: { key: 'tag', value: data.tag } });
+      });
+  }, [id, uuid]);
 
   return (
     <div className="d-flex flex-column h-100 w-100">
@@ -96,7 +89,7 @@ export default function Detail({ component_option }) {
         <div className="container-fluid h-100">
           <div className="row h-100 d-flex justify-content-center">
             <div className="col-3 col-lg-2">
-              <div className="card bg-dark h-100">
+              <div className="card left-nav h-100">
                 <LeftNav component_option="热门话题" />
               </div>
             </div>
@@ -139,9 +132,14 @@ export default function Detail({ component_option }) {
                         <div className="mb-3">
                           <label className="form-label">TAG</label>
                           <select
-                            value={tag || ''}
+                            value={topic.tag || ''}
                             className="form-control input-underscore"
-                            onChange={(event) => setTag(event.target.value)}
+                            onChange={(event) =>
+                              dispatch({
+                                type: 'set',
+                                payload: { key: 'tag', value: event.target.value },
+                              })
+                            }
                           >
                             <option value="">未选择</option>
                             <option value="热门话题">小程序首页</option>
@@ -157,9 +155,14 @@ export default function Detail({ component_option }) {
                           <label className="form-label">标题</label>
                           <input
                             type="text"
-                            value={title}
+                            value={topic.title}
                             className="form-control input-underscore"
-                            onChange={(event) => setTitle(event.target.value)}
+                            onChange={(event) =>
+                              dispatch({
+                                type: 'set',
+                                payload: { key: 'title', value: event.target.value },
+                              })
+                            }
                           />
                         </div>
                       </div>
@@ -187,13 +190,15 @@ export default function Detail({ component_option }) {
                           ],
                         }}
                         placeholder="请填写内容"
-                        value={content}
-                        onChange={setContent}
+                        value={topic.content}
+                        onChange={(event) =>
+                          dispatch({ type: 'set', payload: { key: 'content', value: event } })
+                        }
                       />
                     </div>
                   </div>
 
-                  <div className="card-footer">
+                  <div className="card-footer d-flex justify-content-between">
                     <div className="btn-group">
                       <button
                         type="button"
@@ -204,7 +209,7 @@ export default function Detail({ component_option }) {
                       </button>
                     </div>
 
-                    <div className="btn-group float-right">
+                    <div className="btn-group">
                       {component_option === '编辑' && (
                         <button type="button" className="btn btn-danger" onClick={handleRemove}>
                           删除
@@ -230,6 +235,6 @@ export default function Detail({ component_option }) {
   );
 }
 
-Detail.propTypes = {
+Topic.propTypes = {
   component_option: PropTypes.string.isRequired,
 };
