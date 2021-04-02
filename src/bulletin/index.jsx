@@ -11,6 +11,8 @@ import CampusList from './CampusList';
 import CampusDetail from './CampusDetail';
 import TopicList from './TopicList';
 import Topic from './Topic';
+import NotificationList from './NotificationList';
+import Notification from './Notification';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -52,6 +54,18 @@ export default function Index() {
 
         <Route exact path="/fair/:id">
           <FairDetail component_option="编辑" />
+        </Route>
+
+        <Route exact path="/notification">
+          <NotificationList />
+        </Route>
+
+        <Route exact path="/notification/新增">
+          <Notification component_option="新增" />
+        </Route>
+
+        <Route exact path="/notification/:id">
+          <Notification component_option="编辑" />
         </Route>
 
         <Route exact path="/topic">

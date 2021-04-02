@@ -22,7 +22,7 @@ export default function LeftNav({ component_option }) {
         </a>
       </li>
       <li className="nav-item">
-        <a href="recommend.html" className="nav-link text-reset text-decoration-none">
+        <a href="bulletin.html#/notification" className="nav-link text-reset text-decoration-none">
           {component_option === '推荐信息' ? (
             <strong>
               <FontAwesomeIcon icon={faChevronRight} fixedWidth size="lg" />
