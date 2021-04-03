@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
@@ -37,69 +37,42 @@ export default function Notification({ component_option }) {
   const address_level1_values = useAddressLevel1ValueList();
   const [notification, dispatch] = React.useReducer(reducer, initial_notification);
 
-  const [category, setCategory] = useState('');
-  const [title, setTitle] = useState('');
-  const [date1, setDate1] = useState(dayjs().format('YYYY-MM-DD'));
-  const [date2, setDate2] = useState(dayjs().add(15, 'days').format('YYYY-MM-DD'));
-  const [address_level1, setAddressLevel1] = useState('黑龙江省');
-  const [address_level2, setAddressLevel2] = useState('哈尔滨市');
-  const [publisher, setPublisher] = useState('');
-  const [qty, setQty] = useState(1);
-  const [baomingfangshi, setBaomingfangshi] = useState('');
-  const [content, setContent] = useState('');
-
   const handleSave = async () => {
-    const data = {
-      category,
-      title,
-      date1,
-      date2,
-      address_level1,
-      address_level2,
-      qty,
-      publisher,
-      baomingfangshi,
-      content,
-    };
-
     if (component_option === '新增') {
-      const response = await window.fetch('/api/content/recommend/', {
+      fetch('/api/bulletin/notification', {
         method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(data),
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(notification),
+      }).then((response) => {
+        if (response.status === 200) window.history.back();
+        else window.alert('操作失败');
       });
-      const res = await response.json();
-      if (res.message) {
-        window.alert(res.message);
-        return;
-      }
-      window.history.back();
     } else if (component_option === '编辑') {
-      const response = await window.fetch(`/api/content/recommend/${id}${search}`, {
+      const uuid = new URLSearchParams(location.search).get('uuid');
+      fetch(`/api/bulletin/notification/${id}?uuid=${uuid}`, {
         method: 'PUT',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(data),
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(notification),
+      }).then((response) => {
+        if (response.status === 200) window.history.back();
+        else window.alert('操作失败');
       });
-      const res = await response.json();
-      if (res.message) {
-        window.alert(res.message);
-        return;
-      }
-      window.history.back();
     }
   };
 
   const handleRemove = async () => {
     if (!window.confirm('确定要删除当前数据？')) return;
-    const response = await window.fetch(`/api/content/recommend/${id}${search}`, {
+    const uuid = new URLSearchParams(location.search).get('uuid');
+    fetch(`/api/bulletin/notification/${id}?uuid=${uuid}`, {
       method: 'DELETE',
+    }).then((response) => {
+      if (response.status === 200) window.history.back();
+      else window.alert('操作失败');
     });
-    const res = await response.json();
-    if (res.message) {
-      window.alert(res.message);
-      return;
-    }
-    window.history.back();
   };
 
   React.useEffect(() => {
@@ -108,7 +81,6 @@ export default function Notification({ component_option }) {
 
   React.useEffect(() => {
     const uuid = new URLSearchParams(location.search).get('uuid');
-    console.info(uuid);
     if (!id || !uuid) return;
     fetch(`/api/bulletin/notification/${id}?uuid=${uuid}`)
       .then((response) => response.json())
@@ -144,7 +116,6 @@ export default function Notification({ component_option }) {
       }
     }
     setArr2(arr);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [notification.address_level1]);
 
   return (
