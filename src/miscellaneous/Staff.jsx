@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import md5 from 'blueimp-md5';
@@ -7,83 +7,79 @@ import TopNav from '../component/TopNav';
 import LeftNav from '../component/LeftNav';
 import BottomNav from '../component/BottomNav';
 import useAuth from '../useAuth';
+import { reducer } from '../miscellaneous';
 
-export default function Detail({ component_option }) {
+const initial_staff = {
+  username: '',
+  name: '',
+};
+
+export default function Staff({ component_option }) {
   const auth = useAuth();
   const { id } = useParams();
   const location = useLocation();
-  const [uuid, setUUID] = useState('');
-  const [username, setUsername] = useState('');
-  const [name, setName] = useState('');
+  const [uuid, setUUID] = React.useState('');
+  const [staff, dispatch] = React.useReducer(reducer, initial_staff);
 
   const handleRemove = async () => {
     if (!window.confirm('确定删除当前数据？')) return;
-    const response = await window.fetch(`/api/mis-user/${id}?uuid=${uuid}`, {
+    fetch(`/api/miscellaneous/staff/${id}?uuid=${uuid}`, {
       method: 'DELETE',
+    }).then((response) => {
+      if (response.status === 200) window.history.back();
+      else window.alert('操作失败');
     });
-    const res = await response.json();
-    if (res.message) {
-      window.alert(res.message);
-      return;
-    }
-    window.history.back();
   };
 
   const handleSubmit = async () => {
-    if (!name || !username) {
+    if (!staff.name || !staff.username) {
       window.alert('请完整填写所需信息');
       return;
     }
 
-    const data = {
-      username,
-      password: md5('112332'),
-      name,
-    };
-
     if (component_option === '新增') {
-      const response = await fetch('/api/mis-user/', {
+      fetch('/api/miscellaneous/staff', {
         method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(data),
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...staff,
+          password: md5('112332'),
+        }),
+      }).then((response) => {
+        if (response.status === 200) window.history.back();
+        else window.alert('操作失败');
       });
-      const res = await response.json();
-      if (res.message) {
-        window.alert(res.message);
-        return;
-      }
-      window.history.back();
     } else if (component_option === '编辑') {
-      const response = await fetch(`/api/mis-user/${id}?uuid=${uuid}`, {
+      fetch(`/api/miscellaneous/staff/${id}?uuid=${uuid}`, {
         method: 'PUT',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(data),
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify(staff),
+      }).then((response) => {
+        if (response.status === 200) window.history.back();
+        else window.alert('操作失败');
       });
-      const res = await response.json();
-      if (res.message) {
-        window.alert(res.message);
-        return;
-      }
-      window.history.back();
     }
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (component_option === '编辑') {
       setUUID(new URLSearchParams(location.search).get('uuid'));
     }
-  }, []);
+  }, [location]);
 
-  useEffect(() => {
-    if (!uuid) return;
-    (async () => {
-      const response = await fetch(`/api/mis-user/${id}?uuid=${uuid}`);
-      const res = await response.json();
-      setName(res.content.name);
-      setUsername(res.content.username);
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [uuid]);
+  React.useEffect(() => {
+    if (!id || !uuid) return;
+    fetch(`/api/miscellaneous/staff/${id}?uuid=${uuid}`)
+      .then((response) => response.json())
+      .then((data) => {
+        dispatch({ type: 'set', payload: { key: 'name', value: data.name } });
+        dispatch({ type: 'set', payload: { key: 'username', value: data.username } });
+      });
+  }, [id, uuid]);
 
   return (
     <div className="d-flex flex-column h-100 w-100">
@@ -95,7 +91,7 @@ export default function Detail({ component_option }) {
         <div className="container-fluid h-100">
           <div className="row h-100 d-flex justify-content-center">
             <div className="col-3 col-lg-2">
-              <div className="card bg-dark h-100">
+              <div className="card left-nav h-100">
                 <LeftNav component_option="平台用户" />
               </div>
             </div>
@@ -141,9 +137,14 @@ export default function Detail({ component_option }) {
                       <label className="form-label">姓名</label>
                       <input
                         type="text"
-                        value={name || ''}
+                        value={staff.name}
                         className="form-control input-underscore"
-                        onChange={(event) => setName(event.target.value)}
+                        onChange={(event) =>
+                          dispatch({
+                            type: 'set',
+                            payload: { key: 'name', value: event.target.value },
+                          })
+                        }
                       />
                     </div>
 
@@ -151,14 +152,19 @@ export default function Detail({ component_option }) {
                       <label className="form-label">用户名</label>
                       <input
                         type="text"
-                        value={username || ''}
+                        value={staff.username}
                         className="form-control input-underscore"
-                        onChange={(event) => setUsername(event.target.value)}
+                        onChange={(event) =>
+                          dispatch({
+                            type: 'set',
+                            payload: { key: 'username', value: event.target.value },
+                          })
+                        }
                       />
                     </div>
                   </div>
 
-                  <div className="card-footer">
+                  <div className="card-footer d-flex justify-content-between">
                     <div className="btn-group">
                       <button
                         type="button"
@@ -171,7 +177,7 @@ export default function Detail({ component_option }) {
                       </button>
                     </div>
 
-                    <div className="btn-group float-right">
+                    <div className="btn-group">
                       {component_option === '编辑' && (
                         <button type="button" className="btn btn-danger" onClick={handleRemove}>
                           删除
@@ -196,6 +202,6 @@ export default function Detail({ component_option }) {
   );
 }
 
-Detail.propTypes = {
+Staff.propTypes = {
   component_option: PropTypes.string.isRequired,
 };

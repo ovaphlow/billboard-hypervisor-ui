@@ -99,7 +99,7 @@ export default function LeftNav({ component_option }) {
         </a>
       </li>
       <li className="nav-item">
-        <a href="staff.html" className="nav-link text-reset text-decoration-none">
+        <a href="miscellaneous.html#/staff" className="nav-link text-reset text-decoration-none">
           {component_option === '平台用户' ? (
             <strong>
               <FontAwesomeIcon icon={faChevronRight} fixedWidth size="lg" />
@@ -155,8 +155,8 @@ export default function LeftNav({ component_option }) {
           )}
         </a>
       </li>
-      <hr />
-      <li className="nav-item">
+      {/* <hr /> */}
+      {/* <li className="nav-item">
         <a href="setting-industry.html" className="nav-link text-reset text-decoration-none">
           {component_option === '系统设定：行业' ? (
             <strong>
@@ -168,7 +168,7 @@ export default function LeftNav({ component_option }) {
             <span>系统设定：行业</span>
           )}
         </a>
-      </li>
+      </li> */}
     </ul>
   );
 }

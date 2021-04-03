@@ -5,6 +5,8 @@ import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 import { SIGN_IN_URL } from '../constant';
 import ComplaintList from './ComplaintList';
 import FeedbackList from './FeedbackList';
+import StaffList from './StaffList';
+import Staff from './Staff';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -24,12 +26,24 @@ function Index() {
   return (
     <Router>
       <Switch>
+        <Route path="/complaint">
+          <ComplaintList />
+        </Route>
+
         <Route path="/feedback">
           <FeedbackList />
         </Route>
 
-        <Route path="/complaint">
-          <ComplaintList />
+        <Route exact path="/staff">
+          <StaffList />
+        </Route>
+
+        <Route exact path="/staff/新增">
+          <Staff component_option="新增" />
+        </Route>
+
+        <Route exact path="/staff/:id">
+          <Staff component_option="编辑" />
         </Route>
       </Switch>
     </Router>

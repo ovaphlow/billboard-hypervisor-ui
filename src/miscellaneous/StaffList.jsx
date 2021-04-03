@@ -1,22 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlusCircle, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 import TopNav from '../component/TopNav';
 import LeftNav from '../component/LeftNav';
 import BottomNav from '../component/BottomNav';
 import useAuth from '../useAuth';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusCircle, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 export default function List() {
   const auth = useAuth();
-  const [data, setData] = useState([]);
+  const [staff_list, setStaffList] = React.useState([]);
 
-  useEffect(() => {
-    (async () => {
-      const response = await fetch('/api/mis-user/');
-      const res = await response.json();
-      setData(res.content);
-    })();
+  React.useEffect(() => {
+    fetch('/api/miscellaneous/staff/filter')
+      .then((response) => response.json())
+      .then((data) => {
+        setStaffList(data);
+      });
   }, []);
 
   return (
@@ -29,7 +29,7 @@ export default function List() {
         <div className="container-fluid h-100">
           <div className="row h-100 d-flex justify-content-center">
             <div className="col-3 col-lg-2">
-              <div className="card bg-dark h-100">
+              <div className="card left-nav h-100">
                 <LeftNav component_option="平台用户" />
               </div>
             </div>
@@ -63,7 +63,7 @@ export default function List() {
 
                 <div className="card shadow bg-dark h-100 flex-grow-1">
                   <div className="card-header">
-                    <a href="#/新增" className="btn btn-secondary">
+                    <a href="#/staff/新增" className="btn btn-secondary">
                       <FontAwesomeIcon icon={faPlusCircle} fixedWidth size="lg" />
                       新增
                     </a>
@@ -79,10 +79,10 @@ export default function List() {
                         </tr>
                       </thead>
                       <tbody>
-                        {data.map((it) => (
+                        {staff_list.map((it) => (
                           <tr key={it.id}>
                             <td className="text-right">
-                              <a href={`#/${it.id}?uuid=${it.uuid}`} className="float-left">
+                              <a href={`#/staff/${it.id}?uuid=${it.uuid}`} className="float-left">
                                 <FontAwesomeIcon icon={faEdit} fixedWidth size="lg" />
                               </a>
                               {it.id}
