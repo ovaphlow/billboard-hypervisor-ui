@@ -18,7 +18,7 @@ const initial_fair = {
   content: '',
 };
 
-export default function FairDetail({ component_option }) {
+export default function Fair({ component_option }) {
   const auth = useAuth();
   const { id } = useParams();
   const [fair, dispatch] = React.useReducer(reducer, initial_fair);
@@ -306,6 +306,6 @@ export default function FairDetail({ component_option }) {
   );
 }
 
-FairDetail.propTypes = {
+Fair.propTypes = {
   component_option: PropTypes.string.isRequired,
 };

@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
@@ -10,101 +10,97 @@ import LeftNav from '../component/LeftNav';
 import BottomNav from '../component/BottomNav';
 import { BANNER_CATEGORY } from '../constant';
 import useAuth from '../useAuth';
+import { reducer } from '../miscellaneous';
+
+const initial_banner = {
+  status: '未启用',
+  category: '',
+  title: '',
+  comment: '',
+  data_url: '',
+};
 
 export default function Detail({ component_option }) {
   const auth = useAuth();
   const { id } = useParams();
   const location = useLocation();
-  const [uuid, setUUID] = useState('');
-  const [status, setStatus] = useState('');
-  const [category, setCategory] = useState('');
-  const [title, setTitle] = useState('');
-  const [comment, setComment] = useState('');
-  const [data_url, setDataUrl] = useState('');
+  const [uuid, setUUID] = React.useState('');
+  const [banner, dispatch] = React.useReducer(reducer, initial_banner);
 
   const convertImg2Data = (event) => {
     if (!event.target.files[0]) return;
     const reader = new FileReader();
     reader.onload = (e) => {
-      setDataUrl(e.target.result);
+      dispatch({ type: 'set', payload: { key: 'data_url', value: e.target.result } });
     };
     reader.readAsDataURL(event.target.files[0]);
   };
 
   const handleRemove = async () => {
     if (!window.confirm('确定要删除当前数据？')) return;
-    const response = await window.fetch(`/api/content/banner/${id}?uuid=${uuid}`, {
+    fetch(`/api/bulletin/banner/${id}?uuid=${uuid}`, {
       method: 'DELETE',
+    }).then((response) => {
+      if (response.status === 200) window.history.back();
+      else window.alert('操作失败');
     });
-    const res = await response.json();
-    if (res.message) {
-      window.alert(res.message);
-      return;
-    }
-    window.history.back();
   };
 
   const handleSubmit = async () => {
-    if (!title || !comment || !data_url) {
+    if (!banner.title || !banner.comment || !banner.data_url) {
       window.alert('请完整填写所需信息');
       return;
     }
 
-    const data = {
-      status,
-      category,
-      title,
-      comment,
-      datime: moment().format('YYYY-MM-DD HH:mm:ss'),
-      data_url,
-    };
-
     if (component_option === '新增') {
-      const response = await window.fetch('/api/content/banner/', {
+      fetch('/api/bulletin/banner', {
         method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(data),
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...banner,
+          datime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+        }),
+      }).then((response) => {
+        if (response.status === 200) window.history.back();
+        else window.alert('操作失败');
       });
-      const res = await response.json();
-      if (res.message) {
-        window.alert(res.message);
-        return;
-      }
-      window.history.back();
     } else if (component_option === '编辑') {
-      const response = await window.fetch(`/api/content/banner/${id}?uuid=${uuid}`, {
+      fetch(`/api/bulletin/banner/${id}?uuid=${uuid}`, {
         method: 'PUT',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(data),
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          ...banner,
+          datime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+        }),
+      }).then((response) => {
+        if (response.status === 200) window.history.back();
+        else window.alert('操作失败');
       });
-      const res = await response.json();
-      if (res.message) {
-        window.alert(res.message);
-        return;
-      }
-      window.history.back();
     }
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (component_option === '编辑') {
       setUUID(new URLSearchParams(location.search).get('uuid'));
     }
-  }, []);
+  }, [location]);
 
-  useEffect(() => {
-    if (!uuid) return;
-    (async () => {
-      const response = await window.fetch(`/api/content/banner/${id}?uuid=${uuid}`);
-      const res = await response.json();
-      setStatus(res.content.status);
-      setCategory(res.content.category);
-      setTitle(res.content.title);
-      setComment(res.content.comment);
-      setDataUrl(res.content.data_url);
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [uuid]);
+  React.useEffect(() => {
+    if (!id || !uuid) return;
+    fetch(`/api/bulletin/banner/${id}?uuid=${uuid}`)
+      .then((response) => response.json())
+      .then((data) => {
+        dispatch({ type: 'set', payload: { key: 'status', value: data.status } });
+        dispatch({ type: 'set', payload: { key: 'category', value: data.category } });
+        dispatch({ type: 'set', payload: { key: 'title', value: data.title } });
+        dispatch({ type: 'set', payload: { key: 'comment', value: data.comment } });
+        dispatch({ type: 'set', payload: { key: 'data_url', value: data.data_url } });
+      });
+  }, [id, uuid]);
 
   return (
     <div className="d-flex flex-column h-100 w-100">
@@ -116,7 +112,7 @@ export default function Detail({ component_option }) {
         <div className="container-fluid h-100">
           <div className="row h-100 d-flex justify-content-center">
             <div className="col-3 col-lg-2">
-              <div className="card bg-dark h-100">
+              <div className="card left-nav h-100">
                 <LeftNav component_option="BANNER" />
               </div>
             </div>
@@ -174,9 +170,14 @@ export default function Detail({ component_option }) {
                       <label className="form-label">标题</label>
                       <input
                         type="text"
-                        value={title || ''}
+                        value={banner.title}
                         className="form-control input-underscore"
-                        onChange={(event) => setTitle(event.target.value)}
+                        onChange={(event) =>
+                          dispatch({
+                            type: 'set',
+                            payload: { key: 'title', value: event.target.value },
+                          })
+                        }
                       />
                     </div>
 
@@ -202,17 +203,24 @@ export default function Detail({ component_option }) {
                           ],
                         }}
                         placeholder="请填写内容"
-                        value={comment || ''}
-                        onChange={setComment}
+                        value={banner.comment}
+                        onChange={(event) =>
+                          dispatch({ type: 'set', payload: { key: 'comment', value: event } })
+                        }
                       />
                     </div>
 
                     <div className="mb-3">
                       <label className="form-label">类别</label>
                       <select
-                        value={category || ''}
+                        value={banner.category}
                         className="form-control input-underscore"
-                        onChange={(event) => setCategory(event.target.value)}
+                        onChange={(event) =>
+                          dispatch({
+                            type: 'set',
+                            payload: { key: 'category', value: event.target.value },
+                          })
+                        }
                       >
                         <option value="">未选择</option>
                         {BANNER_CATEGORY.map((it) => (
@@ -230,9 +238,15 @@ export default function Detail({ component_option }) {
                           type="checkbox"
                           className="form-check-input"
                           id="status"
-                          checked={status === '启用'}
+                          checked={banner.status === '启用'}
                           onChange={(event) =>
-                            event.target.checked ? setStatus('启用') : setStatus('未启用')
+                            dispatch({
+                              type: 'set',
+                              payload: {
+                                key: 'status',
+                                value: event.target.checked ? '启用' : '未启用',
+                              },
+                            })
                           }
                         />
                         <label htmlFor="status" className="form-check-label">
@@ -246,11 +260,11 @@ export default function Detail({ component_option }) {
                     <p className="text-muted text-center">
                       预览
                       <br />
-                      <img src={data_url} alt={title} className="img-fluid" />
+                      <img src={banner.data_url} alt={banner.title} className="img-fluid" />
                     </p>
                   </div>
 
-                  <div className="card-footer">
+                  <div className="card-footer d-flex justify-content-between">
                     <div className="btn-group">
                       <button
                         type="button"
@@ -263,7 +277,7 @@ export default function Detail({ component_option }) {
                       </button>
                     </div>
 
-                    <div className="btn-group float-right">
+                    <div className="btn-group">
                       {component_option === '编辑' && (
                         <button type="button" className="btn btn-danger" onClick={handleRemove}>
                           删除

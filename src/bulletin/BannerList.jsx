@@ -1,35 +1,31 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlusCircle, faSearch } from '@fortawesome/free-solid-svg-icons';
 
 import TopNav from '../component/TopNav';
 import LeftNav from '../component/LeftNav';
 import BottomNav from '../component/BottomNav';
 import { BANNER_CATEGORY } from '../constant';
 import useAuth from '../useAuth';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusCircle, faSearch } from '@fortawesome/free-solid-svg-icons';
+import { reducer } from '../miscellaneous';
+
+const initial_filter = {
+  category: '小程序-首页',
+  status: '启用',
+};
 
 export default function List() {
   const auth = useAuth();
-  const [list, setList] = useState([]);
-  const [filter_category, setFilterCategory] = useState('小程序-首页');
-  const [filter_status, setFilterStatus] = useState('启用');
+  const [banner_list, setBannerList] = React.useState([]);
+  const [filter, dispatch] = React.useReducer(reducer, initial_filter);
 
   const handleFilter = async () => {
-    setList([]);
-    const response = await window.fetch('/api/content/banner/', {
-      method: 'PUT',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({
-        category: filter_category,
-        status: filter_status,
-      }),
-    });
-    const res = await response.json();
-    if (res.message) {
-      window.alert(res.message);
-      return;
-    }
-    setList(res.content);
+    setBannerList([]);
+    fetch(`/api/bulletin/banner/filter?category=${filter.category}&status=${filter.status}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setBannerList(data);
+      });
   };
 
   return (
@@ -42,7 +38,7 @@ export default function List() {
         <div className="container-fluid h-100">
           <div className="row h-100 d-flex justify-content-center">
             <div className="col-3 col-lg-2">
-              <div className="card bg-dark h-100">
+              <div className="card left-nav h-100">
                 <LeftNav component_option="BANNER" />
               </div>
             </div>
@@ -78,7 +74,7 @@ export default function List() {
                   <div className="card-header">
                     <div className="row">
                       <div className="col-auto">
-                        <a href="#/新增" className="btn btn-secondary">
+                        <a href="#/banner/新增" className="btn btn-secondary">
                           <FontAwesomeIcon icon={faPlusCircle} fixedWidth size="lg" />
                           新增
                         </a>
@@ -89,9 +85,14 @@ export default function List() {
                             <span className="input-group-text">类别</span>
                           </div>
                           <select
-                            value={filter_category || ''}
+                            value={filter.category}
                             className="form-control"
-                            onChange={(event) => setFilterCategory(event.target.value)}
+                            onChange={(event) =>
+                              dispatch({
+                                type: 'set',
+                                payload: { key: 'category', value: event.target.value },
+                              })
+                            }
                           >
                             {BANNER_CATEGORY.map((it) => (
                               <option key={BANNER_CATEGORY.indexOf(it)} value={it}>
@@ -108,9 +109,14 @@ export default function List() {
                             <span className="input-group-text">状态</span>
                           </div>
                           <select
-                            value={filter_status || ''}
+                            value={filter.status}
                             className="form-control"
-                            onChange={(event) => setFilterStatus(event.target.value)}
+                            onChange={(event) =>
+                              dispatch({
+                                type: 'set',
+                                payload: { key: 'status', value: event.target.value },
+                              })
+                            }
                           >
                             <option value="启用">启用</option>
                             <option value="未启用">未启用</option>
@@ -131,7 +137,7 @@ export default function List() {
 
                   <div className="card-body">
                     <div className="row">
-                      {list.map((it) => (
+                      {banner_list.map((it) => (
                         <div
                           key={it.id}
                           className="card bg-secondary m-2"
@@ -152,7 +158,10 @@ export default function List() {
                           </div>
 
                           <div className="card-footer text-center">
-                            <a href={`#/${it.id}?uuid=${it.uuid}`} className="btn btn-info btn-sm">
+                            <a
+                              href={`#/banner/${it.id}?uuid=${it.uuid}`}
+                              className="btn btn-info btn-sm"
+                            >
                               查看
                             </a>
                           </div>

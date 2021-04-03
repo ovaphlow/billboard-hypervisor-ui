@@ -1,7 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router';
 import PropTypes from 'prop-types';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 
@@ -9,7 +7,7 @@ export default function LeftNav({ component_option }) {
   return (
     <ul className="nav flex-column">
       <li className="nav-item">
-        <a href="banner.html" className="nav-link text-reset text-decoration-none">
+        <a href="bulletin.html#/banner" className="nav-link text-reset text-decoration-none">
           {component_option === 'BANNER' ? (
             <strong>
               <FontAwesomeIcon icon={faChevronRight} fixedWidth size="lg" />

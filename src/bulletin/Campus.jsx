@@ -24,7 +24,7 @@ const initial_campus = {
   category: '',
 };
 
-export default function CampusDetail({ component_option }) {
+export default function Campus({ component_option }) {
   const auth = useAuth();
   const { id } = useParams();
   const location = useLocation();
@@ -437,6 +437,6 @@ export default function CampusDetail({ component_option }) {
   );
 }
 
-CampusDetail.propTypes = {
+Campus.propTypes = {
   component_option: PropTypes.string.isRequired,
 };
