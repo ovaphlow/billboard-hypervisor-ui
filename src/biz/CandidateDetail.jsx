@@ -103,7 +103,7 @@ export default function CandidateDetail() {
                         type="button"
                         className="btn btn-secondary"
                         onClick={() => {
-                          window.location = `favorite.html#/?master_id=${id}`;
+                          window.location = `miscellaneous.html#/favorite?master_id=${id}`;
                         }}
                       >
                         用户收藏

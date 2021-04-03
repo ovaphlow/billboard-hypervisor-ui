@@ -7,6 +7,7 @@ import ComplaintList from './ComplaintList';
 import FeedbackList from './FeedbackList';
 import StaffList from './StaffList';
 import Staff from './Staff';
+import FavoriteList from './FavoriteList';
 
 ReactDOM.render(
   <React.StrictMode>
@@ -28,6 +29,10 @@ function Index() {
       <Switch>
         <Route path="/complaint">
           <ComplaintList />
+        </Route>
+
+        <Route path="/favorite">
+          <FavoriteList />
         </Route>
 
         <Route path="/feedback">
