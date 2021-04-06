@@ -30,21 +30,25 @@ export default function ChangePassword() {
       current_password: md5(password),
       new_password: md5(password1),
     };
-    window
-      .fetch('/api/current-user/change-password', {
-        method: 'PUT',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(data),
-      })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.message) {
-          window.alert(data.message);
-          return;
-        }
+    fetch(`/api/miscellaneous/staff/${auth.id}?option=password`, {
+      method: 'PUT',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        current_password: md5(password),
+        new_password: md5(password1),
+      }),
+    }).then((response) => {
+      if (response.status === 200) {
         window.alert('数据已经提交至服务器，即将重定向至登录页面。');
-        window.location = '#登录';
-      });
+        window.location = SIGN_IN_URL;
+      } else if (response.status === 401) {
+        window.alert('旧密码输入错误');
+      } else {
+        console.error('服务器错误');
+      }
+    });
   };
 
   React.useEffect(() => {
@@ -127,9 +131,7 @@ export default function ChangePassword() {
                       <button
                         type="button"
                         className="btn btn-danger btn-sm"
-                        onClick={() => {
-                          window.location = '#/登录';
-                        }}
+                        onClick={() => (window.location = SIGN_IN_URL)}
                       >
                         <FontAwesomeIcon icon={faSignOutAlt} fixedWidth size="lg" />
                         退出登录
@@ -174,7 +176,7 @@ export default function ChangePassword() {
                     </div>
                   </div>
 
-                  <div className="card-footer">
+                  <div className="card-footer d-flex justify-content-between">
                     <button
                       type="button"
                       className="btn btn-secondary"
@@ -185,7 +187,7 @@ export default function ChangePassword() {
                       返回
                     </button>
 
-                    <div className="btn-group float-right">
+                    <div className="btn-group">
                       <button type="button" className="btn btn-primary" onClick={handleChange}>
                         更改密码
                       </button>

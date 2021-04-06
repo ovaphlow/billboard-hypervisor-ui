@@ -15,20 +15,28 @@ export default function SignIn() {
   }, []);
 
   const handleSignIn = () => {
-    window
-      .fetch('/api/mis-user/sign-in', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ username, password: md5(password) }),
+    fetch('/api/miscellaneous/staff/sign-in', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        username,
+        password: md5(password),
+      }),
+    })
+      .then((response) => {
+        if (response.status === 200) return response.json();
+        else if (response === 401) throw new Error('用户名或密码错误');
+        else throw new Error('服务器错误');
       })
-      .then((response) => response.json())
       .then((data) => {
-        if (data.message) {
-          window.alert(data.message);
-          return;
-        }
-        sessionStorage.setItem('mis-auth', JSON.stringify(data.content));
+        sessionStorage.setItem('mis-auth', JSON.stringify(data));
         window.location = Home;
+      })
+      .catch((err) => {
+        console.error(err.stack);
+        window.alert(err);
       });
   };
 

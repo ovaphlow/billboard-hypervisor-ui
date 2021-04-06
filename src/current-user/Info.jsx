@@ -14,20 +14,16 @@ export default function Info() {
   const [name, setName] = React.useState('');
 
   const handleSave = () => {
-    window
-      .fetch(`/api/mis-user/${auth.id}?uuid=${auth.uuid}`, {
-        method: 'PUT',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ username, name }),
-      })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.message) {
-          window.alert(data.message);
-          return;
-        }
-        window.location = '#/登录';
-      });
+    fetch(`/api/miscellaneous/staff/${auth.id}?uuid=${auth.uuid}`, {
+      method: 'PUT',
+      headers: {
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({ username, name }),
+    }).then((response) => {
+      if (response.status !== 200) window.alert('操作失败');
+      else window.location = SIGN_IN_URL;
+    });
   };
 
   React.useEffect(() => {
@@ -110,9 +106,7 @@ export default function Info() {
                       <button
                         type="button"
                         className="btn btn-danger btn-sm"
-                        onClick={() => {
-                          window.location = '#/登录';
-                        }}
+                        onClick={() => (window.location = SIGN_IN_URL)}
                       >
                         <FontAwesomeIcon icon={faSignOutAlt} fixedWidth size="lg" />
                         退出登录
@@ -149,7 +143,7 @@ export default function Info() {
                     </div>
                   </div>
 
-                  <div className="card-footer">
+                  <div className="card-footer d-flex justify-content-between">
                     <button
                       type="button"
                       className="btn btn-secondary"
@@ -160,7 +154,7 @@ export default function Info() {
                       返回
                     </button>
 
-                    <div className="btn-group float-right">
+                    <div className="btn-group">
                       <button type="button" className="btn btn-primary" onClick={handleSave}>
                         保存
                       </button>
