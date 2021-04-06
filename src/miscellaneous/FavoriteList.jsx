@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 import TopNav from '../component/TopNav';
 import LeftNav from '../component/LeftNav';
@@ -104,10 +104,10 @@ export default function FavoriteList() {
                             <td className="text-right">{it.id}</td>
                             <td>{it.category2}</td>
                             <td>
-                              {moment(it.datime).format('YYYY-MM-DD')}
+                              {dayjs(it.datime).format('YYYY-MM-DD')}
                               &nbsp;
                               <span className="text-muted">
-                                {moment(it.datime).format('HH:mm:ss')}
+                                {dayjs(it.datime).format('HH:mm:ss')}
                               </span>
                             </td>
                             <td>
