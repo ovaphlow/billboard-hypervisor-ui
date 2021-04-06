@@ -1,27 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-export default function ComponentEnterpriseUserFavoriteList({ user_id }) {
-  const [list, setList] = useState([]);
+export default function ComponentEmployerFavoriteList({ user_id }) {
+  const [list, setList] = React.useState([]);
 
   const handleRedirect2Resource = async (event) => {
     const cat = event.target.getAttribute('data-category');
     const id = event.target.getAttribute('data-id');
     const uuid = event.target.getAttribute('data-uuid');
     if (cat === '简历') {
-      window.location = `resume.html#/${id}?uuid=${uuid}`;
+      window.location = `biz.html#/resume/${id}?uuid=${uuid}`;
     } else {
       window.alert('未知类型，解析失败。');
     }
   };
 
-  useEffect(() => {
-    (async () => {
-      const response = await window.fetch(`/api/favorite/enterprise-user/?user_id=${user_id}`);
-      const res = await response.json();
-      setList(res.content);
-    })();
+  React.useEffect(() => {
+    fetch(`/api/miscellaneous/favorite/filter?option=employer&master_id=${user_id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setList(data);
+      });
   }, []);
 
   return (
@@ -64,6 +64,6 @@ export default function ComponentEnterpriseUserFavoriteList({ user_id }) {
   );
 }
 
-ComponentEnterpriseUserFavoriteList.propTypes = {
+ComponentEmployerFavoriteList.propTypes = {
   user_id: PropTypes.string.isRequired,
 };

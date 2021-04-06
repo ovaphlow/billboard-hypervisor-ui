@@ -4,7 +4,7 @@ import { useLocation, useParams } from 'react-router-dom';
 import TopNav from '../component/TopNav';
 import LeftNav from '../component/LeftNav';
 import BottomNav from '../component/BottomNav';
-import ComponentEnterpriseUserFavoriteList from '../favorite/ComponentEnterpriseUserFavoriteList';
+import ComponentEmployerFavoriteList from '../miscellaneous/ComponentEmployerFavoriteList';
 import useAuth from '../useAuth';
 import { reducer } from '../miscellaneous';
 
@@ -26,16 +26,14 @@ export default function UserDetail() {
   }, []);
 
   React.useEffect(() => {
-    if (id && uuid) {
-      fetch(`/api/biz/employer/${id}?option=user&uuid=${uuid}`)
-        .then((response) => response.json())
-        .then((data) => {
-          console.info(data);
-          dispatch({ type: 'set', payload: { key: 'name', value: data.name } });
-          dispatch({ type: 'set', payload: { key: 'phone', value: data.phone } });
-          dispatch({ type: 'set', payload: { key: 'email', value: data.email } });
-        });
-    }
+    if (!id || !uuid) return;
+    fetch(`/api/biz/employer/${id}?option=user&uuid=${uuid}`)
+      .then((response) => response.json())
+      .then((data) => {
+        dispatch({ type: 'set', payload: { key: 'name', value: data.name } });
+        dispatch({ type: 'set', payload: { key: 'phone', value: data.phone } });
+        dispatch({ type: 'set', payload: { key: 'email', value: data.email } });
+      });
   }, [id, uuid]);
 
   return (
@@ -122,7 +120,7 @@ export default function UserDetail() {
                   </div>
 
                   <div className="card-body">
-                    <ComponentEnterpriseUserFavoriteList user_id={id} />
+                    <ComponentEmployerFavoriteList user_id={id} />
                   </div>
                 </div>
               </div>
