@@ -92,7 +92,7 @@ export default function ComponentCertificateList() {
             {list.map((it) => (
               <tr key={it.id}>
                 <td>
-                  <a href={`enterprise.html#/${it.id}?uuid=${it.uuid}`}>
+                  <a href={`employer.html#/${it.id}?uuid=${it.uuid}`}>
                     <FontAwesomeIcon icon={faEdit} fixedWidth size="lg" />
                   </a>
                   <span className="float-right">{it.id}</span>
