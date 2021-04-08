@@ -113,5 +113,5 @@ ComponentJobNResumeList.propTypes = {
 };
 
 ComponentJobNResumeList.defaultProps = {
-  enterprise_uuid: undefined,
+  enterprise_uuid: '',
 };
