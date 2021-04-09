@@ -38,7 +38,7 @@ export default function ComponentJobList({ enterprise_id, enterprise_uuid }) {
           <tr key={it.id}>
             <td className="text-right">
               <span className="float-left">
-                <a href={`recruitment.html#/${it.id}?uuid=${it.uuid}`}>
+                <a href={`biz.html#/job/${it.id}?uuid=${it.uuid}`}>
                   <FontAwesomeIcon icon={faEdit} fixedWidth size="lg" />
                 </a>
               </span>
