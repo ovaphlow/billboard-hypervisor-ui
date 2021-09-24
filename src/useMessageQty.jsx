@@ -12,7 +12,7 @@ export default function useMessageQty({ user_id, user_uuid }) {
     fetch('/api/biz/employer/statistic?option=to-certificate-qty')
       .then((response) => response.json())
       .then((data) => {
-        setQty((prev) => prev + data);
+        setQty((prev) => prev + data.qty);
       });
   }, []);
 

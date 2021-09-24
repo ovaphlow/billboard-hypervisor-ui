@@ -25,11 +25,6 @@ export default function ChangePassword() {
       return;
     }
 
-    const data = {
-      id: auth.id,
-      current_password: md5(password),
-      new_password: md5(password1),
-    };
     fetch(`/api/miscellaneous/staff/${auth.id}?option=password`, {
       method: 'PUT',
       headers: {
@@ -39,16 +34,14 @@ export default function ChangePassword() {
         current_password: md5(password),
         new_password: md5(password1),
       }),
-    }).then((response) => {
-      if (response.status === 200) {
-        window.alert('数据已经提交至服务器，即将重定向至登录页面。');
-        window.location = SIGN_IN_URL;
-      } else if (response.status === 401) {
-        window.alert('旧密码输入错误');
-      } else {
-        console.error('服务器错误');
-      }
-    });
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data > 0) {
+          alert('数据已经提交至服务器，即将重定向至登录页面。');
+          location = SIGN_IN_URL;
+        } else alert('操作失败');
+      });
   };
 
   React.useEffect(() => {

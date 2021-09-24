@@ -2,45 +2,11 @@
 <html lang="zh">
   <head>
     <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css" />
-
-    <style>
-      html,
-      body {
-        height: 100%;
-      }
-
-      body {
-        background-color: rgba(0, 0, 0);
-        background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 30%, rgba(0, 0, 0, 1) 70%),
-          url('wallhaven-n6zrz7.jpg');
-        background-repeat: no-repeat;
-        background-size: 100% 100%;
-        color: rgba(255, 255, 255, 0.897);
-      }
-
-      .navbar {
-        background: rgba(0, 0, 0, 0.7);
-      }
-
-      .left-nav {
-        background: rgba(0, 0, 0, 0.4);
-      }
-
-      .input-underscore {
-        background-color: transparent;
-        border: 0;
-        border-bottom: 2px solid silver /* slategrey */;
-        border-radius: 0;
-        color: rgba(255, 255, 255, 1);
-      }
-
-      .transparent {
-        background-color: transparent;
-      }
-    </style>
+    <link rel="stylesheet" href="src/style.css" />
 
     <title>龙招聘</title>
   </head>
@@ -48,6 +14,6 @@
   <body class="d-flex h-100 w-100">
     <div id="app" class="w-100"></div>
 
-    <script src="src/current-user/index.jsx"></script>
+    <script type="module" src="src/current-user/index.jsx"></script>
   </body>
 </html>

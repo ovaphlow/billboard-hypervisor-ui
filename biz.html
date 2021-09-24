@@ -2,6 +2,7 @@
 <html lang="zh">
   <head>
     <meta charset="utf-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css" />
@@ -15,7 +16,7 @@
       body {
         background-color: rgba(0, 0, 0);
         background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 30%, rgba(0, 0, 0, 1) 70%),
-          url('wallhaven-n6zrz7.jpg');
+          url(data-url:wallhaven-n6zrz7.png);
         background-repeat: no-repeat;
         background-size: 100% 100%;
         color: rgba(255, 255, 255, 0.897);
@@ -48,6 +49,6 @@
   <body class="d-flex h-100 w-100">
     <div id="app" class="w-100"></div>
 
-    <script src="src/biz/index.jsx"></script>
+    <script type="module" src="src/biz/index.jsx"></script>
   </body>
 </html>

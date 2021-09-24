@@ -57,7 +57,7 @@ function Home() {
       .then((data) => {
         dispatch({
           type: 'set',
-          payload: { key: 'candidate_today', value: data },
+          payload: { key: 'candidate_today', value: data.qty },
         });
       });
   }, []);
@@ -68,7 +68,7 @@ function Home() {
       .then((data) => {
         dispatch({
           type: 'set',
-          payload: { key: 'candidate_all', value: data + 200000 },
+          payload: { key: 'candidate_all', value: data.qty + 200000 },
         });
       });
   }, []);
@@ -79,7 +79,7 @@ function Home() {
       .then((data) => {
         dispatch({
           type: 'set',
-          payload: { key: 'employer_today', value: data },
+          payload: { key: 'employer_today', value: data.qty },
         });
       });
   }, []);
@@ -90,7 +90,7 @@ function Home() {
       .then((data) => {
         dispatch({
           type: 'set',
-          payload: { key: 'employer_all', value: data + 60000 },
+          payload: { key: 'employer_all', value: data.qty + 60000 },
         });
       });
   }, []);
@@ -101,7 +101,7 @@ function Home() {
       .then((data) => {
         dispatch({
           type: 'set',
-          payload: { key: 'candidate_send', value: data + 180018 },
+          payload: { key: 'candidate_send', value: data.qty + 180018 },
         });
       });
   }, []);
@@ -112,7 +112,7 @@ function Home() {
       .then((data) => {
         dispatch({
           type: 'set',
-          payload: { key: 'employer_job', value: data },
+          payload: { key: 'employer_job', value: data.qty },
         });
       });
   }, []);
@@ -123,7 +123,7 @@ function Home() {
       .then((data) => {
         dispatch({
           type: 'set',
-          payload: { key: 'bulletin_tuijian_today', value: data },
+          payload: { key: 'bulletin_tuijian_today', value: data.qty },
         });
       });
   }, []);
@@ -134,7 +134,7 @@ function Home() {
       .then((data) => {
         dispatch({
           type: 'set',
-          payload: { key: 'bulletin_tuijian_all', value: data },
+          payload: { key: 'bulletin_tuijian_all', value: data.qty },
         });
       });
   }, []);

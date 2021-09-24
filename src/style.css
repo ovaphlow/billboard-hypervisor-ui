@@ -1,0 +1,33 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background-color: rgba(0, 0, 0);
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 30%, rgba(0, 0, 0, 1) 70%),
+    url(data-url:../wallhaven-n6zrz7.png);
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  color: rgba(255, 255, 255, 0.897);
+}
+
+.navbar {
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.left-nav {
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.input-underscore {
+  background-color: transparent;
+  border: 0;
+  border-bottom: 2px solid silver /* slategrey */;
+  border-radius: 0;
+  color: rgba(255, 255, 255, 1);
+}
+
+.transparent {
+  background-color: transparent;
+}
