@@ -2,7 +2,7 @@
   "name": "billboard-hypervisor-ui",
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://9dbf31a59354e23c0a8a9f263348b404e7d39e7d@github.com/ovaphlow/billboard-hypervisor-ui.git",
+  "repository": "https://github.com/ovaphlow/billboard-hypervisor-ui.git",
   "author": "ovaphlow <ovaphlow@live.com>",
   "license": "MIT",
   "dependencies": {
