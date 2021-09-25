@@ -36,7 +36,7 @@ export default function FeedbackList() {
   };
 
   React.useEffect(() => {
-    fetch('/api/miscellaneous/feedback/filter?category=意见反馈')
+    fetch('/api/miscellaneous/feedback?category=意见反馈')
       .then((response) => response.json())
       .then((data) => {
         setFeedbackList(data);
@@ -50,7 +50,7 @@ export default function FeedbackList() {
     feedback_list.map((current) => {
       if (current.user_category === '个人用户') ll.push(current.user_id);
     });
-    fetch(`/api/biz/candidate/filter?option=by-id-list&list=${ll.join(',')}`)
+    fetch(`/api/biz/candidate?option=by-id-list&list=${ll.join(',')}`)
       .then((response) => response.json())
       .then((data) => {
         const lf = feedback_list.map((current) => {
@@ -75,7 +75,7 @@ export default function FeedbackList() {
     feedback_list.map((current) => {
       if (current.user_category === '企业用户') ll.push(current.user_id);
     });
-    fetch(`/api/biz/employer/filter?option=user-by-user-id-list&list=${ll.join(',')}`)
+    fetch(`/api/biz/employer?option=user-by-user-id-list&list=${ll.join(',')}`)
       .then((response) => response.json())
       .then((data) => {
         const lf = feedback_list.map((current) => {

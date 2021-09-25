@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { HashRouter as Router, Switch, Route } from 'react-router-dom';
 
+import '../style.css';
 import CandidateList from './CandidateList';
 import CandidateDetail from './CandidateDetail';
 import ResumeDetail from './ResumeDetail';

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import moment from 'moment';
 
 import TopNav from '../component/TopNav';
@@ -10,14 +10,14 @@ import useAuth from '../useAuth';
 
 export default function List() {
   const auth = useAuth();
-  const [list, setList] = useState([]);
+  const [list, setList] = React.useState([]);
 
-  useEffect(() => {
-    (async () => {
-      const response = await window.fetch('/api/bulletin/');
-      const res = await response.json();
-      setList(res.content);
-    })();
+  React.useEffect(() => {
+    fetch('/api/bulletin/')
+      .then((response) => response.json())
+      .then((data) => {
+        setList(data);
+      });
   }, []);
 
   return (
