@@ -36,7 +36,7 @@ export default function ComplaintList() {
   };
 
   React.useEffect(() => {
-    fetch('/api/miscellaneous/feedback/filter?category=投诉')
+    fetch('/api/miscellaneous/feedback?category=投诉')
       .then((response) => response.json())
       .then((data) => {
         setComplaintList(data);
@@ -50,7 +50,7 @@ export default function ComplaintList() {
     complaint_list.map((current) => {
       if (current.user_category === '个人用户') ll.push(current.user_id);
     });
-    fetch(`/api/biz/candidate/filter?option=by-id-list&list=${ll.join(',')}`)
+    fetch(`/api/biz/candidate?option=by-id-list&list=${ll.join(',')}`)
       .then((response) => response.json())
       .then((data) => {
         const lf = complaint_list.map((current) => {
@@ -75,7 +75,7 @@ export default function ComplaintList() {
     complaint_list.map((current) => {
       if (current.user_category === '企业用户') ll.push(current.user_id);
     });
-    fetch(`/api/biz/employer/filter?option=user-by-user-id-list&list=${ll.join(',')}`)
+    fetch(`/api/biz/employer?option=user-by-user-id-list&list=${ll.join(',')}`)
       .then((response) => response.json())
       .then((data) => {
         const lf = complaint_list.map((current) => {
