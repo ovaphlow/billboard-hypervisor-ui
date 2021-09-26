@@ -21,7 +21,7 @@ export default function TopicList() {
 
   const handleFilter = () => {
     setTopicList([]);
-    fetch(`/api/bulletin/topic/filter?option=&date=${filter.date}&title=${filter.title}`)
+    fetch(`/api/bulletin/topic?option=&date=${filter.date}&title=${filter.title}`)
       .then((response) => response.json())
       .then((data) => {
         setTopicList(data);
