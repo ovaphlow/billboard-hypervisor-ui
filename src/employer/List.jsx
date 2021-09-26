@@ -14,10 +14,9 @@ export default function List() {
   const [list, setList] = React.useState([]);
   const [filter, setFilter] = React.useState('');
   const [flag, setFlag] = React.useState(false);
-
   const handleFilter = async () => {
     setList([]);
-    fetch(`/api/biz/employer/filter?option=&keyword=${filter}`)
+    fetch(`/api/biz/employer?option=&keyword=${filter}`)
       .then((response) => response.json())
       .then((data) => {
         setList(data);
@@ -28,7 +27,7 @@ export default function List() {
   React.useEffect(() => {
     if (!flag) return;
     const ll = list.map((iter) => iter.id);
-    fetch(`/api/biz/employer/filter?option=filter-user-by-id-list&list=${ll.join(',')}`)
+    fetch(`/api/biz/employer?option=filter-user-by-id-list&list=${ll.join(',')}`)
       .then((response) => response.json())
       .then((data) => {
         const lf = list.map((current) => {

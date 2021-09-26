@@ -6,23 +6,18 @@ import { faSyncAlt, faEdit, faCheckCircle } from '@fortawesome/free-solid-svg-ic
 export default function ComponentCertificateList() {
   const [list, setList] = React.useState([]);
   const [filter_name, setFilterName] = React.useState('');
-
-  React.useEffect(() => {
-    fetch('/api/biz/employer/filter?option=to-certificate&name=')
-      .then((response) => response.json())
-      .then((data) => {
-        setList(data);
-      });
-  }, []);
-
-  const handleFilter = async () => {
+  const handleFilter = () => {
     setList([]);
-    fetch(`/api/biz/employer/filter?option=to-certificate&name=${filter_name}`)
+    fetch(`/api/biz/employer?option=to-certificate&name=${filter_name}`)
       .then((response) => response.json())
       .then((data) => {
         setList(data);
       });
   };
+
+  React.useEffect(() => {
+    handleFilter();
+  }, []);
 
   const handleCertificate = async (event) => {
     if (!window.confirm('确定对该企业的信息核实完毕，并进行认证吗？')) return;

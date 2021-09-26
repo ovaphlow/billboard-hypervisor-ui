@@ -26,15 +26,14 @@ export default function Index() {
   return (
     <Router>
       <Switch>
-        <Route exact path="/">
-          <List />
-        </Route>
         <Route exact path="/账号/:id">
           <UserDetail component_option="编辑" />
         </Route>
-
         <Route exact path="/:id">
           <Detail />
+        </Route>
+        <Route exact path="/">
+          <List />
         </Route>
       </Switch>
     </Router>

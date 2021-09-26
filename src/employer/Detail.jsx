@@ -44,6 +44,7 @@ export default function Detail() {
       fetch(`/api/biz/employer/${id}?option=&uuid=${uuid}`)
         .then((response) => response.json())
         .then((data) => {
+          console.info(data);
           dispatch({ type: 'set', payload: { key: 'name', value: data.name } });
           dispatch({ type: 'set', payload: { key: 'faren', value: data.faren } });
           dispatch({

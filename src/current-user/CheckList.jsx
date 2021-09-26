@@ -22,7 +22,7 @@ export default function CheckList() {
     fetch('/api/biz/employer/statistic?option=to-certificate-qty')
       .then((response) => response.json())
       .then((data) => {
-        setCertificateQty(data);
+        setCertificateQty(data.qty);
       });
   }, []);
 
