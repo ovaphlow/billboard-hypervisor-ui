@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlusCircle, faEdit, faSearch, faSyncAlt } from '@fortawesome/free-solid-svg-icons';
+import dayjs from 'dayjs';
 
 import TopNav from '../component/TopNav';
 import LeftNav from '../component/LeftNav';
@@ -10,7 +11,7 @@ import { reducer } from '../miscellaneous';
 
 const initial_filter = {
   title: '',
-  date: '',
+  date: dayjs().format('YYYY-MM-DD'),
 };
 
 export default function NotificationList() {
@@ -20,7 +21,7 @@ export default function NotificationList() {
 
   const handleFilter = async () => {
     setNotificationList([]);
-    fetch(`/api/bulletin/notification/filter?option=&title=${filter.title}&date=${filter.date}`)
+    fetch(`/api/bulletin/notification?option=&title=${filter.title}&date=${filter.date}`)
       .then((response) => response.json())
       .then((data) => {
         setNotificationList(data);
