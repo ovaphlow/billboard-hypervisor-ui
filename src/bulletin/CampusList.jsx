@@ -18,10 +18,9 @@ export default function CampusList() {
   const auth = useAuth();
   const [list, setList] = React.useState([]);
   const [filter, dispatch] = React.useReducer(reducer, initial_filter);
-
   const handleFilter = () => {
     setList([]);
-    fetch(`/api/bulletin/campus/filter?option=&title=${filter.title}&date=${filter.date}`)
+    fetch(`/api/bulletin/campus?option=&title=${filter.title}&date=${filter.date}`)
       .then((response) => response.json())
       .then((data) => {
         setList(data);
@@ -29,11 +28,7 @@ export default function CampusList() {
   };
 
   React.useEffect(() => {
-    fetch('/api/bulletin/campus/filter?option=&title=&date=')
-      .then((response) => response.json())
-      .then((data) => {
-        setList(data);
-      });
+    handleFilter();
   }, []);
 
   return (

@@ -37,17 +37,6 @@ export default function Campus({ component_option }) {
   const [arr3, setArr3] = React.useState([]);
   const [campus, dispatch] = React.useReducer(reducer, initial_campus);
 
-  const [date, setDate] = useState('');
-  const [time, setTime] = useState('');
-  const [address_level1, setAddressLevel1] = useState('');
-  const [address_level2, setAddressLevel2] = useState('');
-  const [address_level3, setAddressLevel3] = useState('');
-  const [address_level4, setAddressLevel4] = useState('');
-  const [title, setTitle] = useState('');
-  const [school, setSchool] = useState('');
-  const [content, setContent] = useState('');
-  const [category, setCategory] = useState('');
-
   const handleSubmit = async () => {
     if (component_option === '新增') {
       fetch('/api/bulletin/campus', {
