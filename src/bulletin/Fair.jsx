@@ -71,7 +71,7 @@ export default function Fair({ component_option }) {
           dispatch({ type: 'set', payload: { key: 'content', value: data.content } });
         });
 
-      fetch(`/api/biz/job/filter?option=by-fair-id&fair_id=${id}`)
+      fetch(`/api/biz/job?option=by-fair-id&fair_id=${id}`)
         .then((response) => response.json())
         .then((data) => {
           setDataList(data);

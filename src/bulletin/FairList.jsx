@@ -13,7 +13,7 @@ export default function FairList() {
   const [list, setList] = React.useState([]);
 
   React.useEffect(() => {
-    fetch('/api/bulletin/fair/filter')
+    fetch('/api/bulletin/fair')
       .then((response) => response.json())
       .then((data) => {
         setList(data);
