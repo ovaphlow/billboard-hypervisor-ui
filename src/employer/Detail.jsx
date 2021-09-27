@@ -61,37 +61,36 @@ export default function Detail() {
   };
 
   React.useEffect(() => {
-    if (uuid) {
-      fetch(`/api/biz/employer/${id}?option=&uuid=${uuid}`)
-        .then((response) => response.json())
-        .then((data) => {
-          dispatch({ type: 'set', payload: { key: 'name', value: data.name } });
-          dispatch({ type: 'set', payload: { key: 'faren', value: data.faren } });
-          dispatch({
-            type: 'set',
-            payload: { key: 'yingyezhizhao', value: data.yingyezhizhao },
-          });
-          dispatch({ type: 'set', payload: { key: 'zhuceriqi', value: data.zhuceriqi } });
-          dispatch({ type: 'set', payload: { key: 'zhuziguimo', value: data.zhuziguimo } });
-          dispatch({
-            type: 'set',
-            payload: { key: 'yuangongshuliang', value: data.yuangongshuliang },
-          });
-          dispatch({ type: 'set', payload: { key: 'address1', value: data.address1 } });
-          dispatch({ type: 'set', payload: { key: 'address2', value: data.address2 } });
-          dispatch({ type: 'set', payload: { key: 'address3', value: data.address3 } });
-          dispatch({ type: 'set', payload: { key: 'address4', value: data.address4 } });
-          dispatch({ type: 'set', payload: { key: 'industry', value: data.industry } });
-          dispatch({ type: 'set', payload: { key: 'phone', value: data.phone } });
-          dispatch({ type: 'set', payload: { key: 'intro', value: data.intro } });
-          dispatch({ type: 'set', payload: { key: 'url', value: data.url } });
-          dispatch({ type: 'set', payload: { key: 'status', value: data.status } });
-          dispatch({
-            type: 'set',
-            payload: { key: 'yingyezhizhao_tu', value: data.yingyezhizhao_tu },
-          });
+    if (!uuid) return;
+    fetch(`/api/biz/employer/${id}?option=&uuid=${uuid}`)
+      .then((response) => response.json())
+      .then((data) => {
+        dispatch({ type: 'set', payload: { key: 'name', value: data.name } });
+        dispatch({ type: 'set', payload: { key: 'faren', value: data.faren } });
+        dispatch({
+          type: 'set',
+          payload: { key: 'yingyezhizhao', value: data.yingyezhizhao },
         });
-    }
+        dispatch({ type: 'set', payload: { key: 'zhuceriqi', value: data.zhuceriqi } });
+        dispatch({ type: 'set', payload: { key: 'zhuziguimo', value: data.zhuziguimo } });
+        dispatch({
+          type: 'set',
+          payload: { key: 'yuangongshuliang', value: data.yuangongshuliang },
+        });
+        dispatch({ type: 'set', payload: { key: 'address1', value: data.address1 } });
+        dispatch({ type: 'set', payload: { key: 'address2', value: data.address2 } });
+        dispatch({ type: 'set', payload: { key: 'address3', value: data.address3 } });
+        dispatch({ type: 'set', payload: { key: 'address4', value: data.address4 } });
+        dispatch({ type: 'set', payload: { key: 'industry', value: data.industry } });
+        dispatch({ type: 'set', payload: { key: 'phone', value: data.phone } });
+        dispatch({ type: 'set', payload: { key: 'intro', value: data.intro } });
+        dispatch({ type: 'set', payload: { key: 'url', value: data.url } });
+        dispatch({ type: 'set', payload: { key: 'status', value: data.status } });
+        dispatch({
+          type: 'set',
+          payload: { key: 'yingyezhizhao_tu', value: data.yingyezhizhao_tu },
+        });
+      });
   }, [uuid]);
 
   React.useEffect(() => {

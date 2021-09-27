@@ -17,17 +17,12 @@ const initial_user = {
 export default function UserDetail() {
   const auth = useAuth();
   const { id } = useParams();
-  const location = useLocation();
   const [user, dispatch] = React.useReducer(reducer, initial_user);
-  const [uuid, setUUID] = React.useState('');
-
-  React.useEffect(() => {
-    setUUID(new URLSearchParams(location.search).get('uuid'));
-  }, []);
+  const uuid = new URLSearchParams(useLocation().search).get('uuid');
 
   React.useEffect(() => {
     if (!id || !uuid) return;
-    fetch(`/api/biz/employer/${id}?option=user&uuid=${uuid}`)
+    fetch(`/api/biz/employer/${id}?option=user-by-employer&uuid=${uuid}`)
       .then((response) => response.json())
       .then((data) => {
         dispatch({ type: 'set', payload: { key: 'name', value: data.name } });

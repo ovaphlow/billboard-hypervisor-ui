@@ -17,7 +17,7 @@ export default function ComponentEmployerFavoriteList({ user_id }) {
   };
 
   React.useEffect(() => {
-    fetch(`/api/miscellaneous/favorite/filter?option=employer&master_id=${user_id}`)
+    fetch(`/api/miscellaneous/favorite?option=employer&master_id=${user_id}`)
       .then((response) => response.json())
       .then((data) => {
         setList(data);
