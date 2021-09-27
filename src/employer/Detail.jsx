@@ -5,9 +5,11 @@ import TopNav from '../component/TopNav';
 import LeftNav from '../component/LeftNav';
 import BottomNav from '../component/BottomNav';
 import RecruitmentList from './ComponentJobList';
-import RecruitmentList1 from './ComponentJobNResumeList';
+import ComponentJobNResumeList from './ComponentJobNResumeList';
 import useAuth from '../useAuth';
 import { reducer } from '../miscellaneous';
+import dayjs from 'dayjs';
+import { element } from 'prop-types';
 
 const initial_employer = {
   name: '',
@@ -28,23 +30,41 @@ const initial_employer = {
   yingyezhizhao_tu: '',
 };
 
+const initial_job_filter = {
+  date: dayjs().format('YYYY-MM-01'),
+  date2: dayjs().format('YYYY-MM-DD'),
+};
+
 export default function Detail() {
-  const [employer, dispatch] = React.useReducer(reducer, initial_employer);
   const auth = useAuth();
   const { id } = useParams();
-  const location = useLocation();
-  const [uuid, setUUID] = React.useState('');
-
-  React.useEffect(() => {
-    setUUID(new URLSearchParams(location.search).get('uuid'));
-  }, []);
+  const uuid = new URLSearchParams(useLocation().search).get('uuid');
+  const [employer, dispatch] = React.useReducer(reducer, initial_employer);
+  const [job_filter, dispatch_job_filter] = React.useReducer(reducer, initial_job_filter);
+  const [job_list, setJobList] = React.useState([]);
+  const [sendin_list, setSendInList] = React.useState([]);
+  const [progress, setProgress] = React.useState(0);
+  const handleJobFilter = () => {
+    let a = job_list.map((current) => current.id);
+    let url = [
+      '/api/biz/send-in?option=by-job-id-and-date',
+      `&job_id=${a.join(',')}`,
+      `&date=${job_filter.date}`,
+      `&date2=${job_filter.date2}`,
+    ];
+    fetch(url.join(''))
+      .then((response) => response.json())
+      .then((data) => {
+        setSendInList(data);
+        if (data.length) setProgress(1);
+      });
+  };
 
   React.useEffect(() => {
     if (uuid) {
       fetch(`/api/biz/employer/${id}?option=&uuid=${uuid}`)
         .then((response) => response.json())
         .then((data) => {
-          console.info(data);
           dispatch({ type: 'set', payload: { key: 'name', value: data.name } });
           dispatch({ type: 'set', payload: { key: 'faren', value: data.faren } });
           dispatch({
@@ -73,6 +93,51 @@ export default function Detail() {
         });
     }
   }, [uuid]);
+
+  React.useEffect(() => {
+    if (!id || !uuid) return;
+    fetch(`/api/biz/job?option=list-by-employer-id&id=${id}&uuid=${uuid}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setJobList(data);
+      });
+  }, [id, uuid]);
+
+  React.useEffect(() => {
+    if (progress === 1) {
+      // job
+      let job_id_list = sendin_list.map((current) => current.recruitment_id);
+      fetch(`/api/biz/job?option=by-id&id=${job_id_list.join(',')}`)
+        .then((response) => response.json())
+        .then((data) => {
+          let lf = sendin_list.map((current) => {
+            let job = data.find((element) => element.id === current.recruitment_id);
+            return {
+              ...current,
+              recruitment_name: job.name,
+            };
+          });
+          setSendInList(lf);
+          setProgress(2);
+        });
+    } else if (progress === 2) {
+      // resume
+      let resume_id_list = sendin_list.map((current) => current.resume_id);
+      fetch(`/api/biz/resume?option=by-id&id=${resume_id_list.join(',')}`)
+        .then((response) => response.json())
+        .then((data) => {
+          let lf = sendin_list.map((current) => {
+            let resume = data.find((element) => element.id === current.resume_id);
+            return {
+              ...current,
+              resume_name: resume.name,
+            };
+          });
+          setSendInList(lf);
+          setProgress(0);
+        });
+    }
+  }, [progress]);
 
   return (
     <div className="d-flex flex-column h-100 w-100">
@@ -211,9 +276,58 @@ export default function Detail() {
                   </div>
                 </div>
                 <div className="card bg-dark shadow mt-3">
-                  <div className="card-header">收到的简历</div>
+                  <div className="card-header">
+                    <p className="lead">收到的简历</p>
+                    <div className="row">
+                      <div className="col">
+                        <div className="input-group">
+                          <div className="input-group-prepend">
+                            <span className="input-group-text">起始日期</span>
+                          </div>
+                          <input
+                            type="date"
+                            value={job_filter.date}
+                            aria-label="起始日期"
+                            className="form-control"
+                            onChange={(event) =>
+                              dispatch_job_filter({
+                                type: 'set',
+                                payload: { key: 'date', value: event.target.value },
+                              })
+                            }
+                          />
+                        </div>
+                      </div>
+                      <div className="col">
+                        <div className="input-group">
+                          <div className="input-group-prepend">
+                            <span className="input-group-text">终止日期</span>
+                          </div>
+                          <input
+                            type="date"
+                            value={job_filter.date2}
+                            aria-label="终止日期"
+                            className="form-control"
+                            onChange={(event) =>
+                              dispatch_job_filter({
+                                type: 'set',
+                                payload: { key: 'date2', value: event.target.value },
+                              })
+                            }
+                          />
+                        </div>
+                      </div>
+                      <div className="col-auto">
+                        <div className="btn-group">
+                          <button type="button" className="btn btn-info" onClick={handleJobFilter}>
+                            查询
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   <div className="card-body">
-                    <RecruitmentList1 enterprise_id={id} enterprise_uuid={uuid} />
+                    <ComponentJobNResumeList data_list={sendin_list} />
                   </div>
                 </div>
               </div>
