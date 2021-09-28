@@ -14,7 +14,7 @@ export default function CandidateList() {
 
   const handleFilter = async () => {
     setData([]);
-    fetch(`/api/biz/candidate/filter?keyword=${filter_name}`)
+    fetch(`/api/biz/candidate?option=by-keyword&keyword=${filter_name}`)
       .then((response) => response.json())
       .then((data) => {
         setData(data);

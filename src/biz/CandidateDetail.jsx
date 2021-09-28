@@ -18,14 +18,9 @@ const initial_candidate = {
 export default function CandidateDetail() {
   const auth = useAuth();
   const { id } = useParams();
-  const location = useLocation();
+  const uuid = new URLSearchParams(useLocation().search).get('uuid');
   const [candidate, dispatch] = React.useReducer(reducer, initial_candidate);
-  const [uuid, setUUID] = React.useState('');
   const [resume_list, setResumeList] = React.useState([]);
-
-  React.useEffect(() => {
-    setUUID(new URLSearchParams(location.search).get('uuid'));
-  }, []);
 
   React.useEffect(() => {
     if (!id || !uuid) return;
@@ -40,7 +35,7 @@ export default function CandidateDetail() {
 
   React.useEffect(() => {
     if (!id) return;
-    fetch(`/api/biz/resume/filter?option=by-candidate&id=${id}`)
+    fetch(`/api/biz/resume?option=by-candidate&id=${id}`)
       .then((response) => response.json())
       .then((data) => {
         setResumeList(data);

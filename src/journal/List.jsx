@@ -19,12 +19,10 @@ export default function List({ component_option }) {
   const [data, setData] = useState([]);
   const [filter_date_begin, setFilterDateBegin] = useState(moment().format('YYYY-MM-01'));
   const [filter_date_end, setFilterDateEnd] = useState(moment().format('YYYY-MM-DD'));
-
   const handleRedirect = async (event) => {
     const id = event.target.getAttribute('data-id');
     const uuid = event.target.getAttribute('data-uuid');
     const category = event.target.getAttribute('data-category');
-    window.console.info(category);
     if (category === '校园招聘') {
       window.location = `campus.html#/${id}?uuid=${uuid}`;
     } else if (category === '热门话题') {
@@ -35,86 +33,36 @@ export default function List({ component_option }) {
       window.alert('数据类型解析失败');
     }
   };
-
-  useEffect(() => {
-    let _user_category = new URLSearchParams(location.search).get('user_category');
-    let _user_id = new URLSearchParams(location.search).get('user_id');
-    let _user_uuid = new URLSearchParams(location.search).get('user_uuid');
-    setUserCategory(new URLSearchParams(location.search).get('user_category'));
-    setUserID(new URLSearchParams(location.search).get('user_id'));
-    setUserUUID(new URLSearchParams(location.search).get('user_uuid'));
-    if (!_user_category || !_user_id || !_user_uuid) {
-      window.alert('参数错误');
-      return;
-    }
-    if (component_option === '登录') {
-      (async () => {
-        const response = await window.fetch(
-          `/api/journal/sign-in/?user_id=${_user_id}&user_uuid=${_user_uuid}?category=${_user_category}`,
-        );
-        const res = await response.json();
-        setData(res.content);
-      })();
-    } else if (component_option === '浏览') {
-      (async () => {
-        const response = await window.fetch(
-          `/api/journal/browse/?user_id=${_user_id}&user_uuid=${_user_uuid}?category=${_user_category}`,
-        );
-        const res = await response.json();
-        setData(res.content);
-      })();
-    } else if (component_option === '编辑') {
-      (async () => {
-        const response = await window.fetch(
-          `/api/journal/edit/?user_id=${_user_id}&user_uuid=${_user_uuid}&category=${_user_category}`,
-        );
-        const res = await response.json();
-        setData(res.content);
-      })();
-    }
-  }, []);
-
-  // useEffect(() => {
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [user_category, user_id, user_uuid]);
-
   const handleFilter = async () => {
     if (component_option === '登录') {
-      const response = await window.fetch(
-        `/api/journal/sign-in/?user_id=${user_id}&user_uuid=${user_uuid}&category=${user_category}`,
-        {
-          method: 'PUT',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({
-            date_begin: filter_date_begin,
-            date_end: filter_date_end,
-          }),
-        },
-      );
-      const res = await response.json();
-      if (res.message) {
-        window.alert(res.message);
-        return;
-      }
-      setData(res.content);
+      let url = [
+        '/api/miscellaneous/journal',
+        '?option=sign-in-by-date',
+        `&id=${user_id}`,
+        `&uuid=${user_uuid}`,
+        `&category=${user_category}`,
+        `&date_begin=${filter_date_begin}`,
+        `&date_end=${filter_date_end}`,
+      ];
+      fetch(url.join(''))
+        .then((response) => response.json())
+        .then((data) => {
+          setData(data);
+        });
     } else if (component_option === '浏览') {
-      const response = await window.fetch(
-        `/api/journal/browse/?user_id=${user_id}&user_uuid=${user_uuid}&category=${user_category}`,
-        {
-          method: 'PUT',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({
-            date_begin: filter_date_begin,
-            date_end: filter_date_end,
-          }),
-        },
-      );
-      const res = await response.json();
-      if (res.message) {
-        window.alert(res.message);
-        return;
-      }
-      setData(res.content);
+      let url = [
+        '/api/miscellaneous/journal',
+        '?option=browse-by-date',
+        `&id=${user_id}`,
+        `&uuid=${user_uuid}`,
+        `&date_begin=${filter_date_begin}`,
+        `&date_end=${filter_date_end}`,
+      ];
+      fetch(url.join(''))
+        .then((response) => response.json())
+        .then((data) => {
+          setData(data);
+        });
     } else if (component_option === '编辑') {
       const response = await window.fetch(
         `/api/journal/edit/?user_id=${user_id}&user_uuid=${user_uuid}&user_category=${user_category}`,
@@ -135,6 +83,55 @@ export default function List({ component_option }) {
       setData(res.content);
     }
   };
+
+  React.useEffect(() => {
+    let _user_category = new URLSearchParams(location.search).get('user_category');
+    let _user_id = new URLSearchParams(location.search).get('user_id');
+    let _user_uuid = new URLSearchParams(location.search).get('user_uuid');
+    setUserCategory(new URLSearchParams(location.search).get('user_category'));
+    setUserID(new URLSearchParams(location.search).get('user_id'));
+    setUserUUID(new URLSearchParams(location.search).get('user_uuid'));
+    if (!_user_category || !_user_id || !_user_uuid) {
+      window.alert('参数错误');
+      return;
+    }
+    if (component_option === '登录') {
+      let url = [
+        '/api/miscellaneous/journal',
+        '?option=sign-in',
+        `&id=${_user_id}`,
+        `&uuid=${_user_uuid}`,
+        `&category=${_user_category}`,
+      ];
+      fetch(url.join(''))
+        .then((response) => response.json())
+        .then((data) => {
+          setData(data);
+        });
+    } else if (component_option === '浏览') {
+      let url = [
+        '/api/miscellaneous/journal',
+        '?option=browse',
+        `&id=${_user_id}`,
+        `&uuid=${_user_uuid}`,
+        `&category=${_user_category}`,
+      ];
+      fetch(url.join(''))
+        .then((response) => response.json())
+        .then((data) => {
+          console.info(data);
+          setData(data);
+        });
+    } else if (component_option === '编辑') {
+      (async () => {
+        const response = await window.fetch(
+          `/api/journal/edit/?user_id=${_user_id}&user_uuid=${_user_uuid}&category=${_user_category}`,
+        );
+        const res = await response.json();
+        setData(res.content);
+      })();
+    }
+  }, []);
 
   return (
     <div className="d-flex flex-column h-100 w-100">

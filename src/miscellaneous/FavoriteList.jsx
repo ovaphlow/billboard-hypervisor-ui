@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
 
@@ -10,12 +10,12 @@ import useAuth from '../useAuth';
 export default function FavoriteList() {
   const auth = useAuth();
   const location = useLocation();
-  const [favorite_list, setFavoriteList] = useState([]);
+  const [favorite_list, setFavoriteList] = React.useState([]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const master_id = new URLSearchParams(location.search).get('master_id');
     if (!master_id) return;
-    fetch(`/api/miscellaneous/favorite/filter?master_id=${master_id}&category=个人用户`)
+    fetch(`/api/miscellaneous/favorite?option=by-candidate&id=${master_id}&category=个人用户`)
       .then((response) => response.json())
       .then((data) => {
         console.info(data);
