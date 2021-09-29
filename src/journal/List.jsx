@@ -64,23 +64,18 @@ export default function List({ component_option }) {
           setData(data);
         });
     } else if (component_option === '编辑') {
-      const response = await window.fetch(
-        `/api/journal/edit/?user_id=${user_id}&user_uuid=${user_uuid}&user_category=${user_category}`,
-        {
-          method: 'PUT',
-          headers: { 'content-type': 'application/json' },
-          body: JSON.stringify({
-            date_begin: filter_date_begin,
-            date_end: filter_date_end,
-          }),
-        },
-      );
-      const res = await response.json();
-      if (res.message) {
-        window.alert(res.message);
-        return;
-      }
-      setData(res.content);
+      let url = [
+        '/api/miscellaneous/journal',
+        '?option=edit-by-date',
+        `&id=${user_id}`,
+        `&date_begin=${filter_date_begin}`,
+        `&date_end=${filter_date_end}`,
+      ];
+      fetch(url.join(''))
+        .then((response) => response.json())
+        .then((data) => {
+          setData(data);
+        });
     }
   };
 
@@ -123,13 +118,17 @@ export default function List({ component_option }) {
           setData(data);
         });
     } else if (component_option === '编辑') {
-      (async () => {
-        const response = await window.fetch(
-          `/api/journal/edit/?user_id=${_user_id}&user_uuid=${_user_uuid}&category=${_user_category}`,
-        );
-        const res = await response.json();
-        setData(res.content);
-      })();
+      let url = [
+        '/api/miscellaneous/journal',
+        '?option=edit',
+        `&id=${_user_id}`,
+        `&uuid=${_user_uuid}`,
+      ];
+      fetch(url.join(''))
+        .then((response) => response.json())
+        .then((data) => {
+          setData(data);
+        });
     }
   }, []);
 
