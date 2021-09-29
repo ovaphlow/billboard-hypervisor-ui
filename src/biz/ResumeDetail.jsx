@@ -9,13 +9,8 @@ import useAuth from '../useAuth';
 export default function ResumeDetail() {
   const auth = useAuth();
   const { id } = useParams();
-  const location = useLocation();
-  const [uuid, setUUID] = React.useState('');
+  const uuid = new URLSearchParams(useLocation().search).get('uuid');
   const [resume, setResume] = React.useState({});
-
-  React.useEffect(() => {
-    setUUID(new URLSearchParams(location.search).get('uuid'));
-  }, []);
 
   React.useEffect(() => {
     if (!id || !uuid) return;
