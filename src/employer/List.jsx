@@ -25,7 +25,7 @@ export default function List() {
   };
 
   React.useEffect(() => {
-    if (!flag) return;
+    if (!flag || !list.length) return;
     const ll = list.map((iter) => iter.id);
     fetch(`/api/biz/employer?option=filter-user-by-id-list&list=${ll.join(',')}`)
       .then((response) => response.json())

@@ -19,10 +19,10 @@ export default function ComponentCertificateList() {
     handleFilter();
   }, []);
 
-  const handleCertificate = async (event) => {
+  const handleCertificate = (event) => {
     if (!window.confirm('确定对该企业的信息核实完毕，并进行认证吗？')) return;
-    const id = event.target.getAttribute('data-id') || 0;
-    const uuid = event.target.getAttribute('data-uuid') || '';
+    let id = event.target.getAttribute('data-id') || 0;
+    let uuid = event.target.getAttribute('data-uuid') || '';
     fetch(`/api/biz/employer/${id}?option=certificate&uuid=${uuid}`, {
       method: 'PUT',
     }).then((response) => {
@@ -103,7 +103,6 @@ export default function ComponentCertificateList() {
                       data-uuid={it.uuid}
                       onClick={handleCertificate}
                     >
-                      <FontAwesomeIcon icon={faCheckCircle} fixedWidth size="lg" />
                       认证
                     </button>
                   </div>
