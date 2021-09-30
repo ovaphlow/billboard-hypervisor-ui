@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 import TopNav from '../component/TopNav';
 import LeftNav from '../component/LeftNav';
@@ -13,12 +13,12 @@ import { faSearch, faSyncAlt } from '@fortawesome/free-solid-svg-icons';
 export default function List({ component_option }) {
   const auth = useAuth();
   const location = useLocation();
-  const [user_category, setUserCategory] = useState('');
-  const [user_id, setUserID] = useState(0);
-  const [user_uuid, setUserUUID] = useState('');
-  const [data, setData] = useState([]);
-  const [filter_date_begin, setFilterDateBegin] = useState(moment().format('YYYY-MM-01'));
-  const [filter_date_end, setFilterDateEnd] = useState(moment().format('YYYY-MM-DD'));
+  const [user_category, setUserCategory] = React.useState('');
+  const [user_id, setUserID] = React.useState(0);
+  const [user_uuid, setUserUUID] = React.useState('');
+  const [data, setData] = React.useState([]);
+  const [filter_date_begin, setFilterDateBegin] = React.useState(dayjs().format('YYYY-MM-01'));
+  const [filter_date_end, setFilterDateEnd] = React.useState(dayjs().format('YYYY-MM-DD'));
   const handleRedirect = async (event) => {
     const id = event.target.getAttribute('data-id');
     const uuid = event.target.getAttribute('data-uuid');
@@ -101,6 +101,7 @@ export default function List({ component_option }) {
       fetch(url.join(''))
         .then((response) => response.json())
         .then((data) => {
+          console.info(data);
           setData(data);
         });
     } else if (component_option === '浏览') {
@@ -114,7 +115,6 @@ export default function List({ component_option }) {
       fetch(url.join(''))
         .then((response) => response.json())
         .then((data) => {
-          console.info(data);
           setData(data);
         });
     } else if (component_option === '编辑') {
@@ -279,7 +279,7 @@ export default function List({ component_option }) {
                           data.map((it) => (
                             <tr key={it.id}>
                               <td className="text-right">{it.id}</td>
-                              <td>{it.datime}</td>
+                              <td>{dayjs(it.datime).format('YYYY-MM-DD HH:mm:ss')}</td>
                               <td>{it.ip}</td>
                               <td>{it.address}</td>
                               <td>{it.category}</td>
@@ -289,7 +289,7 @@ export default function List({ component_option }) {
                           data.map((it) => (
                             <tr key={it.id}>
                               <td className="text-right">{it.id}</td>
-                              <td>{it.datime}</td>
+                              <td>{dayjs(it.datime).format('YYYY-MM-DD HH:mm:ss')}</td>
                               <td>{it.category}</td>
                               <td className="text-right">
                                 <button
@@ -309,7 +309,7 @@ export default function List({ component_option }) {
                           data.map((it) => (
                             <tr key={it.id}>
                               <td className="text-right">{it.id}</td>
-                              <td>{it.datime}</td>
+                              <td>{dayjs(it.datime).format('YYYY-MM-DD HH:mm:ss')}</td>
                               <td>{it.category1}</td>
                               <td>{it.category2}</td>
                             </tr>

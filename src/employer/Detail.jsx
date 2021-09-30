@@ -9,7 +9,6 @@ import ComponentJobNResumeList from './ComponentJobNResumeList';
 import useAuth from '../useAuth';
 import { reducer } from '../miscellaneous';
 import dayjs from 'dayjs';
-import { element } from 'prop-types';
 
 const initial_employer = {
   name: '',

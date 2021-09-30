@@ -15,6 +15,7 @@ export default function ComplaintList() {
 
   const handleReply = (event) => {
     const content = window.prompt('对投诉回复的内容');
+    if (!content) return;
     fetch(`/api/miscellaneous/feedback/${event.target.getAttribute('data-id')}?option=reply`, {
       method: 'PUT',
       headers: {
@@ -191,7 +192,6 @@ export default function ComplaintList() {
                                 data-user-category={it.user_category}
                                 onClick={handleReply}
                               >
-                                <FontAwesomeIcon icon={faEnvelope} fixedWidth size="lg" />
                                 回复
                               </button>
                             </td>
