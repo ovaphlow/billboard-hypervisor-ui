@@ -1,29 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 export default function ComponentEmployerFavoriteList({ user_id }) {
   const [list, setList] = React.useState([]);
-
   const handleRedirect2Resource = async (event) => {
     const cat = event.target.getAttribute('data-category');
     const id = event.target.getAttribute('data-id');
     const uuid = event.target.getAttribute('data-uuid');
     if (cat === '简历') {
-      window.location = `biz.html#/resume/${id}?uuid=${uuid}`;
+      location = `biz.html#/resume/${id}?uuid=${uuid}`;
     } else {
-      window.alert('未知类型，解析失败。');
+      alert('未知类型，解析失败。');
     }
   };
 
   React.useEffect(() => {
-    fetch(`/api/miscellaneous/favorite?option=by-employer&id=${user_id}`)
+    fetch(`/api/miscellaneous/favorite?option=ref_id-and-tag&id=${user_id}&tag=企业用户`)
       .then((response) => response.json())
       .then((data) => {
         console.info(data);
         setList(data);
       });
-  }, []);
+  }, [user_id]);
 
   return (
     <table className="table table-dark table-striped">
@@ -40,19 +39,19 @@ export default function ComponentEmployerFavoriteList({ user_id }) {
         {list.map((it) => (
           <tr key={it.id}>
             <td className="text-right">{it.id}</td>
-            <td>{it.category2}</td>
+            <td>{it.category}</td>
             <td>
-              {moment(it.datime).format('YYYY-MM-DD')}
+              {dayjs(it.dtime).format('YYYY-MM-DD')}
               &nbsp;
-              <span className="text-muted">{moment(it.datime).format('HH:mm:ss')}</span>
+              <span className="text-muted">{dayjs(it.datime).format('HH:mm:ss')}</span>
             </td>
             <td className="text-right">
               <button
                 type="button"
                 className="btn btn-outline-info btn-sm"
-                data-id={it.data_id}
-                data-uuid={it.data_uuid}
-                data-category={it.category2}
+                data-id={it.ref_id2}
+                data-uuid={it.ref_uuid2}
+                data-category={it.category}
                 onClick={handleRedirect2Resource}
               >
                 查看

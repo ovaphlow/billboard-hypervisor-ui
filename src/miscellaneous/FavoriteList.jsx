@@ -9,34 +9,31 @@ import useAuth from '../useAuth';
 
 export default function FavoriteList() {
   const auth = useAuth();
-  const location = useLocation();
+  const ref_id = new URLSearchParams(useLocation().search).get('master_id');
   const [favorite_list, setFavoriteList] = React.useState([]);
-
-  React.useEffect(() => {
-    const master_id = new URLSearchParams(location.search).get('master_id');
-    if (!master_id) return;
-    fetch(`/api/miscellaneous/favorite?option=by-candidate&id=${master_id}&category=个人用户`)
-      .then((response) => response.json())
-      .then((data) => {
-        console.info(data);
-        setFavoriteList(data);
-      });
-  }, [location]);
-
   const handleRedirect2Resource = async (event) => {
     const t_cat = event.target.getAttribute('data-category');
     const id = event.target.getAttribute('data-id');
     const uuid = event.target.getAttribute('data-uuid');
     if (t_cat === '推荐信息') {
-      window.location = `bulletin.html#/notification/${id}?uuid=${uuid}`;
+      location = `bulletin.html#/notification/${id}?uuid=${uuid}`;
     } else if (t_cat === '校园招聘') {
-      window.location = `bulletin.html#/campus/${id}?uuid=${uuid}`;
+      location = `bulletin.html#/campus/${id}?uuid=${uuid}`;
     } else if (t_cat === '岗位') {
-      window.location = `biz.html#/job/${id}?uuid=${uuid}`;
+      location = `biz.html#/job/${id}?uuid=${uuid}`;
     } else {
-      window.alert('未知类型，解析失败。');
+      alert('未知类型，解析失败。');
     }
   };
+
+  React.useEffect(() => {
+    if (!ref_id) return;
+    fetch(`/api/miscellaneous/favorite?option=ref_id-and-tag&id=${ref_id}&tag=个人用户`)
+      .then((response) => response.json())
+      .then((data) => {
+        setFavoriteList(data);
+      });
+  }, [ref_id]);
 
   return (
     <div className="d-flex flex-column h-100 w-100">
@@ -61,7 +58,7 @@ export default function FavoriteList() {
                       type="button"
                       className="btn btn-link text-reset text-decoration-none"
                       onClick={() => {
-                        window.history.back();
+                        history.back();
                       }}
                     >
                       返回
@@ -102,21 +99,21 @@ export default function FavoriteList() {
                         {favorite_list.map((it) => (
                           <tr key={it.id}>
                             <td className="text-right">{it.id}</td>
-                            <td>{it.category2}</td>
+                            <td>{it.category}</td>
                             <td>
-                              {dayjs(it.datime).format('YYYY-MM-DD')}
+                              {dayjs(it.dtime).format('YYYY-MM-DD')}
                               &nbsp;
                               <span className="text-muted">
-                                {dayjs(it.datime).format('HH:mm:ss')}
+                                {dayjs(it.dtime).format('HH:mm:ss')}
                               </span>
                             </td>
                             <td>
                               <button
                                 type="button"
                                 className="btn btn-outline-info btn-sm"
-                                data-id={it.data_id}
-                                data-uuid={it.data_uuid}
-                                data-category={it.category2}
+                                data-id={it.ref_id2}
+                                data-uuid={it.ref_uuid2}
+                                data-category={it.category}
                                 onClick={handleRedirect2Resource}
                               >
                                 查看
