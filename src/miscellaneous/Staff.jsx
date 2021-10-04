@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import md5 from 'blueimp-md5';
@@ -17,12 +17,11 @@ const initial_staff = {
 export default function Staff({ component_option }) {
   const auth = useAuth();
   const { id } = useParams();
-  const location = useLocation();
-  const [uuid, setUUID] = React.useState('');
+  const uuid = new URLSearchParams(useLocation().search).get('uuid');
   const [staff, dispatch] = React.useReducer(reducer, initial_staff);
 
   const handleRemove = async () => {
-    if (!window.confirm('确定删除当前数据？')) return;
+    if (!confirm('确定删除当前数据？')) return;
     fetch(`/api/miscellaneous/staff/${id}?uuid=${uuid}`, {
       method: 'DELETE',
     }).then((response) => {
@@ -38,7 +37,8 @@ export default function Staff({ component_option }) {
     }
 
     if (component_option === '新增') {
-      fetch('/api/miscellaneous/staff', {
+      // fetch('/api/miscellaneous/staff', {
+      fetch('/api/miscellaneous/subscriber', {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -52,7 +52,8 @@ export default function Staff({ component_option }) {
         else window.alert('操作失败');
       });
     } else if (component_option === '编辑') {
-      fetch(`/api/miscellaneous/staff/${id}?uuid=${uuid}`, {
+      // fetch(`/api/miscellaneous/staff/${id}?uuid=${uuid}`, {
+      fetch(`/api/miscellaneous/subscriber/${id}?uuid=${uuid}`, {
         method: 'PUT',
         headers: {
           'content-type': 'application/json',
@@ -66,14 +67,8 @@ export default function Staff({ component_option }) {
   };
 
   React.useEffect(() => {
-    if (component_option === '编辑') {
-      setUUID(new URLSearchParams(location.search).get('uuid'));
-    }
-  }, [location]);
-
-  React.useEffect(() => {
     if (!id || !uuid) return;
-    fetch(`/api/miscellaneous/staff/${id}?uuid=${uuid}`)
+    fetch(`/api/miscellaneous/subscriber/${id}?uuid=${uuid}`)
       .then((response) => response.json())
       .then((data) => {
         dispatch({ type: 'set', payload: { key: 'name', value: data.name } });

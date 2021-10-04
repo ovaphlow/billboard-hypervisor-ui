@@ -32,7 +32,7 @@ export default function SignIn() {
       })
       .catch((err) => {
         console.error(err.stack);
-        window.alert('用户名或密码错误');
+        alert('用户名或密码错误');
       });
   };
 
