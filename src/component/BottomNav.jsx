@@ -6,7 +6,7 @@ import { faMobileAlt, faLaptop, faCode } from '@fortawesome/free-solid-svg-icons
 export default function BottomNav() {
   return (
     <div className="container-fluid d-flex justify-content-between align-items-center">
-      <span>Copyright © 2020-2021 哈尔滨乔汉科技有限公司. All rights reserved.</span>
+      <span>Copyright © 2020 哈尔滨乔汉科技有限公司. All rights reserved.</span>
       <ul className="list-inline pt-2">
         <li className="list-inline-item">
           <a href="http://" className="text-reset text-decoration-none">
