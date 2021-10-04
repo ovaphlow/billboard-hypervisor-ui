@@ -2,13 +2,15 @@ import React from 'react';
 import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch, faSyncAlt } from '@fortawesome/free-solid-svg-icons';
 
 import TopNav from '../component/TopNav';
 import LeftNav from '../component/LeftNav';
 import BottomNav from '../component/BottomNav';
 import useAuth from '../useAuth';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faSyncAlt } from '@fortawesome/free-solid-svg-icons';
+
+// to-do: 2021-10-04 remove
 
 export default function List({ component_option }) {
   const auth = useAuth();

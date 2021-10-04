@@ -96,25 +96,33 @@ export default function CandidateDetail() {
                     <div className="btn-group">
                       <button
                         type="button"
-                        className="btn btn-secondary"
+                        className="btn btn-warning"
                         onClick={() => {
-                          window.location = `miscellaneous.html#/favorite?master_id=${id}`;
+                          location = `miscellaneous.html#/favorite?master_id=${id}`;
                         }}
                       >
                         用户收藏
                       </button>
-
                       <button
+                        type="button"
+                        className="btn btn-secondary"
+                        onClick={() => {
+                          location = `miscellaneous.html#/journal?tag=个人用户&ref_id=${id}`;
+                        }}
+                      >
+                        操作记录
+                      </button>
+
+                      {/* <button
                         type="button"
                         className="btn btn-warning"
                         onClick={() => {
-                          window.location = `journal.html#/登录?user_category=个人用户&user_id=${id}&user_uuid=${uuid}`;
+                          location = `journal.html#/登录?user_category=个人用户&user_id=${id}&user_uuid=${uuid}`;
                         }}
                       >
                         登录记录
-                      </button>
-
-                      <button
+                      </button> */}
+                      {/* <button
                         type="button"
                         className="btn btn-info"
                         onClick={() => {
@@ -122,9 +130,8 @@ export default function CandidateDetail() {
                         }}
                       >
                         浏览记录
-                      </button>
-
-                      <button
+                      </button> */}
+                      {/* <button
                         type="button"
                         className="btn btn-success"
                         onClick={() => {
@@ -132,7 +139,7 @@ export default function CandidateDetail() {
                         }}
                       >
                         编辑记录
-                      </button>
+                      </button> */}
                     </div>
                   </div>
 
