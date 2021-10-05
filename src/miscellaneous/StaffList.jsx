@@ -15,7 +15,6 @@ export default function List() {
     fetch('/api/miscellaneous/subscriber?option=tag&tag=平台')
       .then((response) => response.json())
       .then((data) => {
-        console.info(data);
         setStaffList(data);
       });
   }, []);

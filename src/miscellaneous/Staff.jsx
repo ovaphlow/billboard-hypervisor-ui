@@ -19,20 +19,19 @@ export default function Staff({ component_option }) {
   const { id } = useParams();
   const uuid = new URLSearchParams(useLocation().search).get('uuid');
   const [staff, dispatch] = React.useReducer(reducer, initial_staff);
-
   const handleRemove = async () => {
     if (!confirm('确定删除当前数据？')) return;
-    fetch(`/api/miscellaneous/staff/${id}?uuid=${uuid}`, {
+    // fetch(`/api/miscellaneous/staff/${id}?uuid=${uuid}`, {
+    fetch(`/api/miscellaneous/subscriber/${id}?uuid=${uuid}`, {
       method: 'DELETE',
     }).then((response) => {
-      if (response.status === 200) window.history.back();
-      else window.alert('操作失败');
+      if (response.status === 200) history.back();
+      else alert('操作失败');
     });
   };
-
   const handleSubmit = async () => {
     if (!staff.name || !staff.username) {
-      window.alert('请完整填写所需信息');
+      alert('请完整填写所需信息');
       return;
     }
 
@@ -46,10 +45,11 @@ export default function Staff({ component_option }) {
         body: JSON.stringify({
           ...staff,
           password: md5('112332'),
+          tag: '平台',
         }),
       }).then((response) => {
-        if (response.status === 200) window.history.back();
-        else window.alert('操作失败');
+        if (response.status === 200) history.back();
+        else alert('操作失败');
       });
     } else if (component_option === '编辑') {
       // fetch(`/api/miscellaneous/staff/${id}?uuid=${uuid}`, {

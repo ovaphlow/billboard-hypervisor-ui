@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import md5 from 'blueimp-md5';
-
-import BottomNav from '../component/BottomNav';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignInAlt } from '@fortawesome/free-solid-svg-icons';
+
+import BottomNav from '../component/BottomNav';
 import { Home } from '../constant';
 
 export default function SignIn() {
@@ -15,7 +15,8 @@ export default function SignIn() {
   }, []);
 
   const handleSignIn = () => {
-    fetch('/api/miscellaneous/staff/sign-in', {
+    // fetch('/api/miscellaneous/staff/sign-in', {
+    fetch('/api/miscellaneous/subscriber/sign-in', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
@@ -28,7 +29,7 @@ export default function SignIn() {
       .then((response) => response.json())
       .then((data) => {
         sessionStorage.setItem('mis-auth', JSON.stringify(data));
-        window.location = Home;
+        location = Home;
       })
       .catch((err) => {
         console.error(err.stack);
