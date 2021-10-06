@@ -36,10 +36,9 @@ export default function Campus({ component_option }) {
   const [arr2, setArr2] = React.useState([]);
   const [arr3, setArr3] = React.useState([]);
   const [campus, dispatch] = React.useReducer(reducer, initial_campus);
-
   const handleSubmit = async () => {
     if (component_option === '新增') {
-      fetch('/api/bulletin/campus', {
+      fetch('/api/bulletin?option=campus', {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -50,22 +49,21 @@ export default function Campus({ component_option }) {
         else window.alert('操作失败');
       });
     } else if (component_option === '编辑') {
-      fetch(`/api/bulletin/campus/${id}?uuid=${uuid}`, {
+      fetch(`/api/bulletin/${id}?option=campus&uuid=${uuid}`, {
         method: 'PUT',
         headers: {
           'content-type': 'application/json',
         },
         body: JSON.stringify(campus),
       }).then((response) => {
-        if (response.status === 200) window.history.back();
-        else window.alert('操作失败');
+        if (response.status === 200) history.back();
+        else alert('操作失败');
       });
     }
   };
-
   const handleRemove = async () => {
     if (!window.confirm('确定要删除当前数据？')) return;
-    fetch(`/api/bulletin/campus/${id}?uuid=${uuid}`, {
+    fetch(`/api/bulletin/${id}?option=campus&uuid=${uuid}`, {
       method: 'DELETE',
     }).then((response) => {
       if (response.status === 200) window.history.back();
@@ -81,7 +79,7 @@ export default function Campus({ component_option }) {
 
   React.useEffect(() => {
     if (!uuid) return;
-    fetch(`/api/bulletin/campus/${id}?uuid=${uuid}`)
+    fetch(`/api/bulletin/${id}?option=campus&uuid=${uuid}`)
       .then((response) => response.json())
       .then((data) => {
         dispatch({ type: 'set', payload: { key: 'title', value: data.title } });

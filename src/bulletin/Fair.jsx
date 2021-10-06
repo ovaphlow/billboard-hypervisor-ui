@@ -23,21 +23,20 @@ export default function Fair({ component_option }) {
   const { id } = useParams();
   const [fair, dispatch] = React.useReducer(reducer, initial_fair);
   const [data_list, setDataList] = React.useState([]);
-
   const handleSubmit = () => {
     if (component_option === '编辑') {
-      fetch(`/api/bulletin/fair/${id}`, {
+      fetch(`/api/bulletin/${id}?option=fair`, {
         method: 'PUT',
         headers: {
           'content-type': 'application/json',
         },
         body: JSON.stringify(fair),
       }).then((response) => {
-        if (response.status === 200) window.history.back();
-        else window.alert('操作失败');
+        if (response.status === 200) history.back();
+        else alert('操作失败');
       });
     } else {
-      fetch('/api/bulletin/fair', {
+      fetch('/api/bulletin?option=fair', {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -49,20 +48,19 @@ export default function Fair({ component_option }) {
       });
     }
   };
-
   const handleRemove = () => {
     if (!window.confirm('确定要删除当前数据？')) return;
-    fetch(`/api/bulletin/fair/${id}`, {
+    fetch(`/api/bulletin/${id}?option=fair`, {
       method: 'DELETE',
     }).then((response) => {
       if (response.status === 200) window.history.back();
-      else window.alert('操作失败');
+      else alert('操作失败');
     });
   };
 
   React.useEffect(() => {
     if (component_option === '编辑') {
-      fetch(`/api/bulletin/fair/${id}`)
+      fetch(`/api/bulletin/${id}?option=fair`)
         .then((response) => response.json())
         .then((data) => {
           dispatch({ type: 'set', payload: { key: 'title', value: data.title } });
@@ -71,7 +69,7 @@ export default function Fair({ component_option }) {
           dispatch({ type: 'set', payload: { key: 'content', value: data.content } });
         });
 
-      fetch(`/api/biz/job?option=by-fair-id&fair_id=${id}`)
+      fetch(`/api/biz/job?option=by-fair-id&id=${id}`)
         .then((response) => response.json())
         .then((data) => {
           setDataList(data);

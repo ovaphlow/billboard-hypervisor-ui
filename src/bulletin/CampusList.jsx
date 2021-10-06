@@ -20,7 +20,7 @@ export default function CampusList() {
   const [filter, dispatch] = React.useReducer(reducer, initial_filter);
   const handleFilter = () => {
     setList([]);
-    fetch(`/api/bulletin/campus?option=&title=${filter.title}&date=${filter.date}`)
+    fetch(`/api/bulletin?option=campus&title=${filter.title}&date=${filter.date}`)
       .then((response) => response.json())
       .then((data) => {
         setList(data);
