@@ -17,6 +17,11 @@ module.exports = function (app) {
     }),
   );
   app.use(
+    createProxyMiddleware('/api/miscellaneous/setting', {
+      target: 'http://localhost:8421/',
+    }),
+  );
+  app.use(
     createProxyMiddleware('/api/miscellaneous/subscriber', {
       target: 'http://localhost:8421/',
     }),

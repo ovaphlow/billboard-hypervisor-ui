@@ -13,7 +13,7 @@ export default function List() {
   const [list, setList] = React.useState([]);
 
   React.useEffect(() => {
-    fetch('/api/bulletin/')
+    fetch('/api/bulletin?option=bulletin')
       .then((response) => response.json())
       .then((data) => {
         setList(data);

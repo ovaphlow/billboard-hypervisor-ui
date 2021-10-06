@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 export default function IndustryPicker({ caption, value, onChange }) {
-  const [list, setList] = useState([]);
+  const [list, setList] = React.useState([]);
 
-  useEffect(() => {
-    (async () => {
-      const response = await window.fetch('/api/settings/industry/');
-      const res = await response.json();
-      setList(res.content);
-    })();
+  React.useEffect(() => {
+    fetch('/api/miscellaneous/setting?option=category&category=行业')
+      .then((response) => response.json())
+      .then((data) => {
+        setList(data);
+      });
   }, []);
 
   return (
