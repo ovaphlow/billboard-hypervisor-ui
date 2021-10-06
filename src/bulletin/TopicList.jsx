@@ -18,10 +18,9 @@ export default function TopicList() {
   const auth = useAuth();
   const [topic_list, setTopicList] = React.useState([]);
   const [filter, dispatch] = React.useReducer(reducer, initial_filter);
-
   const handleFilter = () => {
     setTopicList([]);
-    fetch(`/api/bulletin/topic?option=&date=${filter.date}&title=${filter.title}`)
+    fetch(`/api/bulletin?option=topic&date=${filter.date}&title=${filter.title}`)
       .then((response) => response.json())
       .then((data) => {
         setTopicList(data);

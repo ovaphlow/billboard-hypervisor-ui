@@ -28,7 +28,7 @@ export default function Topic({ component_option }) {
 
   const handleSubmit = async () => {
     if (component_option === '新增') {
-      fetch('/api/bulletin/topic', {
+      fetch('/api/bulletin?option=topic', {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -39,22 +39,22 @@ export default function Topic({ component_option }) {
         else window.alert('操作失败');
       });
     } else if (component_option === '编辑') {
-      fetch(`/api/bulletin/topic/${id}?uuid=${uuid}`, {
+      fetch(`/api/bulletin/${id}?option=topic&uuid=${uuid}`, {
         method: 'PUT',
         headers: {
           'content-type': 'application/json',
         },
         body: JSON.stringify(topic),
       }).then((response) => {
-        if (response.status === 200) window.history.back();
-        else window.alert('操作失败');
+        if (response.status === 200) history.back();
+        else alert('操作失败');
       });
     }
   };
 
   const handleRemove = async () => {
     if (!window.confirm('确定要删除当前数据？')) return;
-    fetch(`/api/bulletin/topic/${id}?uuid=${uuid}`, {
+    fetch(`/api/bulletin/${id}?option=topic&uuid=${uuid}`, {
       method: 'DELETE',
     }).then((response) => {
       if (response.status === 200) window.history.back();
@@ -70,7 +70,7 @@ export default function Topic({ component_option }) {
 
   React.useEffect(() => {
     if (!uuid) return;
-    fetch(`/api/bulletin/topic/${id}?uuid=${uuid}`)
+    fetch(`/api/bulletin/${id}?option=topic&uuid=${uuid}`)
       .then((response) => response.json())
       .then((data) => {
         dispatch({ type: 'set', payload: { key: 'title', value: data.title } });
