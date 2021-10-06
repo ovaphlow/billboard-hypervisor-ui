@@ -43,7 +43,7 @@ export default function List() {
                       type="button"
                       className="btn btn-link text-reset text-decoration-none"
                       onClick={() => {
-                        window.history.back();
+                        history.back();
                       }}
                     >
                       返回

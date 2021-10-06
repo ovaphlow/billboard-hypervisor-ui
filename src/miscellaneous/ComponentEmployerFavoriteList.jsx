@@ -19,7 +19,6 @@ export default function ComponentEmployerFavoriteList({ user_id }) {
     fetch(`/api/miscellaneous/favorite?option=ref_id-and-tag&id=${user_id}&tag=企业用户`)
       .then((response) => response.json())
       .then((data) => {
-        console.info(data);
         setList(data);
       });
   }, [user_id]);

@@ -105,7 +105,7 @@ export default function Detail() {
     if (progress === 1) {
       // job
       let job_id_list = sendin_list.map((current) => current.recruitment_id);
-      fetch(`/api/biz/job?option=by-id&id=${job_id_list.join(',')}`)
+      fetch(`/api/biz/job?option=by-id&list=${job_id_list.join(',')}`)
         .then((response) => response.json())
         .then((data) => {
           let lf = sendin_list.map((current) => {
@@ -121,7 +121,7 @@ export default function Detail() {
     } else if (progress === 2) {
       // resume
       let resume_id_list = sendin_list.map((current) => current.resume_id);
-      fetch(`/api/biz/resume?option=by-id&id=${resume_id_list.join(',')}`)
+      fetch(`/api/biz/resume?option=by-id&list=${resume_id_list.join(',')}`)
         .then((response) => response.json())
         .then((data) => {
           let lf = sendin_list.map((current) => {
