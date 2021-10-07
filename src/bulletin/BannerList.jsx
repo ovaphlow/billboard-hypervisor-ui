@@ -21,7 +21,7 @@ export default function List() {
 
   const handleFilter = async () => {
     setBannerList([]);
-    fetch(`/api/bulletin/banner?category=${filter.category}&status=${filter.status}`)
+    fetch(`/api/bulletin?option=banner&category=${filter.category}&status=${filter.status}`)
       .then((response) => response.json())
       .then((data) => {
         setBannerList(data);

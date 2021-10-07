@@ -26,7 +26,6 @@ export default function Detail({ component_option }) {
   const location = useLocation();
   const [uuid, setUUID] = React.useState('');
   const [banner, dispatch] = React.useReducer(reducer, initial_banner);
-
   const convertImg2Data = (event) => {
     if (!event.target.files[0]) return;
     const reader = new FileReader();
@@ -35,25 +34,24 @@ export default function Detail({ component_option }) {
     };
     reader.readAsDataURL(event.target.files[0]);
   };
-
   const handleRemove = async () => {
-    if (!window.confirm('确定要删除当前数据？')) return;
-    fetch(`/api/bulletin/banner/${id}?uuid=${uuid}`, {
+    if (!confirm('确定要删除当前数据？')) return;
+    fetch(`/api/bulletin/${id}?option=banner&uuid=${uuid}`, {
       method: 'DELETE',
     }).then((response) => {
-      if (response.status === 200) window.history.back();
-      else window.alert('操作失败');
+      if (response.status === 200) history.back();
+      else alert('操作失败');
     });
   };
 
   const handleSubmit = async () => {
     if (!banner.title || !banner.comment || !banner.data_url) {
-      window.alert('请完整填写所需信息');
+      alert('请完整填写所需信息');
       return;
     }
 
     if (component_option === '新增') {
-      fetch('/api/bulletin/banner', {
+      fetch('/api/bulletin?option=banner', {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -63,11 +61,11 @@ export default function Detail({ component_option }) {
           datime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
         }),
       }).then((response) => {
-        if (response.status === 200) window.history.back();
-        else window.alert('操作失败');
+        if (response.status === 200) history.back();
+        else alert('操作失败');
       });
     } else if (component_option === '编辑') {
-      fetch(`/api/bulletin/banner/${id}?uuid=${uuid}`, {
+      fetch(`/api/bulletin/${id}?option=banner&uuid=${uuid}`, {
         method: 'PUT',
         headers: {
           'content-type': 'application/json',
@@ -77,8 +75,8 @@ export default function Detail({ component_option }) {
           datime: dayjs().format('YYYY-MM-DD HH:mm:ss'),
         }),
       }).then((response) => {
-        if (response.status === 200) window.history.back();
-        else window.alert('操作失败');
+        if (response.status === 200) history.back();
+        else alert('操作失败');
       });
     }
   };
@@ -91,7 +89,7 @@ export default function Detail({ component_option }) {
 
   React.useEffect(() => {
     if (!id || !uuid) return;
-    fetch(`/api/bulletin/banner/${id}?uuid=${uuid}`)
+    fetch(`/api/bulletin/${id}?option=banner&uuid=${uuid}`)
       .then((response) => response.json())
       .then((data) => {
         dispatch({ type: 'set', payload: { key: 'status', value: data.status } });
