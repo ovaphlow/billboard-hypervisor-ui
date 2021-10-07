@@ -39,7 +39,7 @@ export default function Notification({ component_option }) {
 
   const handleSave = async () => {
     if (component_option === '新增') {
-      fetch('/api/bulletin/notification', {
+      fetch('/api/bulletin?option=notification', {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -47,11 +47,11 @@ export default function Notification({ component_option }) {
         body: JSON.stringify(notification),
       }).then((response) => {
         if (response.status === 200) window.history.back();
-        else window.alert('操作失败');
+        else alert('操作失败');
       });
     } else if (component_option === '编辑') {
       const uuid = new URLSearchParams(location.search).get('uuid');
-      fetch(`/api/bulletin/notification/${id}?uuid=${uuid}`, {
+      fetch(`/api/bulletin/${id}?option=notification&uuid=${uuid}`, {
         method: 'PUT',
         headers: {
           'content-type': 'application/json',
@@ -67,7 +67,7 @@ export default function Notification({ component_option }) {
   const handleRemove = async () => {
     if (!window.confirm('确定要删除当前数据？')) return;
     const uuid = new URLSearchParams(location.search).get('uuid');
-    fetch(`/api/bulletin/notification/${id}?uuid=${uuid}`, {
+    fetch(`/api/bulletin/${id}?option=notification&uuid=${uuid}`, {
       method: 'DELETE',
     }).then((response) => {
       if (response.status === 200) window.history.back();
@@ -82,7 +82,7 @@ export default function Notification({ component_option }) {
   React.useEffect(() => {
     const uuid = new URLSearchParams(location.search).get('uuid');
     if (!id || !uuid) return;
-    fetch(`/api/bulletin/notification/${id}?uuid=${uuid}`)
+    fetch(`/api/bulletin/${id}?option=notification&uuid=${uuid}`)
       .then((response) => response.json())
       .then((data) => {
         dispatch({ type: 'set', payload: { key: 'category', value: data.category } });

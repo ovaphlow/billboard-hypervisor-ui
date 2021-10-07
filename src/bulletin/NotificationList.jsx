@@ -21,7 +21,7 @@ export default function NotificationList() {
 
   const handleFilter = async () => {
     setNotificationList([]);
-    fetch(`/api/bulletin/notification?option=&title=${filter.title}&date=${filter.date}`)
+    fetch(`/api/bulletin?option=notification&title=${filter.title}&date=${filter.date}`)
       .then((response) => response.json())
       .then((data) => {
         setNotificationList(data);
