@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import md5 from 'blueimp-md5';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignInAlt } from '@fortawesome/free-solid-svg-icons';
@@ -7,10 +7,10 @@ import BottomNav from '../component/BottomNav';
 import { Home } from '../constant';
 
 export default function SignIn() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = React.useState('');
+  const [password, setPassword] = React.useState('');
 
-  useEffect(() => {
+  React.useEffect(() => {
     sessionStorage.removeItem('mis-auth');
   }, []);
 
@@ -29,7 +29,7 @@ export default function SignIn() {
       .then((response) => response.json())
       .then((data) => {
         sessionStorage.setItem('mis-auth', JSON.stringify(data));
-        location = Home;
+        location.href = Home;
       })
       .catch((err) => {
         console.error(err.stack);
