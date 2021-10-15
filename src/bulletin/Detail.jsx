@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import { v5 as uuidv5 } from 'uuid';
+import dayjs from 'dayjs';
 
 import TopNav from '../component/TopNav';
 import LeftNav from '../component/LeftNav';
@@ -9,11 +11,9 @@ import BottomNav from '../component/BottomNav';
 import IndustryPicker from '../component/IndustryPicker';
 import EducationPicker from '../component/EducationPicker';
 import { useAddressKeys, useAddressValues, useAddressLevel1ValueList } from '../useAddress';
-import useAuth from '../useAuth';
-import dayjs from 'dayjs';
 
 export default function Detail({ component_option }) {
-  const auth = useAuth();
+  const auth = useSelector((state) => state.auth);
   const { id } = useParams();
   const location = useLocation();
   const address_keys = useAddressKeys();

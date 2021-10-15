@@ -1,15 +1,15 @@
 import React from 'react';
-import moment from 'moment';
+import dayjs from 'dayjs';
+import { useSelector } from 'react-redux';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlusCircle, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 import TopNav from '../component/TopNav';
 import LeftNav from '../component/LeftNav';
 import BottomNav from '../component/BottomNav';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusCircle, faEdit } from '@fortawesome/free-solid-svg-icons';
-import useAuth from '../useAuth';
 
 export default function List() {
-  const auth = useAuth();
+  const auth = useSelector((state) => state.auth);
   const [list, setList] = React.useState([]);
 
   React.useEffect(() => {
@@ -105,7 +105,7 @@ export default function List() {
                                 <span className="badge bg-info">{it.receiver}</span>
                               )}
                             </td>
-                            <td>{moment(it.dday).format('YYYY-MM-DD')}</td>
+                            <td>{dayjs(it.dday).format('YYYY-MM-DD')}</td>
                             <td>{it.doc.content}</td>
                             <td>
                               {it.doc.address_level1}
