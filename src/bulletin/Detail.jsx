@@ -94,7 +94,6 @@ export default function Detail({ component_option }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.info(data);
         history.back();
       });
   };
