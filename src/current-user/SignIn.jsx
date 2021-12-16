@@ -16,7 +16,7 @@ export default function SignIn() {
 
   const handleSignIn = () => {
     // fetch('/api/miscellaneous/staff/sign-in', {
-    fetch('/api/miscellaneous/subscriber/sign-in', {
+    fetch('/api/biz/simple/staff/sign-in', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
