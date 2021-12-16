@@ -12,7 +12,7 @@ export default function List() {
   const [staff_list, setStaffList] = React.useState([]);
 
   React.useEffect(() => {
-    fetch('/api/miscellaneous/subscriber?option=tag&tag=平台')
+    fetch('/api/bis/simple/staff?option=tag&tag=平台')
       .then((response) => response.json())
       .then((data) => {
         setStaffList(data);

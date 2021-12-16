@@ -22,7 +22,7 @@ export default function Staff({ component_option }) {
   const handleRemove = async () => {
     if (!confirm('确定删除当前数据？')) return;
     // fetch(`/api/miscellaneous/staff/${id}?uuid=${uuid}`, {
-    fetch(`/api/miscellaneous/subscriber/${id}?uuid=${uuid}`, {
+    fetch(`/api/biz/simple/staff/${id}?uuid=${uuid}`, {
       method: 'DELETE',
     }).then((response) => {
       if (response.status === 200) history.back();
@@ -37,7 +37,7 @@ export default function Staff({ component_option }) {
 
     if (component_option === '新增') {
       // fetch('/api/miscellaneous/staff', {
-      fetch('/api/miscellaneous/subscriber', {
+      fetch('/api/biz/simple/staff', {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
@@ -53,7 +53,7 @@ export default function Staff({ component_option }) {
       });
     } else if (component_option === '编辑') {
       // fetch(`/api/miscellaneous/staff/${id}?uuid=${uuid}`, {
-      fetch(`/api/miscellaneous/subscriber/${id}?uuid=${uuid}`, {
+      fetch(`/api/biz/simple/staff/${id}?uuid=${uuid}`, {
         method: 'PUT',
         headers: {
           'content-type': 'application/json',
@@ -68,7 +68,7 @@ export default function Staff({ component_option }) {
 
   React.useEffect(() => {
     if (!id || !uuid) return;
-    fetch(`/api/miscellaneous/subscriber/${id}?uuid=${uuid}`)
+    fetch(`/api/biz/simple/staff/${id}?uuid=${uuid}`)
       .then((response) => response.json())
       .then((data) => {
         dispatch({ type: 'set', payload: { key: 'name', value: data.name } });
