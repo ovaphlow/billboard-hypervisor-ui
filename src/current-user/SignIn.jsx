@@ -28,12 +28,12 @@ export default function SignIn() {
     })
       .then((response) => response.json())
       .then((data) => {
-        sessionStorage.setItem('mis-auth', JSON.stringify(data));
+        window.sessionStorage.setItem('mis-auth', JSON.stringify(data));
         location.href = Home;
       })
       .catch((err) => {
-        console.error(err.stack);
-        alert('用户名或密码错误');
+        window.console.error(err.stack);
+        window.alert('用户名或密码错误');
       });
   };
 
