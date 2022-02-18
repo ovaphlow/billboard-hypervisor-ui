@@ -50,15 +50,28 @@ export default function Detail() {
     let a = job_list.map((current) => current.id);
     let url = [
       '/api/biz/send-in?option=by-job-id-and-date',
-      `&job_id=${a.join(',')}`,
+      `&list=${a.join(',')}`,
       `&date=${job_filter.date}`,
       `&date2=${job_filter.date2}`,
     ];
     fetch(url.join(''))
       .then((response) => response.json())
       .then((data) => {
-        setSendInList(data);
-        if (data.length) setProgress(1);
+        // 原代码
+        // setSendInList(data);
+        // if (data.length) setProgress(1);
+        // 修改为下方代码，减少progress === 1的步骤
+        let lf = data.map((current) => {
+          let job = job_list.find(
+            (element) => element.id === current.recruitment_id,
+          );
+          return {
+            ...current,
+            recruitment_name: job.name,
+          };
+        });
+        setSendInList(lf);
+        setProgress(2);
       });
   };
 
