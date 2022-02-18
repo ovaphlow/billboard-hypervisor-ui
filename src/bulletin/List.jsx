@@ -53,7 +53,10 @@ export default function List() {
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
-                        <a href="home.html" className="text-reset text-decoration-none">
+                        <a
+                          href="home.html"
+                          className="text-reset text-decoration-none"
+                        >
                           首页
                         </a>
                       </li>
@@ -64,7 +67,11 @@ export default function List() {
                 <div className="card shadow bg-dark h-100">
                   <div className="card-header">
                     <a href="#/新增" className="btn btn-sm btn-secondary">
-                      <FontAwesomeIcon icon={faPlusCircle} fixedWidth size="lg" />
+                      <FontAwesomeIcon
+                        icon={faPlusCircle}
+                        fixedWidth
+                        size="lg"
+                      />
                       新增
                     </a>
                   </div>
@@ -90,7 +97,11 @@ export default function List() {
                             <td className="text-right">
                               <span className="float-left">
                                 <a href={`#/${it.id}?uuid=${it.uuid}`}>
-                                  <FontAwesomeIcon icon={faEdit} fixedWidth size="lg" />
+                                  <FontAwesomeIcon
+                                    icon={faEdit}
+                                    fixedWidth
+                                    size="lg"
+                                  />
                                 </a>
                               </span>
                               {it.id}
@@ -98,11 +109,15 @@ export default function List() {
                             <td>{it.title}</td>
                             <td>
                               {it.receiver === '企业用户' && (
-                                <span className="badge bg-success">{it.receiver}</span>
+                                <span className="badge bg-success">
+                                  {it.receiver}
+                                </span>
                               )}
 
                               {it.receiver === '个人用户' && (
-                                <span className="badge bg-info">{it.receiver}</span>
+                                <span className="badge bg-info">
+                                  {it.receiver}
+                                </span>
                               )}
                             </td>
                             <td>{dayjs(it.dday).format('YYYY-MM-DD')}</td>
@@ -112,8 +127,12 @@ export default function List() {
                               <br />
                               {it.doc.address_level2}
                             </td>
-                            <td>{it.receiver === '企业用户' && it.doc.industry}</td>
-                            <td>{it.receiver === '个人用户' && it.doc.education}</td>
+                            <td>
+                              {it.receiver === '企业用户' && it.doc.industry}
+                            </td>
+                            <td>
+                              {it.receiver === '个人用户' && it.doc.education}
+                            </td>
                           </tr>
                         ))}
                       </tbody>

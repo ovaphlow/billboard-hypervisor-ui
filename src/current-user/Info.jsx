@@ -71,7 +71,10 @@ export default function Info() {
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
-                        <a href="home.html" className="text-reset text-decoration-none">
+                        <a
+                          href="home.html"
+                          className="text-reset text-decoration-none"
+                        >
                           首页
                         </a>
                       </li>
@@ -108,14 +111,20 @@ export default function Info() {
                         className="btn btn-danger btn-sm"
                         onClick={() => (window.location = SIGN_IN_URL)}
                       >
-                        <FontAwesomeIcon icon={faSignOutAlt} fixedWidth size="lg" />
+                        <FontAwesomeIcon
+                          icon={faSignOutAlt}
+                          fixedWidth
+                          size="lg"
+                        />
                         退出登录
                       </button>
                     </div>
                   </div>
 
                   <div className="card-body">
-                    <div className="alert alert-warning">修改用户信息后需要重新登录</div>
+                    <div className="alert alert-warning">
+                      修改用户信息后需要重新登录
+                    </div>
 
                     <div className="row">
                       <div className="col">
@@ -136,7 +145,9 @@ export default function Info() {
                             type="text"
                             value={username}
                             className="form-control input-underscore"
-                            onChange={(event) => setUsername(event.target.value)}
+                            onChange={(event) =>
+                              setUsername(event.target.value)
+                            }
                           />
                         </div>
                       </div>
@@ -155,7 +166,11 @@ export default function Info() {
                     </button>
 
                     <div className="btn-group">
-                      <button type="button" className="btn btn-primary" onClick={handleSave}>
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={handleSave}
+                      >
                         保存
                       </button>
                     </div>

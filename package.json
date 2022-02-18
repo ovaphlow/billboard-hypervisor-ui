@@ -25,15 +25,19 @@
     "@parcel/optimizer-data-url": "^2.0.1",
     "@parcel/transformer-image": "^2.0.1",
     "@parcel/transformer-inline-string": "^2.0.1",
+    "eslint": "^8.9.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-react": "^7.28.0",
     "http-proxy-middleware": "^2.0.1",
-    "parcel": "^2.0.1"
+    "parcel": "^2.0.1",
+    "prettier": "^2.5.1"
   },
   "scripts": {
     "watch": "parcel watch *.html --dist-dir dist",
     "dev": "parcel *.html --lazy",
     "build": "parcel build *.html --dist-dir dist",
-    "format": "npx prettier --write src",
-    "lint": "npx eslint src"
+    "format": "prettier --write src *.js",
+    "lint": "eslint --fix src"
   },
   "browserslist": "> 0.5%, last 2 versions, not dead"
 }

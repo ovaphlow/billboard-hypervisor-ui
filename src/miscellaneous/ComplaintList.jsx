@@ -16,21 +16,26 @@ export default function ComplaintList() {
   const handleReply = (event) => {
     const content = window.prompt('对投诉回复的内容');
     if (!content) return;
-    fetch(`/api/miscellaneous/feedback/${event.target.getAttribute('data-id')}?option=reply`, {
-      method: 'PUT',
-      headers: {
-        'content-type': 'application/json',
+    fetch(
+      `/api/miscellaneous/feedback/${event.target.getAttribute(
+        'data-id',
+      )}?option=reply`,
+      {
+        method: 'PUT',
+        headers: {
+          'content-type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: event.target.getAttribute('data-id'),
+          user_id: event.target.getAttribute('data-user-id'),
+          category: '系统消息',
+          title: '对用户投诉内容的回复',
+          content,
+          datime: dayjs().format('YYYY-MM-DD'),
+          user_category: event.target.getAttribute('data-user-category'),
+        }),
       },
-      body: JSON.stringify({
-        id: event.target.getAttribute('data-id'),
-        user_id: event.target.getAttribute('data-user-id'),
-        category: '系统消息',
-        title: '对用户投诉内容的回复',
-        content,
-        datime: dayjs().format('YYYY-MM-DD'),
-        user_category: event.target.getAttribute('data-user-category'),
-      }),
-    }).then((response) => {
+    ).then((response) => {
       if (response.status !== 200) console.error('服务器错误');
       else window.location.reload();
     });
@@ -56,7 +61,9 @@ export default function ComplaintList() {
       .then((data) => {
         const lf = complaint_list.map((current) => {
           if (current.user_category === '个人用户') {
-            const user = data.find((element) => element.uuid === current.user_uuid);
+            const user = data.find(
+              (element) => element.uuid === current.user_uuid,
+            );
             return {
               ...current,
               name: (user && user.name) || '',
@@ -128,7 +135,10 @@ export default function ComplaintList() {
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
-                        <a href="home.html" className="text-reset text-decoration-none">
+                        <a
+                          href="home.html"
+                          className="text-reset text-decoration-none"
+                        >
                           首页
                         </a>
                       </li>
@@ -158,17 +168,23 @@ export default function ComplaintList() {
                             <td className="text-right">{it.id}</td>
                             <td>
                               {it.status === '已处理' ? (
-                                <span className="badge bg-secondary">已处理</span>
+                                <span className="badge bg-secondary">
+                                  已处理
+                                </span>
                               ) : (
                                 <span className="badge bg-danger">未处理</span>
                               )}
                             </td>
                             <td>
                               {it.user_category === '企业用户' && (
-                                <span className="badge bg-success">{it.user_category}</span>
+                                <span className="badge bg-success">
+                                  {it.user_category}
+                                </span>
                               )}
                               {it.user_category === '个人用户' && (
-                                <span className="badge bg-info">{it.user_category}</span>
+                                <span className="badge bg-info">
+                                  {it.user_category}
+                                </span>
                               )}
                               &nbsp;
                               {it.name}

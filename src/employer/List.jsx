@@ -6,7 +6,12 @@ import BottomNav from '../component/BottomNav';
 import useMessageQty from '../useMessageQty';
 import useAuth from '../useAuth';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faSyncAlt, faEdit, faLink } from '@fortawesome/free-solid-svg-icons';
+import {
+  faSearch,
+  faSyncAlt,
+  faEdit,
+  faLink,
+} from '@fortawesome/free-solid-svg-icons';
 
 export default function List() {
   const auth = useAuth();
@@ -27,11 +32,15 @@ export default function List() {
   React.useEffect(() => {
     if (!flag || !list.length) return;
     const ll = list.map((iter) => iter.id);
-    fetch(`/api/biz/employer?option=filter-user-by-id-list&list=${ll.join(',')}`)
+    fetch(
+      `/api/biz/employer?option=filter-user-by-id-list&list=${ll.join(',')}`,
+    )
       .then((response) => response.json())
       .then((data) => {
         const lf = list.map((current) => {
-          const user = data.find((element) => element.enterprise_id === current.id);
+          const user = data.find(
+            (element) => element.enterprise_id === current.id,
+          );
           return {
             ...current,
             user_id: 0 || (user && user.id),
@@ -79,7 +88,10 @@ export default function List() {
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
-                        <a href="home.html" className="text-reset text-decoration-none">
+                        <a
+                          href="home.html"
+                          className="text-reset text-decoration-none"
+                        >
                           首页
                         </a>
                       </li>
@@ -101,7 +113,9 @@ export default function List() {
                       <div className="col">
                         <div className="input-group">
                           <div className="input-group-prepend">
-                            <span className="input-group-text">姓名/电话/企业</span>
+                            <span className="input-group-text">
+                              姓名/电话/企业
+                            </span>
                           </div>
                           <input
                             type="text"
@@ -113,8 +127,16 @@ export default function List() {
                       </div>
 
                       <div className="btn-group col-auto">
-                        <button type="button" className="btn btn-info" onClick={handleFilter}>
-                          <FontAwesomeIcon icon={faSearch} fixedWidth size="lg" />
+                        <button
+                          type="button"
+                          className="btn btn-info"
+                          onClick={handleFilter}
+                        >
+                          <FontAwesomeIcon
+                            icon={faSearch}
+                            fixedWidth
+                            size="lg"
+                          />
                           查询
                         </button>
 
@@ -125,7 +147,11 @@ export default function List() {
                             window.location.reload(true);
                           }}
                         >
-                          <FontAwesomeIcon icon={faSyncAlt} fixedWidth size="lg" />
+                          <FontAwesomeIcon
+                            icon={faSyncAlt}
+                            fixedWidth
+                            size="lg"
+                          />
                           重置
                         </button>
                       </div>
@@ -161,7 +187,10 @@ export default function List() {
                             <td>
                               <ul className="list-inline">
                                 <li className="list-inline-item">
-                                  <a href={`#/${it.id}?uuid=${it.uuid}`} className="float-left">
+                                  <a
+                                    href={`#/${it.id}?uuid=${it.uuid}`}
+                                    className="float-left"
+                                  >
                                     企业信息
                                   </a>
                                 </li>

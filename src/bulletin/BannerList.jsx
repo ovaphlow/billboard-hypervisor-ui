@@ -21,7 +21,9 @@ export default function List() {
 
   const handleFilter = async () => {
     setBannerList([]);
-    fetch(`/api/bulletin?option=banner&category=${filter.category}&status=${filter.status}`)
+    fetch(
+      `/api/bulletin?option=banner&category=${filter.category}&status=${filter.status}`,
+    )
       .then((response) => response.json())
       .then((data) => {
         setBannerList(data);
@@ -61,7 +63,10 @@ export default function List() {
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
-                        <a href="home.html" className="text-reset text-decoration-none">
+                        <a
+                          href="home.html"
+                          className="text-reset text-decoration-none"
+                        >
                           首页
                         </a>
                       </li>
@@ -75,7 +80,11 @@ export default function List() {
                     <div className="row">
                       <div className="col-auto">
                         <a href="#/banner/新增" className="btn btn-secondary">
-                          <FontAwesomeIcon icon={faPlusCircle} fixedWidth size="lg" />
+                          <FontAwesomeIcon
+                            icon={faPlusCircle}
+                            fixedWidth
+                            size="lg"
+                          />
                           新增
                         </a>
                       </div>
@@ -90,12 +99,18 @@ export default function List() {
                             onChange={(event) =>
                               dispatch({
                                 type: 'set',
-                                payload: { key: 'category', value: event.target.value },
+                                payload: {
+                                  key: 'category',
+                                  value: event.target.value,
+                                },
                               })
                             }
                           >
                             {BANNER_CATEGORY.map((it) => (
-                              <option key={BANNER_CATEGORY.indexOf(it)} value={it}>
+                              <option
+                                key={BANNER_CATEGORY.indexOf(it)}
+                                value={it}
+                              >
                                 {it}
                               </option>
                             ))}
@@ -114,7 +129,10 @@ export default function List() {
                             onChange={(event) =>
                               dispatch({
                                 type: 'set',
-                                payload: { key: 'status', value: event.target.value },
+                                payload: {
+                                  key: 'status',
+                                  value: event.target.value,
+                                },
                               })
                             }
                           >
@@ -126,8 +144,16 @@ export default function List() {
 
                       <div className="col-auto">
                         <div className="btn-group">
-                          <button type="button" className="btn btn-info" onClick={handleFilter}>
-                            <FontAwesomeIcon icon={faSearch} fixedWidth size="lg" />
+                          <button
+                            type="button"
+                            className="btn btn-info"
+                            onClick={handleFilter}
+                          >
+                            <FontAwesomeIcon
+                              icon={faSearch}
+                              fixedWidth
+                              size="lg"
+                            />
                             检索
                           </button>
                         </div>
@@ -143,15 +169,23 @@ export default function List() {
                           className="card bg-secondary m-2"
                           style={{ width: '18rem' }}
                         >
-                          <img src={it.data_url} className="card-img-top" alt={it.title} />
+                          <img
+                            src={it.data_url}
+                            className="card-img-top"
+                            alt={it.title}
+                          />
                           <div className="card-body">
                             <h5 className="card-title">
                               {it.title}
                               <span className="float-right">
                                 {it.status === '启用' ? (
-                                  <span className="badge bg-success">{it.status}</span>
+                                  <span className="badge bg-success">
+                                    {it.status}
+                                  </span>
                                 ) : (
-                                  <span className="badge bg-danger">{it.status}</span>
+                                  <span className="badge bg-danger">
+                                    {it.status}
+                                  </span>
                                 )}
                               </span>
                             </h5>

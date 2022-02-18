@@ -9,7 +9,11 @@ import TopNav from '../component/TopNav';
 import LeftNav from '../component/LeftNav';
 import BottomNav from '../component/BottomNav';
 import { RECOMMEND_CATEGORY } from '../constant';
-import { useAddressKeys, useAddressValues, useAddressLevel1ValueList } from '../useAddress';
+import {
+  useAddressKeys,
+  useAddressValues,
+  useAddressLevel1ValueList,
+} from '../useAddress';
 import useAuth from '../useAuth';
 import { reducer } from '../miscellaneous';
 
@@ -35,7 +39,10 @@ export default function Notification({ component_option }) {
   const address_keys = useAddressKeys();
   const address_values = useAddressValues();
   const address_level1_values = useAddressLevel1ValueList();
-  const [notification, dispatch] = React.useReducer(reducer, initial_notification);
+  const [notification, dispatch] = React.useReducer(
+    reducer,
+    initial_notification,
+  );
 
   const handleSave = async () => {
     if (component_option === '新增') {
@@ -85,16 +92,34 @@ export default function Notification({ component_option }) {
     fetch(`/api/bulletin/${id}?option=notification&uuid=${uuid}`)
       .then((response) => response.json())
       .then((data) => {
-        dispatch({ type: 'set', payload: { key: 'category', value: data.category } });
+        dispatch({
+          type: 'set',
+          payload: { key: 'category', value: data.category },
+        });
         dispatch({ type: 'set', payload: { key: 'title', value: data.title } });
         dispatch({ type: 'set', payload: { key: 'date1', value: data.date1 } });
         dispatch({ type: 'set', payload: { key: 'date2', value: data.date2 } });
-        dispatch({ type: 'set', payload: { key: 'address_level1', value: data.address_level1 } });
-        dispatch({ type: 'set', payload: { key: 'address_level2', value: data.address_level2 } });
-        dispatch({ type: 'set', payload: { key: 'publisher', value: data.publisher } });
+        dispatch({
+          type: 'set',
+          payload: { key: 'address_level1', value: data.address_level1 },
+        });
+        dispatch({
+          type: 'set',
+          payload: { key: 'address_level2', value: data.address_level2 },
+        });
+        dispatch({
+          type: 'set',
+          payload: { key: 'publisher', value: data.publisher },
+        });
         dispatch({ type: 'set', payload: { key: 'qty', value: data.qty } });
-        dispatch({ type: 'set', payload: { key: 'baomingfangshi', value: data.baomignfangshi } });
-        dispatch({ type: 'set', payload: { key: 'content', value: data.content } });
+        dispatch({
+          type: 'set',
+          payload: { key: 'baomingfangshi', value: data.baomignfangshi },
+        });
+        dispatch({
+          type: 'set',
+          payload: { key: 'content', value: data.content },
+        });
       });
   }, [id, location]);
 
@@ -109,7 +134,8 @@ export default function Notification({ component_option }) {
             address_keys[j].slice(0, 2) === code.slice(0, 2) &&
             address_keys[j].slice(-2) === '00'
           ) {
-            if (address_keys[j].slice(-4) !== '0000') arr.push(address_values[j]);
+            if (address_keys[j].slice(-4) !== '0000')
+              arr.push(address_values[j]);
           }
         }
         return;
@@ -151,16 +177,24 @@ export default function Notification({ component_option }) {
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
-                        <a href="home.html" className="text-reset text-decoration-none">
+                        <a
+                          href="home.html"
+                          className="text-reset text-decoration-none"
+                        >
                           首页
                         </a>
                       </li>
                       <li className="breadcrumb-item">
-                        <a href="recommend.html" className="text-reset text-decoration-none">
+                        <a
+                          href="recommend.html"
+                          className="text-reset text-decoration-none"
+                        >
                           推荐信息
                         </a>
                       </li>
-                      <li className="breadcrumb-item active">{component_option}</li>
+                      <li className="breadcrumb-item active">
+                        {component_option}
+                      </li>
                     </ol>
                   </nav>
                 </div>
@@ -177,13 +211,19 @@ export default function Notification({ component_option }) {
                             onChange={(event) =>
                               dispatch({
                                 type: 'set',
-                                payload: { key: 'category', value: event.target.value },
+                                payload: {
+                                  key: 'category',
+                                  value: event.target.value,
+                                },
                               })
                             }
                           >
                             <option value="">未选择</option>
                             {RECOMMEND_CATEGORY.map((it) => (
-                              <option key={RECOMMEND_CATEGORY.indexOf(it)} value={it}>
+                              <option
+                                key={RECOMMEND_CATEGORY.indexOf(it)}
+                                value={it}
+                              >
                                 {it}
                               </option>
                             ))}
@@ -201,7 +241,10 @@ export default function Notification({ component_option }) {
                             onChange={(event) =>
                               dispatch({
                                 type: 'set',
-                                payload: { key: 'title', value: event.target.value },
+                                payload: {
+                                  key: 'title',
+                                  value: event.target.value,
+                                },
                               })
                             }
                           />
@@ -220,7 +263,10 @@ export default function Notification({ component_option }) {
                             onChange={(event) =>
                               dispatch({
                                 type: 'set',
-                                payload: { key: 'date1', value: event.target.value },
+                                payload: {
+                                  key: 'date1',
+                                  value: event.target.value,
+                                },
                               })
                             }
                             onBlur={(event) =>
@@ -248,7 +294,10 @@ export default function Notification({ component_option }) {
                             onChange={(event) =>
                               dispatch({
                                 type: 'set',
-                                payload: { key: 'date2', value: event.target.value },
+                                payload: {
+                                  key: 'date2',
+                                  value: event.target.value,
+                                },
                               })
                             }
                           />
@@ -264,7 +313,10 @@ export default function Notification({ component_option }) {
                             onChange={(event) =>
                               dispatch({
                                 type: 'set',
-                                payload: { key: 'address_level1', value: event.target.value },
+                                payload: {
+                                  key: 'address_level1',
+                                  value: event.target.value,
+                                },
                               })
                             }
                           >
@@ -287,7 +339,10 @@ export default function Notification({ component_option }) {
                             onChange={(event) =>
                               dispatch({
                                 type: 'set',
-                                payload: { key: 'address_level2', value: event.target.value },
+                                payload: {
+                                  key: 'address_level2',
+                                  value: event.target.value,
+                                },
                               })
                             }
                           >
@@ -313,7 +368,10 @@ export default function Notification({ component_option }) {
                             onChange={(event) =>
                               dispatch({
                                 type: 'set',
-                                payload: { key: 'publisher', value: event.target.value },
+                                payload: {
+                                  key: 'publisher',
+                                  value: event.target.value,
+                                },
                               })
                             }
                           />
@@ -330,7 +388,10 @@ export default function Notification({ component_option }) {
                             onChange={(event) =>
                               dispatch({
                                 type: 'set',
-                                payload: { key: 'qty', value: event.target.value },
+                                payload: {
+                                  key: 'qty',
+                                  value: event.target.value,
+                                },
                               })
                             }
                           />
@@ -347,7 +408,10 @@ export default function Notification({ component_option }) {
                             onChange={(event) =>
                               dispatch({
                                 type: 'set',
-                                payload: { key: 'baomingfangshi', value: event.target.value },
+                                payload: {
+                                  key: 'baomingfangshi',
+                                  value: event.target.value,
+                                },
                               })
                             }
                           />
@@ -378,7 +442,10 @@ export default function Notification({ component_option }) {
                         placeholder="请填写内容"
                         value={notification.content}
                         onChange={(event) =>
-                          dispatch({ type: 'set', payload: { key: 'content', value: event } })
+                          dispatch({
+                            type: 'set',
+                            payload: { key: 'content', value: event },
+                          })
                         }
                       />
                     </div>
@@ -399,11 +466,19 @@ export default function Notification({ component_option }) {
 
                     <div className="btn-group">
                       {component_option === '编辑' && (
-                        <button type="button" className="btn btn-danger" onClick={handleRemove}>
+                        <button
+                          type="button"
+                          className="btn btn-danger"
+                          onClick={handleRemove}
+                        >
                           删除
                         </button>
                       )}
-                      <button type="button" className="btn btn-primary" onClick={handleSave}>
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={handleSave}
+                      >
                         保存
                       </button>
                     </div>

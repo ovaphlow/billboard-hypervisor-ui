@@ -76,12 +76,18 @@ export default function CandidateDetail() {
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
-                        <a href="home.html" className="text-reset text-decoration-none">
+                        <a
+                          href="home.html"
+                          className="text-reset text-decoration-none"
+                        >
                           首页
                         </a>
                       </li>
                       <li className="breadcrumb-item">
-                        <a href="common-user.html" className="text-reset text-decoration-none">
+                        <a
+                          href="common-user.html"
+                          className="text-reset text-decoration-none"
+                        >
                           个人用户
                         </a>
                       </li>
@@ -183,7 +189,9 @@ export default function CandidateDetail() {
                           key={it.id}
                         >
                           {it.qiwangzhiwei}
-                          <span className="text-muted">{it.yixiangchengshi}</span>
+                          <span className="text-muted">
+                            {it.yixiangchengshi}
+                          </span>
                         </a>
                       ))}
                     </div>

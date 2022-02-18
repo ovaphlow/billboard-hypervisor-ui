@@ -72,7 +72,10 @@ export default function Staff({ component_option }) {
       .then((response) => response.json())
       .then((data) => {
         dispatch({ type: 'set', payload: { key: 'name', value: data.name } });
-        dispatch({ type: 'set', payload: { key: 'username', value: data.username } });
+        dispatch({
+          type: 'set',
+          payload: { key: 'username', value: data.username },
+        });
       });
   }, [id, uuid]);
 
@@ -109,16 +112,24 @@ export default function Staff({ component_option }) {
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
-                        <a href="home.html" className="text-reset text-decoration-none">
+                        <a
+                          href="home.html"
+                          className="text-reset text-decoration-none"
+                        >
                           首页
                         </a>
                       </li>
                       <li className="breadcrumb-item">
-                        <a href="staff.html" className="text-reset text-decoration-none">
+                        <a
+                          href="staff.html"
+                          className="text-reset text-decoration-none"
+                        >
                           平台用户
                         </a>
                       </li>
-                      <li className="breadcrumb-item active">{component_option}</li>
+                      <li className="breadcrumb-item active">
+                        {component_option}
+                      </li>
                     </ol>
                   </nav>
                 </div>
@@ -126,7 +137,9 @@ export default function Staff({ component_option }) {
                 <div className="card shadow bg-dark h-100 flex-grow-1">
                   <div className="card-body">
                     {component_option === '新增' && (
-                      <div className="alert alert-warning">新增用户的默认密码为112332</div>
+                      <div className="alert alert-warning">
+                        新增用户的默认密码为112332
+                      </div>
                     )}
                     <div className="mb-3">
                       <label className="form-label">姓名</label>
@@ -152,7 +165,10 @@ export default function Staff({ component_option }) {
                         onChange={(event) =>
                           dispatch({
                             type: 'set',
-                            payload: { key: 'username', value: event.target.value },
+                            payload: {
+                              key: 'username',
+                              value: event.target.value,
+                            },
                           })
                         }
                       />
@@ -174,11 +190,19 @@ export default function Staff({ component_option }) {
 
                     <div className="btn-group">
                       {component_option === '编辑' && (
-                        <button type="button" className="btn btn-danger" onClick={handleRemove}>
+                        <button
+                          type="button"
+                          className="btn btn-danger"
+                          onClick={handleRemove}
+                        >
                           删除
                         </button>
                       )}
-                      <button type="button" className="btn btn-primary" onClick={handleSubmit}>
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={handleSubmit}
+                      >
                         保存
                       </button>
                     </div>

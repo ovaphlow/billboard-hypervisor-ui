@@ -1,6 +1,11 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusCircle, faEdit, faSearch, faSyncAlt } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPlusCircle,
+  faEdit,
+  faSearch,
+  faSyncAlt,
+} from '@fortawesome/free-solid-svg-icons';
 import dayjs from 'dayjs';
 
 import TopNav from '../component/TopNav';
@@ -21,7 +26,9 @@ export default function NotificationList() {
 
   const handleFilter = async () => {
     setNotificationList([]);
-    fetch(`/api/bulletin?option=notification&title=${filter.title}&date=${filter.date}`)
+    fetch(
+      `/api/bulletin?option=notification&title=${filter.title}&date=${filter.date}`,
+    )
       .then((response) => response.json())
       .then((data) => {
         setNotificationList(data);
@@ -65,7 +72,10 @@ export default function NotificationList() {
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
-                        <a href="home.html" className="text-reset text-decoration-none">
+                        <a
+                          href="home.html"
+                          className="text-reset text-decoration-none"
+                        >
                           首页
                         </a>
                       </li>
@@ -78,8 +88,15 @@ export default function NotificationList() {
                   <div className="card-header">
                     <div className="row">
                       <div className="col-auto">
-                        <a href="#/notification/新增" className="btn btn-secondary">
-                          <FontAwesomeIcon icon={faPlusCircle} fixedWidth size="lg" />
+                        <a
+                          href="#/notification/新增"
+                          className="btn btn-secondary"
+                        >
+                          <FontAwesomeIcon
+                            icon={faPlusCircle}
+                            fixedWidth
+                            size="lg"
+                          />
                           新增
                         </a>
                       </div>
@@ -95,7 +112,10 @@ export default function NotificationList() {
                             onChange={(event) =>
                               dispatch({
                                 type: 'set',
-                                payload: { key: 'title', value: event.target.value },
+                                payload: {
+                                  key: 'title',
+                                  value: event.target.value,
+                                },
                               })
                             }
                           />
@@ -114,7 +134,10 @@ export default function NotificationList() {
                             onChange={(event) =>
                               dispatch({
                                 type: 'set',
-                                payload: { key: 'date', value: event.target.value },
+                                payload: {
+                                  key: 'date',
+                                  value: event.target.value,
+                                },
                               })
                             }
                           />
@@ -123,8 +146,16 @@ export default function NotificationList() {
 
                       <div className="col-auto">
                         <div className="btn-group">
-                          <button type="button" className="btn btn-info" onClick={handleFilter}>
-                            <FontAwesomeIcon icon={faSearch} fixedWidth size="lg" />
+                          <button
+                            type="button"
+                            className="btn btn-info"
+                            onClick={handleFilter}
+                          >
+                            <FontAwesomeIcon
+                              icon={faSearch}
+                              fixedWidth
+                              size="lg"
+                            />
                             查询
                           </button>
 
@@ -133,7 +164,11 @@ export default function NotificationList() {
                             className="btn btn-secondary"
                             onClick={() => window.location.reload(true)}
                           >
-                            <FontAwesomeIcon icon={faSyncAlt} fixedWidth size="lg" />
+                            <FontAwesomeIcon
+                              icon={faSyncAlt}
+                              fixedWidth
+                              size="lg"
+                            />
                             重置
                           </button>
                         </div>
@@ -157,8 +192,14 @@ export default function NotificationList() {
                           <tr key={it.id}>
                             <td className="text-right">
                               <span className="float-left">
-                                <a href={`#/notification/${it.id}?uuid=${it.uuid}`}>
-                                  <FontAwesomeIcon icon={faEdit} fixedWidth size="lg" />
+                                <a
+                                  href={`#/notification/${it.id}?uuid=${it.uuid}`}
+                                >
+                                  <FontAwesomeIcon
+                                    icon={faEdit}
+                                    fixedWidth
+                                    size="lg"
+                                  />
                                 </a>
                               </span>
                               {it.id}

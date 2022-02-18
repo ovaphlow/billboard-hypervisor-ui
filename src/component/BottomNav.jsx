@@ -1,7 +1,11 @@
 import React from 'react';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMobileAlt, faLaptop, faCode } from '@fortawesome/free-solid-svg-icons';
+import {
+  faMobileAlt,
+  faLaptop,
+  faCode,
+} from '@fortawesome/free-solid-svg-icons';
 
 export default function BottomNav() {
   return (
@@ -15,7 +19,10 @@ export default function BottomNav() {
           </a>
         </li>
         <li className="list-inline-item">
-          <a href="http://www.longzhaopin.com" className="text-reset text-decoration-none">
+          <a
+            href="http://www.longzhaopin.com"
+            className="text-reset text-decoration-none"
+          >
             <FontAwesomeIcon icon={faLaptop} fixedWidth size="lg" />
             企业招聘网站
           </a>

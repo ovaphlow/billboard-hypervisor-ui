@@ -10,7 +10,11 @@ import LeftNav from '../component/LeftNav';
 import BottomNav from '../component/BottomNav';
 import IndustryPicker from '../component/IndustryPicker';
 import EducationPicker from '../component/EducationPicker';
-import { useAddressKeys, useAddressValues, useAddressLevel1ValueList } from '../useAddress';
+import {
+  useAddressKeys,
+  useAddressValues,
+  useAddressLevel1ValueList,
+} from '../useAddress';
 
 export default function Detail({ component_option }) {
   const auth = useSelector((state) => state.auth);
@@ -75,11 +79,16 @@ export default function Detail({ component_option }) {
         })
         .catch((err) => alert(err));
     } else if (component_option === '编辑') {
-      fetch(`/api/bulletin/${id}?uuid=${new URLSearchParams(location.search).get('uuid')}`, {
-        method: 'PUT',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify(data),
-      })
+      fetch(
+        `/api/bulletin/${id}?uuid=${new URLSearchParams(location.search).get(
+          'uuid',
+        )}`,
+        {
+          method: 'PUT',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify(data),
+        },
+      )
         .then((response) => {
           if (response.status === 200) history.back();
           else throw new Error('操作失败');
@@ -89,11 +98,16 @@ export default function Detail({ component_option }) {
   };
   const handleRemove = () => {
     if (!confirm('确定要删除当前数据吗？')) return;
-    fetch(`/api/bulletin/${id}?uuid=${new URLSearchParams(location.search).get('uuid')}`, {
-      method: 'DELETE',
-    })
+    fetch(
+      `/api/bulletin/${id}?uuid=${new URLSearchParams(location.search).get(
+        'uuid',
+      )}`,
+      {
+        method: 'DELETE',
+      },
+    )
       .then((response) => response.json())
-      .then((data) => {
+      .then(() => {
         history.back();
       });
   };
@@ -113,19 +127,23 @@ export default function Detail({ component_option }) {
             address_keys[j].slice(0, 2) === code.slice(0, 2) &&
             address_keys[j].slice(-2) === '00'
           ) {
-            if (address_keys[j].slice(-4) !== '0000') arr.push(address_values[j]);
+            if (address_keys[j].slice(-4) !== '0000')
+              arr.push(address_values[j]);
           }
         }
         return;
       }
     }
     setArr2(arr);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address_level1]);
 
   React.useEffect(() => {
     if (component_option === '编辑') {
-      fetch(`/api/bulletin/${id}?uuid=${new URLSearchParams(location.search).get('uuid')}`)
+      fetch(
+        `/api/bulletin/${id}?uuid=${new URLSearchParams(location.search).get(
+          'uuid',
+        )}`,
+      )
         .then((response) => response.json())
         .then((data) => {
           setTitle(data.title);
@@ -173,16 +191,24 @@ export default function Detail({ component_option }) {
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
-                        <a href="home.html" className="text-reset text-decoration-none">
+                        <a
+                          href="home.html"
+                          className="text-reset text-decoration-none"
+                        >
                           首页
                         </a>
                       </li>
                       <li className="breadcrumb-item">
-                        <a href="bulletin.html" className="text-reset text-decoration-none">
+                        <a
+                          href="bulletin.html"
+                          className="text-reset text-decoration-none"
+                        >
                           通知/公告
                         </a>
                       </li>
-                      <li className="breadcrumb-item active">{component_option}</li>
+                      <li className="breadcrumb-item active">
+                        {component_option}
+                      </li>
                     </ol>
                   </nav>
                 </div>
@@ -243,7 +269,9 @@ export default function Detail({ component_option }) {
                           <select
                             value={address_level1}
                             className="form-control input-underscore"
-                            onChange={(event) => setAddressLevel1(event.target.value)}
+                            onChange={(event) =>
+                              setAddressLevel1(event.target.value)
+                            }
                           >
                             <option value="">不限</option>
                             {arr1.map((it) => (
@@ -262,7 +290,9 @@ export default function Detail({ component_option }) {
                             <select
                               value={address_level2}
                               className="form-control input-underscore"
-                              onChange={(event) => setAddressLevel2(event.target.value)}
+                              onChange={(event) =>
+                                setAddressLevel2(event.target.value)
+                              }
                             >
                               <option value="">不限</option>
                               {arr2.map((it) => (
@@ -280,7 +310,9 @@ export default function Detail({ component_option }) {
                           <IndustryPicker
                             caption="行业"
                             value={industry}
-                            onChange={(event) => setIndustry(event.target.value)}
+                            onChange={(event) =>
+                              setIndustry(event.target.value)
+                            }
                           />
                         </div>
                       )}
@@ -309,10 +341,18 @@ export default function Detail({ component_option }) {
                     </div>
 
                     <div className="btn-group">
-                      <button type="button" className="btn btn-danger" onClick={handleRemove}>
+                      <button
+                        type="button"
+                        className="btn btn-danger"
+                        onClick={handleRemove}
+                      >
                         删除
                       </button>
-                      <button type="button" className="btn btn-primary" onClick={handleSave}>
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={handleSave}
+                      >
                         保存
                       </button>
                     </div>

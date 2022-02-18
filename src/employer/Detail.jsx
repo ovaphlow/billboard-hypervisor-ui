@@ -39,7 +39,10 @@ export default function Detail() {
   const { id } = useParams();
   const uuid = new URLSearchParams(useLocation().search).get('uuid');
   const [employer, dispatch] = React.useReducer(reducer, initial_employer);
-  const [job_filter, dispatch_job_filter] = React.useReducer(reducer, initial_job_filter);
+  const [job_filter, dispatch_job_filter] = React.useReducer(
+    reducer,
+    initial_job_filter,
+  );
   const [job_list, setJobList] = React.useState([]);
   const [sendin_list, setSendInList] = React.useState([]);
   const [progress, setProgress] = React.useState(0);
@@ -70,21 +73,45 @@ export default function Detail() {
           type: 'set',
           payload: { key: 'yingyezhizhao', value: data.yingyezhizhao },
         });
-        dispatch({ type: 'set', payload: { key: 'zhuceriqi', value: data.zhuceriqi } });
-        dispatch({ type: 'set', payload: { key: 'zhuziguimo', value: data.zhuziguimo } });
+        dispatch({
+          type: 'set',
+          payload: { key: 'zhuceriqi', value: data.zhuceriqi },
+        });
+        dispatch({
+          type: 'set',
+          payload: { key: 'zhuziguimo', value: data.zhuziguimo },
+        });
         dispatch({
           type: 'set',
           payload: { key: 'yuangongshuliang', value: data.yuangongshuliang },
         });
-        dispatch({ type: 'set', payload: { key: 'address1', value: data.address1 } });
-        dispatch({ type: 'set', payload: { key: 'address2', value: data.address2 } });
-        dispatch({ type: 'set', payload: { key: 'address3', value: data.address3 } });
-        dispatch({ type: 'set', payload: { key: 'address4', value: data.address4 } });
-        dispatch({ type: 'set', payload: { key: 'industry', value: data.industry } });
+        dispatch({
+          type: 'set',
+          payload: { key: 'address1', value: data.address1 },
+        });
+        dispatch({
+          type: 'set',
+          payload: { key: 'address2', value: data.address2 },
+        });
+        dispatch({
+          type: 'set',
+          payload: { key: 'address3', value: data.address3 },
+        });
+        dispatch({
+          type: 'set',
+          payload: { key: 'address4', value: data.address4 },
+        });
+        dispatch({
+          type: 'set',
+          payload: { key: 'industry', value: data.industry },
+        });
         dispatch({ type: 'set', payload: { key: 'phone', value: data.phone } });
         dispatch({ type: 'set', payload: { key: 'intro', value: data.intro } });
         dispatch({ type: 'set', payload: { key: 'url', value: data.url } });
-        dispatch({ type: 'set', payload: { key: 'status', value: data.status } });
+        dispatch({
+          type: 'set',
+          payload: { key: 'status', value: data.status },
+        });
         dispatch({
           type: 'set',
           payload: { key: 'yingyezhizhao_tu', value: data.yingyezhizhao_tu },
@@ -109,7 +136,9 @@ export default function Detail() {
         .then((response) => response.json())
         .then((data) => {
           let lf = sendin_list.map((current) => {
-            let job = data.find((element) => element.id === current.recruitment_id);
+            let job = data.find(
+              (element) => element.id === current.recruitment_id,
+            );
             return {
               ...current,
               recruitment_name: job.name,
@@ -125,7 +154,9 @@ export default function Detail() {
         .then((response) => response.json())
         .then((data) => {
           let lf = sendin_list.map((current) => {
-            let resume = data.find((element) => element.id === current.resume_id);
+            let resume = data.find(
+              (element) => element.id === current.resume_id,
+            );
             return {
               ...current,
               resume_name: resume.name,
@@ -168,12 +199,18 @@ export default function Detail() {
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
-                        <a href="home.html" className="text-reset text-decoration-none">
+                        <a
+                          href="home.html"
+                          className="text-reset text-decoration-none"
+                        >
                           首页
                         </a>
                       </li>
                       <li className="breadcrumb-item">
-                        <a href="employer.html" className="text-reset text-decoration-none">
+                        <a
+                          href="employer.html"
+                          className="text-reset text-decoration-none"
+                        >
                           企业用户
                         </a>
                       </li>
@@ -189,7 +226,9 @@ export default function Detail() {
                       <dd className="col-9 lead">
                         {employer.status === '认证' && (
                           <>
-                            <span className="badge bg-success pull-right">{employer.status}</span>
+                            <span className="badge bg-success pull-right">
+                              {employer.status}
+                            </span>
                             &nbsp;
                           </>
                         )}
@@ -218,10 +257,18 @@ export default function Detail() {
                       <dt className="col-3">地址</dt>
                       <dd className="col-9">
                         <ul className="list-inline">
-                          <li className="list-inline-item">{employer.address1}</li>
-                          <li className="list-inline-item">{employer.address2}</li>
-                          <li className="list-inline-item">{employer.address3}</li>
-                          <li className="list-inline-item">{employer.address4}</li>
+                          <li className="list-inline-item">
+                            {employer.address1}
+                          </li>
+                          <li className="list-inline-item">
+                            {employer.address2}
+                          </li>
+                          <li className="list-inline-item">
+                            {employer.address3}
+                          </li>
+                          <li className="list-inline-item">
+                            {employer.address4}
+                          </li>
                         </ul>
                       </dd>
 
@@ -235,7 +282,10 @@ export default function Detail() {
                       <dd className="col-9">{employer.url}</dd>
 
                       <dt className="col-3">简介</dt>
-                      <dd className="col-9" dangerouslySetInnerHTML={{ __html: employer.intro }} />
+                      <dd
+                        className="col-9"
+                        dangerouslySetInnerHTML={{ __html: employer.intro }}
+                      />
 
                       {employer.status !== '认证' && (
                         <>
@@ -270,7 +320,10 @@ export default function Detail() {
                 <div className="card bg-dark shadow mt-3">
                   <div className="card-header">发布的岗位</div>
                   <div className="card-body">
-                    <RecruitmentList enterprise_id={id} enterprise_uuid={uuid} />
+                    <RecruitmentList
+                      enterprise_id={id}
+                      enterprise_uuid={uuid}
+                    />
                   </div>
                 </div>
                 <div className="card bg-dark shadow mt-3">
@@ -290,7 +343,10 @@ export default function Detail() {
                             onChange={(event) =>
                               dispatch_job_filter({
                                 type: 'set',
-                                payload: { key: 'date', value: event.target.value },
+                                payload: {
+                                  key: 'date',
+                                  value: event.target.value,
+                                },
                               })
                             }
                           />
@@ -309,7 +365,10 @@ export default function Detail() {
                             onChange={(event) =>
                               dispatch_job_filter({
                                 type: 'set',
-                                payload: { key: 'date2', value: event.target.value },
+                                payload: {
+                                  key: 'date2',
+                                  value: event.target.value,
+                                },
                               })
                             }
                           />
@@ -317,7 +376,11 @@ export default function Detail() {
                       </div>
                       <div className="col-auto">
                         <div className="btn-group">
-                          <button type="button" className="btn btn-info" onClick={handleJobFilter}>
+                          <button
+                            type="button"
+                            className="btn btn-info"
+                            onClick={handleJobFilter}
+                          >
                             查询
                           </button>
                         </div>

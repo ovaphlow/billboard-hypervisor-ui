@@ -15,7 +15,11 @@ export default function IndustryPicker({ caption, value, onChange }) {
   return (
     <div className="mb-3">
       <label className="form-label">{caption || '行业'}</label>
-      <select value={value} className="form-control input-underscore" onChange={onChange}>
+      <select
+        value={value}
+        className="form-control input-underscore"
+        onChange={onChange}
+      >
         <option value="">不限</option>
         {list.map((it) => (
           <option value={it.name} key={it.id}>

@@ -16,7 +16,9 @@ export default function ComponentEmployerFavoriteList({ user_id }) {
   };
 
   React.useEffect(() => {
-    fetch(`/api/miscellaneous/favorite?option=ref_id-and-tag&id=${user_id}&tag=企业用户`)
+    fetch(
+      `/api/miscellaneous/favorite?option=ref_id-and-tag&id=${user_id}&tag=企业用户`,
+    )
       .then((response) => response.json())
       .then((data) => {
         setList(data);
@@ -42,7 +44,9 @@ export default function ComponentEmployerFavoriteList({ user_id }) {
             <td>
               {dayjs(it.dtime).format('YYYY-MM-DD')}
               &nbsp;
-              <span className="text-muted">{dayjs(it.datime).format('HH:mm:ss')}</span>
+              <span className="text-muted">
+                {dayjs(it.datime).format('HH:mm:ss')}
+              </span>
             </td>
             <td className="text-right">
               <button

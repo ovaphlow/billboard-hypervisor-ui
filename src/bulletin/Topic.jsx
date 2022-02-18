@@ -74,7 +74,10 @@ export default function Topic({ component_option }) {
       .then((response) => response.json())
       .then((data) => {
         dispatch({ type: 'set', payload: { key: 'title', value: data.title } });
-        dispatch({ type: 'set', payload: { key: 'content', value: data.content } });
+        dispatch({
+          type: 'set',
+          payload: { key: 'content', value: data.content },
+        });
         dispatch({ type: 'set', payload: { key: 'tag', value: data.tag } });
       });
   }, [id, uuid]);
@@ -112,12 +115,18 @@ export default function Topic({ component_option }) {
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
-                        <a href="home.html" className="text-reset text-decoration-none">
+                        <a
+                          href="home.html"
+                          className="text-reset text-decoration-none"
+                        >
                           首页
                         </a>
                       </li>
                       <li className="breadcrumb-item">
-                        <a href="topic.html" className="text-reset text-decoration-none">
+                        <a
+                          href="topic.html"
+                          className="text-reset text-decoration-none"
+                        >
                           热门话题
                         </a>
                       </li>
@@ -137,7 +146,10 @@ export default function Topic({ component_option }) {
                             onChange={(event) =>
                               dispatch({
                                 type: 'set',
-                                payload: { key: 'tag', value: event.target.value },
+                                payload: {
+                                  key: 'tag',
+                                  value: event.target.value,
+                                },
                               })
                             }
                           >
@@ -160,7 +172,10 @@ export default function Topic({ component_option }) {
                             onChange={(event) =>
                               dispatch({
                                 type: 'set',
-                                payload: { key: 'title', value: event.target.value },
+                                payload: {
+                                  key: 'title',
+                                  value: event.target.value,
+                                },
                               })
                             }
                           />
@@ -192,7 +207,10 @@ export default function Topic({ component_option }) {
                         placeholder="请填写内容"
                         value={topic.content}
                         onChange={(event) =>
-                          dispatch({ type: 'set', payload: { key: 'content', value: event } })
+                          dispatch({
+                            type: 'set',
+                            payload: { key: 'content', value: event },
+                          })
                         }
                       />
                     </div>
@@ -211,12 +229,20 @@ export default function Topic({ component_option }) {
 
                     <div className="btn-group">
                       {component_option === '编辑' && (
-                        <button type="button" className="btn btn-danger" onClick={handleRemove}>
+                        <button
+                          type="button"
+                          className="btn btn-danger"
+                          onClick={handleRemove}
+                        >
                           删除
                         </button>
                       )}
 
-                      <button type="button" className="btn btn-primary" onClick={handleSubmit}>
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={handleSubmit}
+                      >
                         保存
                       </button>
                     </div>

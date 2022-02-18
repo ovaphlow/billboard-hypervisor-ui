@@ -30,7 +30,10 @@ export default function Detail({ component_option }) {
     if (!event.target.files[0]) return;
     const reader = new FileReader();
     reader.onload = (e) => {
-      dispatch({ type: 'set', payload: { key: 'data_url', value: e.target.result } });
+      dispatch({
+        type: 'set',
+        payload: { key: 'data_url', value: e.target.result },
+      });
     };
     reader.readAsDataURL(event.target.files[0]);
   };
@@ -92,11 +95,23 @@ export default function Detail({ component_option }) {
     fetch(`/api/bulletin/${id}?option=banner&uuid=${uuid}`)
       .then((response) => response.json())
       .then((data) => {
-        dispatch({ type: 'set', payload: { key: 'status', value: data.status } });
-        dispatch({ type: 'set', payload: { key: 'category', value: data.category } });
+        dispatch({
+          type: 'set',
+          payload: { key: 'status', value: data.status },
+        });
+        dispatch({
+          type: 'set',
+          payload: { key: 'category', value: data.category },
+        });
         dispatch({ type: 'set', payload: { key: 'title', value: data.title } });
-        dispatch({ type: 'set', payload: { key: 'comment', value: data.comment } });
-        dispatch({ type: 'set', payload: { key: 'data_url', value: data.data_url } });
+        dispatch({
+          type: 'set',
+          payload: { key: 'comment', value: data.comment },
+        });
+        dispatch({
+          type: 'set',
+          payload: { key: 'data_url', value: data.data_url },
+        });
       });
   }, [id, uuid]);
 
@@ -133,16 +148,24 @@ export default function Detail({ component_option }) {
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
-                        <a href="home.html" className="text-reset text-decoration-none">
+                        <a
+                          href="home.html"
+                          className="text-reset text-decoration-none"
+                        >
                           首页
                         </a>
                       </li>
                       <li className="breadcrumb-item">
-                        <a href="banner.html" className="text-reset text-decoration-none">
+                        <a
+                          href="banner.html"
+                          className="text-reset text-decoration-none"
+                        >
                           BANNER
                         </a>
                       </li>
-                      <li className="breadcrumb-item active">{component_option}</li>
+                      <li className="breadcrumb-item active">
+                        {component_option}
+                      </li>
                     </ol>
                   </nav>
                 </div>
@@ -173,7 +196,10 @@ export default function Detail({ component_option }) {
                         onChange={(event) =>
                           dispatch({
                             type: 'set',
-                            payload: { key: 'title', value: event.target.value },
+                            payload: {
+                              key: 'title',
+                              value: event.target.value,
+                            },
                           })
                         }
                       />
@@ -203,7 +229,10 @@ export default function Detail({ component_option }) {
                         placeholder="请填写内容"
                         value={banner.comment}
                         onChange={(event) =>
-                          dispatch({ type: 'set', payload: { key: 'comment', value: event } })
+                          dispatch({
+                            type: 'set',
+                            payload: { key: 'comment', value: event },
+                          })
                         }
                       />
                     </div>
@@ -216,7 +245,10 @@ export default function Detail({ component_option }) {
                         onChange={(event) =>
                           dispatch({
                             type: 'set',
-                            payload: { key: 'category', value: event.target.value },
+                            payload: {
+                              key: 'category',
+                              value: event.target.value,
+                            },
                           })
                         }
                       >
@@ -258,7 +290,11 @@ export default function Detail({ component_option }) {
                     <p className="text-muted text-center">
                       预览
                       <br />
-                      <img src={banner.data_url} alt={banner.title} className="img-fluid" />
+                      <img
+                        src={banner.data_url}
+                        alt={banner.title}
+                        className="img-fluid"
+                      />
                     </p>
                   </div>
 
@@ -277,12 +313,20 @@ export default function Detail({ component_option }) {
 
                     <div className="btn-group">
                       {component_option === '编辑' && (
-                        <button type="button" className="btn btn-danger" onClick={handleRemove}>
+                        <button
+                          type="button"
+                          className="btn btn-danger"
+                          onClick={handleRemove}
+                        >
                           删除
                         </button>
                       )}
 
-                      <button type="button" className="btn btn-primary" onClick={handleSubmit}>
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={handleSubmit}
+                      >
                         保存
                       </button>
                     </div>

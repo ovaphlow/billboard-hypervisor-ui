@@ -19,8 +19,12 @@ export default function List({ component_option }) {
   const [user_id, setUserID] = React.useState(0);
   const [user_uuid, setUserUUID] = React.useState('');
   const [data, setData] = React.useState([]);
-  const [filter_date_begin, setFilterDateBegin] = React.useState(dayjs().format('YYYY-MM-01'));
-  const [filter_date_end, setFilterDateEnd] = React.useState(dayjs().format('YYYY-MM-DD'));
+  const [filter_date_begin, setFilterDateBegin] = React.useState(
+    dayjs().format('YYYY-MM-01'),
+  );
+  const [filter_date_end, setFilterDateEnd] = React.useState(
+    dayjs().format('YYYY-MM-DD'),
+  );
   const handleRedirect = async (event) => {
     const id = event.target.getAttribute('data-id');
     const uuid = event.target.getAttribute('data-uuid');
@@ -82,7 +86,9 @@ export default function List({ component_option }) {
   };
 
   React.useEffect(() => {
-    let _user_category = new URLSearchParams(location.search).get('user_category');
+    let _user_category = new URLSearchParams(location.search).get(
+      'user_category',
+    );
     let _user_id = new URLSearchParams(location.search).get('user_id');
     let _user_uuid = new URLSearchParams(location.search).get('user_uuid');
     setUserCategory(new URLSearchParams(location.search).get('user_category'));
@@ -170,12 +176,18 @@ export default function List({ component_option }) {
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
-                        <a href="home.html" className="text-reset text-decoration-none">
+                        <a
+                          href="home.html"
+                          className="text-reset text-decoration-none"
+                        >
                           首页
                         </a>
                       </li>
                       <li className="breadcrumb-item">
-                        <a href="common-user.html" className="text-reset text-decoration-none">
+                        <a
+                          href="common-user.html"
+                          className="text-reset text-decoration-none"
+                        >
                           个人用户
                         </a>
                       </li>
@@ -200,7 +212,9 @@ export default function List({ component_option }) {
                             value={filter_date_begin || ''}
                             aria-label="起"
                             className="form-control"
-                            onChange={(event) => setFilterDateBegin(event.target.value)}
+                            onChange={(event) =>
+                              setFilterDateBegin(event.target.value)
+                            }
                           />
                         </div>
                       </div>
@@ -215,15 +229,25 @@ export default function List({ component_option }) {
                             value={filter_date_end || ''}
                             aria-label="止"
                             className="form-control"
-                            onChange={(event) => setFilterDateEnd(event.target.value)}
+                            onChange={(event) =>
+                              setFilterDateEnd(event.target.value)
+                            }
                           />
                         </div>
                       </div>
 
                       <div className="col-auto">
                         <div className="btn-group">
-                          <button type="button" className="btn btn-info" onClick={handleFilter}>
-                            <FontAwesomeIcon icon={faSearch} fixedWidth size="lg" />
+                          <button
+                            type="button"
+                            className="btn btn-info"
+                            onClick={handleFilter}
+                          >
+                            <FontAwesomeIcon
+                              icon={faSearch}
+                              fixedWidth
+                              size="lg"
+                            />
                             查询
                           </button>
 
@@ -234,7 +258,11 @@ export default function List({ component_option }) {
                               window.location.reload(true);
                             }}
                           >
-                            <FontAwesomeIcon icon={faSyncAlt} fixedWidth size="lg" />
+                            <FontAwesomeIcon
+                              icon={faSyncAlt}
+                              fixedWidth
+                              size="lg"
+                            />
                             重置
                           </button>
                         </div>
@@ -281,7 +309,9 @@ export default function List({ component_option }) {
                           data.map((it) => (
                             <tr key={it.id}>
                               <td className="text-right">{it.id}</td>
-                              <td>{dayjs(it.datime).format('YYYY-MM-DD HH:mm:ss')}</td>
+                              <td>
+                                {dayjs(it.datime).format('YYYY-MM-DD HH:mm:ss')}
+                              </td>
                               <td>{it.ip}</td>
                               <td>{it.address}</td>
                               <td>{it.category}</td>
@@ -291,7 +321,9 @@ export default function List({ component_option }) {
                           data.map((it) => (
                             <tr key={it.id}>
                               <td className="text-right">{it.id}</td>
-                              <td>{dayjs(it.datime).format('YYYY-MM-DD HH:mm:ss')}</td>
+                              <td>
+                                {dayjs(it.datime).format('YYYY-MM-DD HH:mm:ss')}
+                              </td>
                               <td>{it.category}</td>
                               <td className="text-right">
                                 <button
@@ -311,7 +343,9 @@ export default function List({ component_option }) {
                           data.map((it) => (
                             <tr key={it.id}>
                               <td className="text-right">{it.id}</td>
-                              <td>{dayjs(it.datime).format('YYYY-MM-DD HH:mm:ss')}</td>
+                              <td>
+                                {dayjs(it.datime).format('YYYY-MM-DD HH:mm:ss')}
+                              </td>
                               <td>{it.category1}</td>
                               <td>{it.category2}</td>
                             </tr>

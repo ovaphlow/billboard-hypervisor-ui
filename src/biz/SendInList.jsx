@@ -53,7 +53,9 @@ export default function SendInList() {
       .then((response) => response.json())
       .then((data) => {
         const lf = list.map((current) => {
-          const resume = data.find((element) => element.id === current.resume_id);
+          const resume = data.find(
+            (element) => element.id === current.resume_id,
+          );
           return {
             ...current,
             resume_name: resume.name,
@@ -73,7 +75,9 @@ export default function SendInList() {
       .then((response) => response.json())
       .then((data) => {
         const lf = list.map((current) => {
-          const job = data.find((element) => element.id === current.recruitment_id);
+          const job = data.find(
+            (element) => element.id === current.recruitment_id,
+          );
           return {
             ...current,
             job_id: job.id,
@@ -119,12 +123,18 @@ export default function SendInList() {
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
-                        <a href="home.html" className="text-reset text-decoration-none">
+                        <a
+                          href="home.html"
+                          className="text-reset text-decoration-none"
+                        >
                           首页
                         </a>
                       </li>
                       <li className="breadcrumb-item">
-                        <a href="common-user.html" className="text-reset text-decoration-none">
+                        <a
+                          href="common-user.html"
+                          className="text-reset text-decoration-none"
+                        >
                           个人用户
                         </a>
                       </li>
@@ -149,7 +159,10 @@ export default function SendInList() {
                             onChange={(event) =>
                               dispatch({
                                 type: 'set',
-                                payload: { key: 'date_begin', value: event.target.value },
+                                payload: {
+                                  key: 'date_begin',
+                                  value: event.target.value,
+                                },
                               })
                             }
                           />
@@ -169,7 +182,10 @@ export default function SendInList() {
                             onChange={(event) =>
                               dispatch({
                                 type: 'set',
-                                payload: { key: 'date_end', value: event.target.value },
+                                payload: {
+                                  key: 'date_end',
+                                  value: event.target.value,
+                                },
                               })
                             }
                           />
@@ -178,7 +194,11 @@ export default function SendInList() {
 
                       <div className="col-auto">
                         <div className="btn-group">
-                          <button type="button" className="btn btn-info" onClick={handleFilter}>
+                          <button
+                            type="button"
+                            className="btn btn-info"
+                            onClick={handleFilter}
+                          >
                             查询
                           </button>
 
@@ -189,7 +209,11 @@ export default function SendInList() {
                               window.location.reload();
                             }}
                           >
-                            <FontAwesomeIcon icon={faSyncAlt} fixedWidth size="lg" />
+                            <FontAwesomeIcon
+                              icon={faSyncAlt}
+                              fixedWidth
+                              size="lg"
+                            />
                             重置
                           </button>
                         </div>
@@ -215,12 +239,18 @@ export default function SendInList() {
                           <tr key={it.id}>
                             <td className="text-right">{it.id}</td>
                             <td>
-                              <a href={`#/resume/${it.resume_id}?uuid=${it.resume_uuid}`}>
+                              <a
+                                href={`#/resume/${it.resume_id}?uuid=${it.resume_uuid}`}
+                              >
                                 {it.resume_name}
                               </a>
                             </td>
                             <td>
-                              <a href={`#/job/${it.job_id}?uuid=${it.job_uuid}`}>{it.job_name}</a>
+                              <a
+                                href={`#/job/${it.job_id}?uuid=${it.job_uuid}`}
+                              >
+                                {it.job_name}
+                              </a>
                             </td>
                             <td>{it.datime}</td>
                             <td className="text-right">{it.status}</td>

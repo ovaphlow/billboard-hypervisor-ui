@@ -60,17 +60,26 @@ export default function JobDetail() {
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
-                        <a href="home.html" className="text-reset text-decoration-none">
+                        <a
+                          href="home.html"
+                          className="text-reset text-decoration-none"
+                        >
                           首页
                         </a>
                       </li>
                       <li className="breadcrumb-item">
-                        <a href="employer.html" className="text-reset text-decoration-none">
+                        <a
+                          href="employer.html"
+                          className="text-reset text-decoration-none"
+                        >
                           企业用户
                         </a>
                       </li>
                       <li className="breadcrumb-item">
-                        <a href="enterprise.html" className="text-reset text-decoration-none">
+                        <a
+                          href="enterprise.html"
+                          className="text-reset text-decoration-none"
+                        >
                           企业
                         </a>
                       </li>
@@ -117,10 +126,16 @@ export default function JobDetail() {
                       <dd className="col-9">{job.category}</dd>
 
                       <dt className="col-3">工作职责</dt>
-                      <dd className="col-9" dangerouslySetInnerHTML={{ __html: job.description }} />
+                      <dd
+                        className="col-9"
+                        dangerouslySetInnerHTML={{ __html: job.description }}
+                      />
 
                       <dt className="col-3">岗位要求</dt>
-                      <dd className="col-9" dangerouslySetInnerHTML={{ __html: job.requirement }} />
+                      <dd
+                        className="col-9"
+                        dangerouslySetInnerHTML={{ __html: job.requirement }}
+                      />
                     </dl>
                   </div>
 

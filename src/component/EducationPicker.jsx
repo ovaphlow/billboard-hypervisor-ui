@@ -7,7 +7,11 @@ export default function EducationPicker({ caption, value, onChange }) {
   return (
     <div className="mb-3">
       <label className="form-label">{caption || '学历'}</label>
-      <select value={value} className="form-control input-underscore" onChange={onChange}>
+      <select
+        value={value}
+        className="form-control input-underscore"
+        onChange={onChange}
+      >
         <option value="">不限</option>
         {EDUCATION.map((it) => (
           <option key={EDUCATION.indexOf(it)} value={it}>

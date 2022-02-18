@@ -1,7 +1,12 @@
 import React from 'react';
 import dayjs from 'dayjs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlusCircle, faSearch, faSyncAlt, faEdit } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPlusCircle,
+  faSearch,
+  faSyncAlt,
+  faEdit,
+} from '@fortawesome/free-solid-svg-icons';
 
 import TopNav from '../component/TopNav';
 import LeftNav from '../component/LeftNav';
@@ -20,7 +25,9 @@ export default function CampusList() {
   const [filter, dispatch] = React.useReducer(reducer, initial_filter);
   const handleFilter = () => {
     setList([]);
-    fetch(`/api/bulletin?option=campus&title=${filter.title}&date=${filter.date}`)
+    fetch(
+      `/api/bulletin?option=campus&title=${filter.title}&date=${filter.date}`,
+    )
       .then((response) => response.json())
       .then((data) => {
         setList(data);
@@ -64,7 +71,10 @@ export default function CampusList() {
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
-                        <a href="home.html" className="text-reset text-decoration-none">
+                        <a
+                          href="home.html"
+                          className="text-reset text-decoration-none"
+                        >
                           首页
                         </a>
                       </li>
@@ -78,7 +88,11 @@ export default function CampusList() {
                     <div className="row">
                       <div className="col-auto">
                         <a href="#/campus/新增" className="btn btn-secondary">
-                          <FontAwesomeIcon icon={faPlusCircle} fixedWidth size="lg" />
+                          <FontAwesomeIcon
+                            icon={faPlusCircle}
+                            fixedWidth
+                            size="lg"
+                          />
                           新增
                         </a>
                       </div>
@@ -94,7 +108,10 @@ export default function CampusList() {
                             onChange={(event) =>
                               dispatch({
                                 type: 'set',
-                                payload: { key: 'title', value: event.target.value },
+                                payload: {
+                                  key: 'title',
+                                  value: event.target.value,
+                                },
                               })
                             }
                           />
@@ -113,7 +130,10 @@ export default function CampusList() {
                             onChange={(event) =>
                               dispatch({
                                 type: 'set',
-                                payload: { key: 'date', value: event.target.value },
+                                payload: {
+                                  key: 'date',
+                                  value: event.target.value,
+                                },
                               })
                             }
                           />
@@ -122,8 +142,16 @@ export default function CampusList() {
 
                       <div className="col-auto">
                         <div className="btn-group">
-                          <button type="button" className="btn btn-info" onClick={handleFilter}>
-                            <FontAwesomeIcon icon={faSearch} fixedWidth size="lg" />
+                          <button
+                            type="button"
+                            className="btn btn-info"
+                            onClick={handleFilter}
+                          >
+                            <FontAwesomeIcon
+                              icon={faSearch}
+                              fixedWidth
+                              size="lg"
+                            />
                             查询
                           </button>
 
@@ -132,7 +160,11 @@ export default function CampusList() {
                             className="btn btn-secondary"
                             onClick={() => window.location.reload(true)}
                           >
-                            <FontAwesomeIcon icon={faSyncAlt} fixedWidth size="lg" />
+                            <FontAwesomeIcon
+                              icon={faSyncAlt}
+                              fixedWidth
+                              size="lg"
+                            />
                             重置
                           </button>
                         </div>
@@ -159,7 +191,11 @@ export default function CampusList() {
                             <td className="text-right">
                               <span className="float-left">
                                 <a href={`#/campus/${it.id}?uuid=${it.uuid}`}>
-                                  <FontAwesomeIcon icon={faEdit} fixedWidth size="lg" />
+                                  <FontAwesomeIcon
+                                    icon={faEdit}
+                                    fixedWidth
+                                    size="lg"
+                                  />
                                 </a>
                               </span>
                               {it.id}

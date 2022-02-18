@@ -52,7 +52,10 @@ export default function List() {
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
-                        <a href="home.html" className="text-reset text-decoration-none">
+                        <a
+                          href="home.html"
+                          className="text-reset text-decoration-none"
+                        >
                           首页
                         </a>
                       </li>
@@ -64,7 +67,11 @@ export default function List() {
                 <div className="card shadow bg-dark h-100 flex-grow-1">
                   <div className="card-header">
                     <a href="#/staff/新增" className="btn btn-secondary">
-                      <FontAwesomeIcon icon={faPlusCircle} fixedWidth size="lg" />
+                      <FontAwesomeIcon
+                        icon={faPlusCircle}
+                        fixedWidth
+                        size="lg"
+                      />
                       新增
                     </a>
                   </div>
@@ -82,8 +89,15 @@ export default function List() {
                         {staff_list.map((it) => (
                           <tr key={it.id}>
                             <td className="text-right">
-                              <a href={`#/staff/${it.id}?uuid=${it.uuid}`} className="float-left">
-                                <FontAwesomeIcon icon={faEdit} fixedWidth size="lg" />
+                              <a
+                                href={`#/staff/${it.id}?uuid=${it.uuid}`}
+                                className="float-left"
+                              >
+                                <FontAwesomeIcon
+                                  icon={faEdit}
+                                  fixedWidth
+                                  size="lg"
+                                />
                               </a>
                               {it.id}
                             </td>

@@ -23,15 +23,18 @@ export default function Detail({ component_option }) {
     }
     if (component_option === '新增') {
       const t_master_id = new URLSearchParams(location.search).get('master_id');
-      const response = await window.fetch(`/api/settings/industry/2nd/?master_id=${t_master_id}`, {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({
-          master_id: id,
-          name,
-          comment,
-        }),
-      });
+      const response = await window.fetch(
+        `/api/settings/industry/2nd/?master_id=${t_master_id}`,
+        {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({
+            master_id: id,
+            name,
+            comment,
+          }),
+        },
+      );
       const res = await response.json();
       if (res.message) {
         window.alert(res.message);
@@ -128,12 +131,18 @@ export default function Detail({ component_option }) {
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
-                        <a href="home.html" className="text-reset text-decoration-none">
+                        <a
+                          href="home.html"
+                          className="text-reset text-decoration-none"
+                        >
                           首页
                         </a>
                       </li>
                       <li className="breadcrumb-item">
-                        <a href="setting-industry.html" className="text-reset text-decoration-none">
+                        <a
+                          href="setting-industry.html"
+                          className="text-reset text-decoration-none"
+                        >
                           系统设定：行业
                         </a>
                       </li>
@@ -183,12 +192,20 @@ export default function Detail({ component_option }) {
 
                     <div className="btn-group float-right">
                       {component_option === '编辑' && (
-                        <button type="button" className="btn btn-danger" onClick={handleRemove}>
+                        <button
+                          type="button"
+                          className="btn btn-danger"
+                          onClick={handleRemove}
+                        >
                           删除
                         </button>
                       )}
 
-                      <button type="button" className="btn btn-primary" onClick={handleSubmit}>
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={handleSubmit}
+                      >
                         保存
                       </button>
                     </div>

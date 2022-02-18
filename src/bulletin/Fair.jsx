@@ -63,10 +63,22 @@ export default function Fair({ component_option }) {
       fetch(`/api/bulletin/${id}?option=fair`)
         .then((response) => response.json())
         .then((data) => {
-          dispatch({ type: 'set', payload: { key: 'title', value: data.title } });
-          dispatch({ type: 'set', payload: { key: 'datime', value: data.datime } });
-          dispatch({ type: 'set', payload: { key: 'status', value: data.status } });
-          dispatch({ type: 'set', payload: { key: 'content', value: data.content } });
+          dispatch({
+            type: 'set',
+            payload: { key: 'title', value: data.title },
+          });
+          dispatch({
+            type: 'set',
+            payload: { key: 'datime', value: data.datime },
+          });
+          dispatch({
+            type: 'set',
+            payload: { key: 'status', value: data.status },
+          });
+          dispatch({
+            type: 'set',
+            payload: { key: 'content', value: data.content },
+          });
         });
 
       fetch(`/api/biz/job?option=by-fair-id&id=${id}`)
@@ -78,7 +90,10 @@ export default function Fair({ component_option }) {
       dispatch({ type: 'set', payload: { key: 'status', value: '停用' } });
       dispatch({
         type: 'set',
-        payload: { key: 'datime', value: dayjs().format('YYYY-MM-DD HH:mm:ss') },
+        payload: {
+          key: 'datime',
+          value: dayjs().format('YYYY-MM-DD HH:mm:ss'),
+        },
       });
     }
   }, []);
@@ -116,16 +131,24 @@ export default function Fair({ component_option }) {
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
-                        <a href="home.html" className="text-reset text-decoration-none">
+                        <a
+                          href="home.html"
+                          className="text-reset text-decoration-none"
+                        >
                           首页
                         </a>
                       </li>
                       <li className="breadcrumb-item">
-                        <a href="enterprise-user" className="text-reset text-decoration-none">
+                        <a
+                          href="enterprise-user"
+                          className="text-reset text-decoration-none"
+                        >
                           线上招聘会
                         </a>
                       </li>
-                      <li className="breadcrumb-item active">{component_option}</li>
+                      <li className="breadcrumb-item active">
+                        {component_option}
+                      </li>
                     </ol>
                   </nav>
                 </div>
@@ -141,7 +164,10 @@ export default function Fair({ component_option }) {
                         onChange={(event) =>
                           dispatch({
                             type: 'set',
-                            payload: { key: 'title', value: event.target.value },
+                            payload: {
+                              key: 'title',
+                              value: event.target.value,
+                            },
                           })
                         }
                       />
@@ -156,7 +182,10 @@ export default function Fair({ component_option }) {
                         onChange={(event) =>
                           dispatch({
                             type: 'set',
-                            payload: { key: 'datime', value: event.target.value },
+                            payload: {
+                              key: 'datime',
+                              value: event.target.value,
+                            },
                           })
                         }
                       />
@@ -236,12 +265,20 @@ export default function Fair({ component_option }) {
 
                     <div className="btn-group float-right">
                       {component_option === '编辑' && (
-                        <button type="button" className="btn btn-danger" onClick={handleRemove}>
+                        <button
+                          type="button"
+                          className="btn btn-danger"
+                          onClick={handleRemove}
+                        >
                           删除
                         </button>
                       )}
 
-                      <button type="button" className="btn btn-primary" onClick={handleSubmit}>
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={handleSubmit}
+                      >
                         保存
                       </button>
                     </div>
@@ -277,9 +314,15 @@ export default function Fair({ component_option }) {
                               <td>{it.education}</td>
                               <td>
                                 <ul className="list-inline">
-                                  <li className="list-inline-item">{it.address1}</li>
-                                  <li className="list-inline-item">{it.address2}</li>
-                                  <li className="list-inline-item">{it.address3}</li>
+                                  <li className="list-inline-item">
+                                    {it.address1}
+                                  </li>
+                                  <li className="list-inline-item">
+                                    {it.address2}
+                                  </li>
+                                  <li className="list-inline-item">
+                                    {it.address3}
+                                  </li>
                                 </ul>
                               </td>
                             </tr>

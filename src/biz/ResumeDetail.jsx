@@ -54,12 +54,18 @@ export default function ResumeDetail() {
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
-                        <a href="home.html" className="text-reset text-decoration-none">
+                        <a
+                          href="home.html"
+                          className="text-reset text-decoration-none"
+                        >
                           首页
                         </a>
                       </li>
                       <li className="breadcrumb-item">
-                        <a href="common-user.html" className="text-reset text-decoration-none">
+                        <a
+                          href="common-user.html"
+                          className="text-reset text-decoration-none"
+                        >
                           个人用户
                         </a>
                       </li>
@@ -93,7 +99,9 @@ export default function ResumeDetail() {
                         <ul className="list-inline">
                           <li className="list-inline-item">{resume.school}</li>
                           <li className="list-inline-item">{resume.major}</li>
-                          <li className="list-inline-item">{resume.education}</li>
+                          <li className="list-inline-item">
+                            {resume.education}
+                          </li>
                           <li className="list-inline-item">
                             {resume.date_begin}~{resume.date_end}
                           </li>
@@ -103,9 +111,15 @@ export default function ResumeDetail() {
                       <dt className="col-3">住址</dt>
                       <dd className="col-9">
                         <ul className="list-inline">
-                          <li className="list-inline-item">{resume.address1}</li>
-                          <li className="list-inline-item">{resume.address2}</li>
-                          <li className="list-inline-item">{resume.address3}</li>
+                          <li className="list-inline-item">
+                            {resume.address1}
+                          </li>
+                          <li className="list-inline-item">
+                            {resume.address2}
+                          </li>
+                          <li className="list-inline-item">
+                            {resume.address3}
+                          </li>
                         </ul>
                       </dd>
 

@@ -70,12 +70,18 @@ function JournalList() {
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
-                        <a href="home.html" className="text-reset text-decoration-none">
+                        <a
+                          href="home.html"
+                          className="text-reset text-decoration-none"
+                        >
                           首页
                         </a>
                       </li>
                       <li className="breadcrumb-item">
-                        <a href="common-user.html" className="text-reset text-decoration-none">
+                        <a
+                          href="common-user.html"
+                          className="text-reset text-decoration-none"
+                        >
                           个人用户
                         </a>
                       </li>
@@ -100,7 +106,10 @@ function JournalList() {
                             onChange={(event) => {
                               dispatch({
                                 type: 'set',
-                                payload: { key: 'date_begin', value: event.target.value },
+                                payload: {
+                                  key: 'date_begin',
+                                  value: event.target.value,
+                                },
                               });
                             }}
                           />
@@ -120,7 +129,10 @@ function JournalList() {
                             onChange={(event) => {
                               dispatch({
                                 type: 'set',
-                                payload: { key: 'date_end', value: event.target.value },
+                                payload: {
+                                  key: 'date_end',
+                                  value: event.target.value,
+                                },
                               });
                             }}
                           />
@@ -129,8 +141,16 @@ function JournalList() {
 
                       <div className="col-auto">
                         <div className="btn-group">
-                          <button type="button" className="btn btn-info" onClick={handleFilter}>
-                            <FontAwesomeIcon icon={faSearch} fixedWidth size="lg" />
+                          <button
+                            type="button"
+                            className="btn btn-info"
+                            onClick={handleFilter}
+                          >
+                            <FontAwesomeIcon
+                              icon={faSearch}
+                              fixedWidth
+                              size="lg"
+                            />
                             查询
                           </button>
 
@@ -141,7 +161,11 @@ function JournalList() {
                               location.reload(true);
                             }}
                           >
-                            <FontAwesomeIcon icon={faSyncAlt} fixedWidth size="lg" />
+                            <FontAwesomeIcon
+                              icon={faSyncAlt}
+                              fixedWidth
+                              size="lg"
+                            />
                             重置
                           </button>
                         </div>
@@ -163,7 +187,11 @@ function JournalList() {
                         {journal_list.map((current) => (
                           <tr key={current.id}>
                             <td>{current.id}</td>
-                            <td>{dayjs(current.dtime).format('YYYY-MM-DD HH:mm:ss')}</td>
+                            <td>
+                              {dayjs(current.dtime).format(
+                                'YYYY-MM-DD HH:mm:ss',
+                              )}
+                            </td>
                             <td>{current.category}</td>
                           </tr>
                         ))}

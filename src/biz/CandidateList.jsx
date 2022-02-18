@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch, faSyncAlt, faEnvelope, faMobileAlt } from '@fortawesome/free-solid-svg-icons';
+import {
+  faSearch,
+  faSyncAlt,
+  faEnvelope,
+  faMobileAlt,
+} from '@fortawesome/free-solid-svg-icons';
 
 import TopNav from '../component/TopNav';
 import LeftNav from '../component/LeftNav';
@@ -52,7 +57,10 @@ export default function CandidateList() {
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
-                        <a href="home.html" className="text-reset text-decoration-none">
+                        <a
+                          href="home.html"
+                          className="text-reset text-decoration-none"
+                        >
                           首页
                         </a>
                       </li>
@@ -75,15 +83,25 @@ export default function CandidateList() {
                             value={filter_name}
                             aria-label="企业名称"
                             className="form-control"
-                            onChange={(event) => setFilterName(event.target.value)}
+                            onChange={(event) =>
+                              setFilterName(event.target.value)
+                            }
                           />
                         </div>
                       </div>
 
                       <div className="col-auto">
                         <div className="btn-group">
-                          <button type="button" className="btn btn-info" onClick={handleFilter}>
-                            <FontAwesomeIcon icon={faSearch} fixedWidth size="lg" />
+                          <button
+                            type="button"
+                            className="btn btn-info"
+                            onClick={handleFilter}
+                          >
+                            <FontAwesomeIcon
+                              icon={faSearch}
+                              fixedWidth
+                              size="lg"
+                            />
                             查询
                           </button>
 
@@ -94,7 +112,11 @@ export default function CandidateList() {
                               window.reload(true);
                             }}
                           >
-                            <FontAwesomeIcon icon={faSyncAlt} fixedWidth size="lg" />
+                            <FontAwesomeIcon
+                              icon={faSyncAlt}
+                              fixedWidth
+                              size="lg"
+                            />
                             重置
                           </button>
                         </div>
@@ -122,11 +144,19 @@ export default function CandidateList() {
                             </td>
                             <td>{it.name}</td>
                             <td>
-                              <FontAwesomeIcon icon={faEnvelope} fixedWidth size="lg" />
+                              <FontAwesomeIcon
+                                icon={faEnvelope}
+                                fixedWidth
+                                size="lg"
+                              />
                               {it.email}
                             </td>
                             <td>
-                              <FontAwesomeIcon icon={faMobileAlt} fixedWidth size="lg" />
+                              <FontAwesomeIcon
+                                icon={faMobileAlt}
+                                fixedWidth
+                                size="lg"
+                              />
                               {it.phone}
                             </td>
                             <td>

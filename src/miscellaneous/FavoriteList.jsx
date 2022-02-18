@@ -28,7 +28,9 @@ export default function FavoriteList() {
 
   React.useEffect(() => {
     if (!ref_id) return;
-    fetch(`/api/miscellaneous/favorite?option=ref_id-and-tag&id=${ref_id}&tag=个人用户`)
+    fetch(
+      `/api/miscellaneous/favorite?option=ref_id-and-tag&id=${ref_id}&tag=个人用户`,
+    )
       .then((response) => response.json())
       .then((data) => {
         setFavoriteList(data);
@@ -68,12 +70,18 @@ export default function FavoriteList() {
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
-                        <a href="home.html" className="text-reset text-decoration-none">
+                        <a
+                          href="home.html"
+                          className="text-reset text-decoration-none"
+                        >
                           首页
                         </a>
                       </li>
                       <li className="breadcrumb-item">
-                        <a href="common-user.html" className="text-reset text-decoration-none">
+                        <a
+                          href="common-user.html"
+                          className="text-reset text-decoration-none"
+                        >
                           个人用户
                         </a>
                       </li>

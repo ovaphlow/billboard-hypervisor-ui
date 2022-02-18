@@ -52,7 +52,10 @@ export default function List() {
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
-                        <a href="home.html" className="text-reset text-decoration-none">
+                        <a
+                          href="home.html"
+                          className="text-reset text-decoration-none"
+                        >
                           首页
                         </a>
                       </li>
@@ -63,7 +66,11 @@ export default function List() {
                 <div className="card shadow bg-dark h-100">
                   <div className="card-header">
                     <a href="#/新增" className="btn btn-sm btn-secondary">
-                      <FontAwesomeIcon icon={faPlusCircle} fixedWidth size="lg" />
+                      <FontAwesomeIcon
+                        icon={faPlusCircle}
+                        fixedWidth
+                        size="lg"
+                      />
                       新增
                     </a>
                   </div>
@@ -83,7 +90,11 @@ export default function List() {
                           <tr key={it.id}>
                             <td>
                               <a href={`#/${it.id}?uuid=${it.uuid}`}>
-                                <FontAwesomeIcon icon={faEdit} fixedWidth size="lg" />
+                                <FontAwesomeIcon
+                                  icon={faEdit}
+                                  fixedWidth
+                                  size="lg"
+                                />
                               </a>
                               <span className="float-right">{it.id}</span>
                             </td>

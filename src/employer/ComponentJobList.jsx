@@ -9,7 +9,9 @@ export default function ComponentJobList({ enterprise_id, enterprise_uuid }) {
 
   React.useEffect(() => {
     if (!enterprise_id || !enterprise_uuid) return;
-    fetch(`/api/biz/job?option=list-by-employer-id&id=${enterprise_id}&uuid=${enterprise_uuid}`)
+    fetch(
+      `/api/biz/job?option=list-by-employer-id&id=${enterprise_id}&uuid=${enterprise_uuid}`,
+    )
       .then((response) => response.json())
       .then((data) => {
         setDataList(data);

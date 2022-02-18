@@ -7,7 +7,11 @@ import 'react-quill/dist/quill.snow.css';
 import TopNav from '../component/TopNav';
 import LeftNav from '../component/LeftNav';
 import BottomNav from '../component/BottomNav';
-import { useAddressKeys, useAddressValues, useAddressLevel1ValueList } from '../useAddress';
+import {
+  useAddressKeys,
+  useAddressValues,
+  useAddressLevel1ValueList,
+} from '../useAddress';
 import useAuth from '../useAuth';
 import { reducer } from '../miscellaneous';
 
@@ -83,15 +87,36 @@ export default function Campus({ component_option }) {
       .then((response) => response.json())
       .then((data) => {
         dispatch({ type: 'set', payload: { key: 'title', value: data.title } });
-        dispatch({ type: 'set', payload: { key: 'content', value: data.content } });
+        dispatch({
+          type: 'set',
+          payload: { key: 'content', value: data.content },
+        });
         dispatch({ type: 'set', payload: { key: 'date', value: data.date } });
         dispatch({ type: 'set', payload: { key: 'time', value: data.time } });
-        dispatch({ type: 'set', payload: { key: 'address_level1', value: data.address_level1 } });
-        dispatch({ type: 'set', payload: { key: 'address_level2', value: data.address_level2 } });
-        dispatch({ type: 'set', payload: { key: 'address_level3', value: data.address_level3 } });
-        dispatch({ type: 'set', payload: { key: 'address_level4', value: data.address_level4 } });
-        dispatch({ type: 'set', payload: { key: 'school', value: data.school } });
-        dispatch({ type: 'set', payload: { key: 'category', value: data.category } });
+        dispatch({
+          type: 'set',
+          payload: { key: 'address_level1', value: data.address_level1 },
+        });
+        dispatch({
+          type: 'set',
+          payload: { key: 'address_level2', value: data.address_level2 },
+        });
+        dispatch({
+          type: 'set',
+          payload: { key: 'address_level3', value: data.address_level3 },
+        });
+        dispatch({
+          type: 'set',
+          payload: { key: 'address_level4', value: data.address_level4 },
+        });
+        dispatch({
+          type: 'set',
+          payload: { key: 'school', value: data.school },
+        });
+        dispatch({
+          type: 'set',
+          payload: { key: 'category', value: data.category },
+        });
       });
   }, [uuid]);
 
@@ -111,7 +136,8 @@ export default function Campus({ component_option }) {
             address_keys[j].slice(0, 2) === code.slice(0, 2) &&
             address_keys[j].slice(-2) === '00'
           ) {
-            if (address_keys[j].slice(-4) !== '0000') arr.push(address_values[j]);
+            if (address_keys[j].slice(-4) !== '0000')
+              arr.push(address_values[j]);
           }
         }
         return;
@@ -169,7 +195,10 @@ export default function Campus({ component_option }) {
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
-                        <a href="home.html" className="text-reset text-decoration-none">
+                        <a
+                          href="home.html"
+                          className="text-reset text-decoration-none"
+                        >
                           首页
                         </a>
                       </li>
@@ -191,7 +220,10 @@ export default function Campus({ component_option }) {
                             onChange={(event) =>
                               dispatch({
                                 type: 'set',
-                                payload: { key: 'category', value: event.target.value },
+                                payload: {
+                                  key: 'category',
+                                  value: event.target.value,
+                                },
                               })
                             }
                           >
@@ -212,7 +244,10 @@ export default function Campus({ component_option }) {
                             onChange={(event) =>
                               dispatch({
                                 type: 'set',
-                                payload: { key: 'title', value: event.target.value },
+                                payload: {
+                                  key: 'title',
+                                  value: event.target.value,
+                                },
                               })
                             }
                           />
@@ -231,7 +266,10 @@ export default function Campus({ component_option }) {
                             onChange={(event) =>
                               dispatch({
                                 type: 'set',
-                                payload: { key: 'date', value: event.target.value },
+                                payload: {
+                                  key: 'date',
+                                  value: event.target.value,
+                                },
                               })
                             }
                           />
@@ -248,7 +286,10 @@ export default function Campus({ component_option }) {
                             onChange={(event) =>
                               dispatch({
                                 type: 'set',
-                                payload: { key: 'time', value: event.target.value },
+                                payload: {
+                                  key: 'time',
+                                  value: event.target.value,
+                                },
                               })
                             }
                           />
@@ -266,7 +307,10 @@ export default function Campus({ component_option }) {
                             onChange={(event) =>
                               dispatch({
                                 type: 'set',
-                                payload: { key: 'address_level1', value: event.target.value },
+                                payload: {
+                                  key: 'address_level1',
+                                  value: event.target.value,
+                                },
                               })
                             }
                           >
@@ -289,7 +333,10 @@ export default function Campus({ component_option }) {
                             onChange={(event) =>
                               dispatch({
                                 type: 'set',
-                                payload: { key: 'address_level2', value: event.target.value },
+                                payload: {
+                                  key: 'address_level2',
+                                  value: event.target.value,
+                                },
                               })
                             }
                           >
@@ -312,7 +359,10 @@ export default function Campus({ component_option }) {
                             onChange={(event) =>
                               dispatch({
                                 type: 'set',
-                                payload: { key: 'address_level3', value: event.target.value },
+                                payload: {
+                                  key: 'address_level3',
+                                  value: event.target.value,
+                                },
                               })
                             }
                           >
@@ -336,7 +386,10 @@ export default function Campus({ component_option }) {
                         onChange={(event) =>
                           dispatch({
                             type: 'set',
-                            payload: { key: 'address_level4', value: event.target.value },
+                            payload: {
+                              key: 'address_level4',
+                              value: event.target.value,
+                            },
                           })
                         }
                       />
@@ -351,7 +404,10 @@ export default function Campus({ component_option }) {
                         onChange={(event) =>
                           dispatch({
                             type: 'set',
-                            payload: { key: 'school', value: event.target.value },
+                            payload: {
+                              key: 'school',
+                              value: event.target.value,
+                            },
                           })
                         }
                       />
@@ -381,7 +437,10 @@ export default function Campus({ component_option }) {
                         placeholder="请填写内容"
                         value={campus.content}
                         onChange={(event) =>
-                          dispatch({ type: 'set', payload: { key: 'content', value: event } })
+                          dispatch({
+                            type: 'set',
+                            payload: { key: 'content', value: event },
+                          })
                         }
                       />
                     </div>
@@ -401,11 +460,19 @@ export default function Campus({ component_option }) {
                     </div>
 
                     <div className="btn-group">
-                      <button type="button" className="btn btn-danger" onClick={handleRemove}>
+                      <button
+                        type="button"
+                        className="btn btn-danger"
+                        onClick={handleRemove}
+                      >
                         删除
                       </button>
 
-                      <button type="button" className="btn btn-primary" onClick={handleSubmit}>
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={handleSubmit}
+                      >
                         保存
                       </button>
                     </div>

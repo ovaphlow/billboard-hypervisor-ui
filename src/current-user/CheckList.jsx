@@ -29,7 +29,10 @@ export default function CheckList() {
   return (
     <div className="d-flex flex-column h-100 w-100">
       <header>
-        <TopNav component_option="待处理任务" component_param_name={auth.name} />
+        <TopNav
+          component_option="待处理任务"
+          component_param_name={auth.name}
+        />
       </header>
 
       <main className="flex-grow-1">
@@ -59,12 +62,18 @@ export default function CheckList() {
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
-                        <a href="home.html" className="text-reset text-decoration-none">
+                        <a
+                          href="home.html"
+                          className="text-reset text-decoration-none"
+                        >
                           首页
                         </a>
                       </li>
                       <li className="breadcrumb-item">
-                        <a href="current-user.html" className="text-reset text-decoration-none">
+                        <a
+                          href="current-user.html"
+                          className="text-reset text-decoration-none"
+                        >
                           当前用户
                         </a>
                       </li>

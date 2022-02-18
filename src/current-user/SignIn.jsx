@@ -78,7 +78,11 @@ export default function SignIn() {
             </div>
 
             <div className="card-footer d-grid">
-              <button type="button" className="btn btn-primary" onClick={handleSignIn}>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handleSignIn}
+              >
                 <FontAwesomeIcon icon={faSignInAlt} fixedWidth size="lg" />
                 确定
               </button>

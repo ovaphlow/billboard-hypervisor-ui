@@ -1,13 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons';
+import {
+  faChevronRight,
+  faChevronLeft,
+} from '@fortawesome/free-solid-svg-icons';
 
 export default function LeftNav({ component_option }) {
   return (
     <ul className="nav flex-column">
       <li className="nav-item">
-        <a href="bulletin.html#/banner" className="nav-link text-reset text-decoration-none">
+        <a
+          href="bulletin.html#/banner"
+          className="nav-link text-reset text-decoration-none"
+        >
           {component_option === 'BANNER' ? (
             <strong>
               <FontAwesomeIcon icon={faChevronRight} fixedWidth size="lg" />
@@ -20,7 +26,10 @@ export default function LeftNav({ component_option }) {
         </a>
       </li>
       <li className="nav-item">
-        <a href="bulletin.html#/notification" className="nav-link text-reset text-decoration-none">
+        <a
+          href="bulletin.html#/notification"
+          className="nav-link text-reset text-decoration-none"
+        >
           {component_option === '推荐信息' ? (
             <strong>
               <FontAwesomeIcon icon={faChevronRight} fixedWidth size="lg" />
@@ -33,7 +42,10 @@ export default function LeftNav({ component_option }) {
         </a>
       </li>
       <li className="nav-item">
-        <a href="bulletin.html#/topic" className="nav-link text-reset text-decoration-none">
+        <a
+          href="bulletin.html#/topic"
+          className="nav-link text-reset text-decoration-none"
+        >
           {component_option === '热门话题' ? (
             <strong>
               <FontAwesomeIcon icon={faChevronRight} fixedWidth size="lg" />
@@ -46,7 +58,10 @@ export default function LeftNav({ component_option }) {
         </a>
       </li>
       <li className="nav-item">
-        <a href="bulletin.html#/campus" className="nav-link text-reset text-decoration-none">
+        <a
+          href="bulletin.html#/campus"
+          className="nav-link text-reset text-decoration-none"
+        >
           {component_option === '校园招聘' ? (
             <strong>
               <FontAwesomeIcon icon={faChevronRight} fixedWidth size="lg" />
@@ -59,7 +74,10 @@ export default function LeftNav({ component_option }) {
         </a>
       </li>
       <li className="nav-item">
-        <a href="bulletin.html#/fair" className="nav-link text-reset text-decoration-none">
+        <a
+          href="bulletin.html#/fair"
+          className="nav-link text-reset text-decoration-none"
+        >
           {component_option === '线上招聘会' ? (
             <strong>
               <FontAwesomeIcon icon={faChevronRight} fixedWidth size="lg" />
@@ -73,7 +91,10 @@ export default function LeftNav({ component_option }) {
       </li>
       <hr />
       <li className="nav-item">
-        <a href="employer.html" className="nav-link text-reset text-decoration-none">
+        <a
+          href="employer.html"
+          className="nav-link text-reset text-decoration-none"
+        >
           {component_option === '企业用户' ? (
             <strong>
               <FontAwesomeIcon icon={faChevronRight} fixedWidth size="lg" />
@@ -86,7 +107,10 @@ export default function LeftNav({ component_option }) {
         </a>
       </li>
       <li className="nav-item">
-        <a href="biz.html#/candidate" className="nav-link text-reset text-decoration-none">
+        <a
+          href="biz.html#/candidate"
+          className="nav-link text-reset text-decoration-none"
+        >
           {component_option === '个人用户' ? (
             <strong>
               <FontAwesomeIcon icon={faChevronRight} fixedWidth size="lg" />
@@ -99,7 +123,10 @@ export default function LeftNav({ component_option }) {
         </a>
       </li>
       <li className="nav-item">
-        <a href="miscellaneous.html#/staff" className="nav-link text-reset text-decoration-none">
+        <a
+          href="miscellaneous.html#/staff"
+          className="nav-link text-reset text-decoration-none"
+        >
           {component_option === '平台用户' ? (
             <strong>
               <FontAwesomeIcon icon={faChevronRight} fixedWidth size="lg" />
@@ -129,7 +156,10 @@ export default function LeftNav({ component_option }) {
         </a>
       </li>
       <li className="nav-item">
-        <a href="miscellaneous.html#/feedback" className="nav-link text-reset text-decoration-none">
+        <a
+          href="miscellaneous.html#/feedback"
+          className="nav-link text-reset text-decoration-none"
+        >
           {component_option === '意见反馈' ? (
             <strong>
               <FontAwesomeIcon icon={faChevronRight} fixedWidth size="lg" />
@@ -143,7 +173,10 @@ export default function LeftNav({ component_option }) {
       </li>
       <hr />
       <li className="nav-item">
-        <a href="bulletin.html" className="nav-link text-reset text-decoration-none">
+        <a
+          href="bulletin.html"
+          className="nav-link text-reset text-decoration-none"
+        >
           {component_option === '通知/公告' ? (
             <strong>
               <FontAwesomeIcon icon={faChevronRight} fixedWidth size="lg" />

@@ -53,7 +53,10 @@ export default function FairList() {
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
-                        <a href="home.html" className="text-reset text-decoration-none">
+                        <a
+                          href="home.html"
+                          className="text-reset text-decoration-none"
+                        >
                           首页
                         </a>
                       </li>
@@ -67,7 +70,11 @@ export default function FairList() {
                     <div className="row">
                       <div className="col">
                         <a href="#/fair/新增" className="btn btn-secondary">
-                          <FontAwesomeIcon icon={faPlusCircle} fixedWidth size="lg" />
+                          <FontAwesomeIcon
+                            icon={faPlusCircle}
+                            fixedWidth
+                            size="lg"
+                          />
                           新增
                         </a>
                       </div>
@@ -90,13 +97,22 @@ export default function FairList() {
                         {list.map((it) => (
                           <tr key={it.id}>
                             <td className="text-right">
-                              <a href={`#/fair/${it.id}`} className="float-left">
-                                <FontAwesomeIcon icon={faEdit} fixedWidth size="lg" />
+                              <a
+                                href={`#/fair/${it.id}`}
+                                className="float-left"
+                              >
+                                <FontAwesomeIcon
+                                  icon={faEdit}
+                                  fixedWidth
+                                  size="lg"
+                                />
                               </a>
                               {it.id}
                             </td>
                             <td>{it.title}</td>
-                            <td>{dayjs(it.datime).format('YYYY-MM-DD HH:mm')}</td>
+                            <td>
+                              {dayjs(it.datime).format('YYYY-MM-DD HH:mm')}
+                            </td>
                             <td>{it.status}</td>
                           </tr>
                         ))}

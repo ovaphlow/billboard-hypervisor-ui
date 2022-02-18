@@ -84,12 +84,18 @@ export default function ChangePassword() {
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
-                        <a href="home.html" className="text-reset text-decoration-none">
+                        <a
+                          href="home.html"
+                          className="text-reset text-decoration-none"
+                        >
                           首页
                         </a>
                       </li>
                       <li className="breadcrumb-item">
-                        <a href="current-user.html" className="text-reset text-decoration-none">
+                        <a
+                          href="current-user.html"
+                          className="text-reset text-decoration-none"
+                        >
                           当前用户
                         </a>
                       </li>
@@ -126,14 +132,20 @@ export default function ChangePassword() {
                         className="btn btn-danger btn-sm"
                         onClick={() => (window.location = SIGN_IN_URL)}
                       >
-                        <FontAwesomeIcon icon={faSignOutAlt} fixedWidth size="lg" />
+                        <FontAwesomeIcon
+                          icon={faSignOutAlt}
+                          fixedWidth
+                          size="lg"
+                        />
                         退出登录
                       </button>
                     </div>
                   </div>
 
                   <div className="card-body">
-                    <div className="alert alert-warning">修改密码后需要重新登录</div>
+                    <div className="alert alert-warning">
+                      修改密码后需要重新登录
+                    </div>
 
                     <div className="mb-3">
                       <label className="form-label">当前密码</label>
@@ -181,7 +193,11 @@ export default function ChangePassword() {
                     </button>
 
                     <div className="btn-group">
-                      <button type="button" className="btn btn-primary" onClick={handleChange}>
+                      <button
+                        type="button"
+                        className="btn btn-primary"
+                        onClick={handleChange}
+                      >
                         更改密码
                       </button>
                     </div>

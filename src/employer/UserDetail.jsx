@@ -64,12 +64,18 @@ export default function UserDetail() {
                   <nav>
                     <ol className="breadcrumb transparent">
                       <li className="breadcrumb-item">
-                        <a href="home.html" className="text-reset text-decoration-none">
+                        <a
+                          href="home.html"
+                          className="text-reset text-decoration-none"
+                        >
                           首页
                         </a>
                       </li>
                       <li className="breadcrumb-item">
-                        <a href="enterprise-user" className="text-reset text-decoration-none">
+                        <a
+                          href="enterprise-user"
+                          className="text-reset text-decoration-none"
+                        >
                           企业用户
                         </a>
                       </li>
