@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import dayjs from 'dayjs';
@@ -11,18 +11,20 @@ import BottomNav from '../component/BottomNav';
 import useAuth from '../useAuth';
 import { reducer } from '../miscellaneous';
 
-const initial_fair = {
-  title: '',
-  datime: '',
-  status: '',
-  content: '',
-};
-
 export default function Fair({ component_option }) {
   const auth = useAuth();
   const { id } = useParams();
-  const [fair, dispatch] = React.useReducer(reducer, initial_fair);
-  const [data_list, setDataList] = React.useState([]);
+  const [state, dispatchState] = useReducer(reducer, {
+    qtyAll: 0,
+    qtyCandidate: 0,
+  });
+  const [fair, dispatch] = useReducer(reducer, {
+    title: '',
+    datime: '',
+    status: '',
+    content: '',
+  });
+  const [data_list, setDataList] = useState([]);
   const handleSubmit = () => {
     if (component_option === '编辑') {
       fetch(`/api/bulletin/${id}?option=fair`, {
@@ -58,7 +60,7 @@ export default function Fair({ component_option }) {
     });
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (component_option === '编辑') {
       fetch(`/api/bulletin/${id}?option=fair`)
         .then((response) => response.json())
@@ -97,6 +99,44 @@ export default function Fair({ component_option }) {
       });
     }
   }, []);
+
+  useEffect(() => {
+    // 浏览人次
+    if (!id) return;
+    const url = [
+      '/api/miscellaneous/simple/journal',
+      '?option=countBy-refId2-detail',
+      `&refId2=${id}`,
+      `&detail=${JSON.stringify({ tag: '个人用户', category: '浏览招聘会' })}`,
+    ];
+    fetch(url.join(''))
+      .then((response) => response.json())
+      .then((data) => {
+        dispatchState({
+          type: 'set',
+          payload: { key: 'qtyAll', value: data.qty },
+        });
+      });
+  }, [id]);
+
+  useEffect(() => {
+    // 浏览人数
+    if (!id) return;
+    const url = [
+      '/api/miscellaneous/simple/journal',
+      '?option=countBy-refId2-detail-groupBy-refId',
+      `&refId2=${id}`,
+      `&detail=${JSON.stringify({ tag: '个人用户', category: '浏览招聘会' })}`,
+    ];
+    fetch(url.join(''))
+      .then((response) => response.json())
+      .then((data) => {
+        dispatchState({
+          type: 'set',
+          payload: { key: 'qtyCandidate', value: data.qty },
+        });
+      });
+  }, [id]);
 
   return (
     <div className="d-flex flex-column h-100 w-100">
@@ -154,6 +194,18 @@ export default function Fair({ component_option }) {
                 </div>
 
                 <div className="card shadow bg-dark h-100 flex-grow-1">
+                  <div className="card-header d-flex justify-content-between">
+                    <p>
+                      浏览招聘会人次 &nbsp;
+                      <span className="badge bg-info">{state.qtyAll}</span>
+                    </p>
+                    <p>
+                      参加招聘会人数 &nbsp;
+                      <span className="badge bg-info">
+                        {state.qtyCandidate}
+                      </span>
+                    </p>
+                  </div>
                   <div className="card-body">
                     <div className="mb-3">
                       <label className="form-label">标题</label>
